@@ -2,6 +2,7 @@
     "extensions": [
         "humao.rest-client"
     ],
+    "forwardPorts": [9411],
     // Use 'onCreateCommand' to run commands as part of container creation. 
     "onCreateCommand": "/bin/bash -c .devcontainer/on-create.sh",
 }
