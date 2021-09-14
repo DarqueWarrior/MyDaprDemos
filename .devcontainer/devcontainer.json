@@ -1,6 +1,13 @@
 {
+    // Set container specific settings
+    "settings": {
+        "terminal.integrated.defaultProfile.linux": "pwsh",
+        "terminal.integrated.defaultProfile.windows": "PowerShell"
+    },
     "extensions": [
-        "humao.rest-client"
+        "humao.rest-client",
+        "ms-azuretools.vscode-bicep",
+        "ms-vscode.PowerShell"
     ],
     // Use 'onCreateCommand' to run commands as part of container creation. 
     "onCreateCommand": "/bin/bash -c .devcontainer/on-create.sh",
