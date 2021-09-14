@@ -13,5 +13,8 @@ az login --service-principal -t $TID -u $SPID -p $SPKEY
 
 # set the subscription
 az account set -s $SUBID
+
+# set defaults
+az config set core.output=table
  
 echo "on-create complete" >> ~/status
