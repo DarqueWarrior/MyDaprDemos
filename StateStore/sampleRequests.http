@@ -1,0 +1,14 @@
+# dapr run -H 3500
+
+POST http://localhost:3500/v1.0/state/statestore
+
+[
+    {
+        "key": "Dog",
+        "value": "Hybrid"
+    }
+]
+
+###
+
+http://localhost:3500/v1.0/state/statestore/Dog
