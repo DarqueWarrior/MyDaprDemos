@@ -9,7 +9,8 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"**/.devcontainer": true
+			"**/.devcontainer": true,
+			"statestore.code-workspace": true
 		}
 	}
 }
