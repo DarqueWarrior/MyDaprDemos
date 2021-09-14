@@ -9,6 +9,7 @@
         "ms-azuretools.vscode-bicep",
         "ms-vscode.PowerShell"
     ],
+    "forwardPorts": [9411],
     // Use 'onCreateCommand' to run commands as part of container creation. 
     "onCreateCommand": "/bin/bash -c .devcontainer/on-create.sh",
 }
