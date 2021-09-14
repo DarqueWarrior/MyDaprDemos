@@ -42,3 +42,17 @@ $cosmosDbEndpoint = $deployment.properties.outputs.cosmosDbEndpoint.value
 
 Write-Verbose "cosmosDbKey = $cosmosDbKey"
 Write-Verbose "cosmosDbEndpoint = $cosmosDbEndpoint"
+
+# Creating azureComponets/local_secrets.json
+
+$secrets = [PSCustomObject]@{
+    url = $cosmosDbEndpoint
+    key = $cosmosDbKey
+}
+
+$secrets | ConvertTo-Json | Set-Content ../azureComponets/local_secrets.json
+
+# After running move up a level so I don't forget and run dapr run from wrong
+# location 
+
+Set-Location -Path ..

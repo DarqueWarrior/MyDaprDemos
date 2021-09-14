@@ -1,7 +1,8 @@
-param uniqueValue string
 param location string = 'eastus2'
 
-var cdbName = 'cdb${uniqueValue}'
+var dbName = 'StateStore'
+var containerName = 'StateStoreValues'
+var cdbName = 'cdb${uniqueString(resourceGroup().id)}'
 
 resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   name: cdbName
@@ -24,6 +25,31 @@ resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
       }
     ]
     databaseAccountOfferType: 'Standard'
+  }
+}
+
+resource db 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06-15' = {
+  name: dbName
+  parent: cdb
+  properties: {
+    resource: {
+      id: dbName
+    }
+  }
+}
+
+resource dbContiner 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-06-15' = {
+  name: containerName
+  parent: db
+  properties: {
+    resource: {
+      id: containerName
+      partitionKey: {
+        paths: [
+          '/id'
+        ]
+      }
+    }
   }
 }
 

@@ -1,4 +1,5 @@
-# dapr run -H 3500
+# dapr run --app-id local --dapr-http-port 3500
+# dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponets
 
 POST http://localhost:3500/v1.0/state/statestore
 
@@ -12,3 +13,7 @@ POST http://localhost:3500/v1.0/state/statestore
 ###
 
 http://localhost:3500/v1.0/state/statestore/Dog
+
+###
+
+DELETE http://localhost:3500/v1.0/state/statestore/Dog
