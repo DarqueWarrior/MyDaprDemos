@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "../StateStore"
+		},
+		{
+			"path": "../../../home/codespace/.dapr/components"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.devcontainer": true
+		}
+	}
+}
