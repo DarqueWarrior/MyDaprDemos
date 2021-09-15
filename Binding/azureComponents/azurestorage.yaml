@@ -1,0 +1,22 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: files
+auth:
+  secretStore: strongbox  
+spec:
+  type: bindings.azure.blobstorage
+  version: v1
+  metadata:
+  - name: storageAccount
+    secretKeyRef:
+      name: acct
+  - name: storageAccessKey
+    secretKeyRef:
+      name: key
+  - name: container
+    value: container1
+  - name: decodeBase64
+    value: false
+  - name: getBlobRetryCount
+    value: 3

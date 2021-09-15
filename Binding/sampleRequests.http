@@ -1,0 +1,47 @@
+# dapr run --app-id local --dapr-http-port 3500 --components-path ./components
+@itemName = fileName
+# # dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
+# @itemName = blobName
+
+
+POST http://localhost:3500/v1.0/bindings/files
+
+{
+    "operation": "create",
+    "data": "Hello World",
+    "metadata": {
+        "{{itemName}}": "myTestFile.txt"
+    }
+}
+
+
+###
+
+POST http://localhost:3500/v1.0/bindings/files
+
+{
+    "operation": "list"
+}
+
+###
+
+POST http://localhost:3500/v1.0/bindings/files
+
+{
+    "operation": "get",
+    "metadata": {
+        "{{itemName}}": "myTestFile.txt"
+    }
+}
+
+
+###
+
+POST http://localhost:3500/v1.0/bindings/files/
+
+{
+    "operation": "delete",
+    "metadata": {
+        "{{itemName}}": "myTestFile.txt"
+    }
+}

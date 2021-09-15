@@ -7,7 +7,8 @@
     "extensions": [
         "humao.rest-client",
         "ms-azuretools.vscode-bicep",
-        "ms-vscode.PowerShell"
+        "ms-vscode.PowerShell",
+        "cweijan.vscode-redis-client"
     ],
     "forwardPorts": [9411],
     // Use 'onCreateCommand' to run commands as part of container creation. 
