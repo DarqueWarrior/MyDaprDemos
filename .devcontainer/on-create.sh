@@ -9,7 +9,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 dapr init
 
 # log into azure cli
-az login --service-principal -t $TID -u $SPID -p $SPKEY
+az login --service-principal -t $TENANT -u $APPID -p $PASSWORD
 
 # set the subscription
 az account set -s $SUBID

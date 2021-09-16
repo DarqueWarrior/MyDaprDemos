@@ -1,5 +1,10 @@
+# Use this command to run local
+# Use fileName for the local store
 # dapr run --app-id local --dapr-http-port 3500 --components-path ./components
 @itemName = fileName
+
+# Use this command to run in the cloud
+# Use blobName for the local store
 # # dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
 # @itemName = blobName
 
@@ -13,7 +18,6 @@ POST http://localhost:3500/v1.0/bindings/files
         "{{itemName}}": "myTestFile.txt"
     }
 }
-
 
 ###
 
@@ -33,7 +37,6 @@ POST http://localhost:3500/v1.0/bindings/files
         "{{itemName}}": "myTestFile.txt"
     }
 }
-
 
 ###
 

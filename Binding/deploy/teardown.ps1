@@ -7,7 +7,7 @@ param (
         HelpMessage = "The name of the resource group to be created. All resources will be place in the resource group and start with name."
     )]
     [string]
-    $rgName = "bindingDemo",
+    $rgName = "dapr_binding_demo",
 
     [switch]
     $force

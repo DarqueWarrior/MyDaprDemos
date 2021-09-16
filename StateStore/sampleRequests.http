@@ -1,4 +1,7 @@
+# Use this command to run local
 # dapr run --app-id local --dapr-http-port 3500
+
+# Use this command to run in the cloud
 # dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
 
 POST http://localhost:3500/v1.0/state/statestore
