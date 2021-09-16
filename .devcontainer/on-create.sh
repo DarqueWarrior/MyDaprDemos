@@ -16,5 +16,8 @@ az account set -s $SUBID
 
 # set defaults
 az config set core.output=table
+
+# install PowerShell modules
+pwsh -Command "& {Install-Module -Name Trackyon.Utils, VSTeam -Force}"
  
 echo "on-create complete" >> ~/status
