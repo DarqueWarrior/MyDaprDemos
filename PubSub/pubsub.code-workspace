@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../PubSub"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.devcontainer": true,
+			"**/bin": true,
+			"**/obj": true,
+			"**/.vscode": true,
+			".gitignore": true,
+			"pubsub.code-workspace": true
+		},
+		"editor.minimap.enabled": false
+	}
+}
