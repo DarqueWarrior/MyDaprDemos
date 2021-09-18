@@ -5,7 +5,7 @@
 
 # Use this command to run in the cloud
 # Use blobName for the local store
-# # dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
+# dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
 # @itemName = blobName
 
 

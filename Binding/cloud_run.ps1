@@ -1,0 +1,1 @@
+dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents

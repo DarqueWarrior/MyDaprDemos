@@ -1,16 +1,13 @@
 {
 	"folders": [
 		{
-			"path": "../StateStore"
-		},
-		{
-			"path": "../../../home/codespace/.dapr/components"
+			"path": "./Binding"
 		}
 	],
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
-			"statestore.code-workspace": true
+			"binding.code-workspace": true
 		},
 		"editor.minimap.enabled": false
 	}

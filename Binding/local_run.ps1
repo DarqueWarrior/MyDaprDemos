@@ -1,0 +1,1 @@
+dapr run --app-id local --dapr-http-port 3500 --components-path ./components
