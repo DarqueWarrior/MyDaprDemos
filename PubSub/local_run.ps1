@@ -1,0 +1,1 @@
+dapr run -a app1 -p 5013 -H 3500 -d ./components -- dotnet run --project ./src/
