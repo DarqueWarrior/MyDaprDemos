@@ -1,2 +1,3 @@
 Binding/azureComponents/local_secrets.json
 StateStore/azureComponents/local_secrets.json
+PubSub/azureComponents/local_secrets.json

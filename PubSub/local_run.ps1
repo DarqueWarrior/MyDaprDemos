@@ -1,1 +1,1 @@
-dapr run -a app1 -p 5013 -H 3500 -d ./components -- dotnet run --project ./src/
+dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components -- dotnet run --project ./src/

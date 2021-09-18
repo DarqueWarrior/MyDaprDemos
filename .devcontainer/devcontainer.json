@@ -6,6 +6,8 @@
 		"dockerfile": "Dockerfile"
 	},
 	"settings": {
+		"csharp.suppressDotnetRestoreNotification": true,
+		"csharp.suppressBuildAssetsNotification": true,
 		"go.toolsManagement.checkForUpdates": "local",
 		"go.useLanguageServer": true,
 		"go.gopath": "/go",
