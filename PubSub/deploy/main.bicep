@@ -16,4 +16,6 @@ module pubsub './pubsub.bicep' = {
   }
 }
 
+output storageAccountKey string = pubsub.outputs.storageAccountKey
+output storageAccountName string = pubsub.outputs.storageAccountName
 output serviceBusEndpoint string = pubsub.outputs.serviceBusEndpoint

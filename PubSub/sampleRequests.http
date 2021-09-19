@@ -4,9 +4,11 @@
 # Use this command to run in the cloud
 # dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./azureComponents -- dotnet run --project ./src/
 
-POST http://localhost:3500/v1.0/publish/pubsub/new
+POST http://localhost:3500/v1.0/publish/pubsub/neworder
 Content-Type: application/json
 
-{
-    "data": "Hello World"
-}
+{"orderId":"44"}
+
+###
+
+GET http://localhost:3500/v1.0/invoke/app1/method/order

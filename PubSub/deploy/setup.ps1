@@ -37,16 +37,23 @@ $deployment = $(az deployment sub create --name $rgName `
         --parameters rgName=$rgName `
         --output json) | ConvertFrom-Json
 
+$storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
+$storageAccountName = $deployment.properties.outputs.storageAccountName.value
 $serviceBusEndpoint = $deployment.properties.outputs.serviceBusEndpoint.value
 
+Write-Verbose "storageAccountKey = $storageAccountKey"
+Write-Verbose "storageAccountName = $storageAccountName"
 Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
 
 # Creating azureComponents/local_secrets.json
 
 $secrets = [PSCustomObject]@{
     connectionString = $serviceBusEndpoint
+    storageAccountKey = $storageAccountKey
+    storageAccountName = $storageAccountName
 }
 
+Write-Output 'Creating local_secrets.json for local secret store'
 $secrets | ConvertTo-Json | Set-Content ../azureComponents/local_secrets.json
 
 # After running move up a level so I don't forget and run dapr run from wrong
