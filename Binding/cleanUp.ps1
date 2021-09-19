@@ -13,6 +13,15 @@ param (
     $force
 )
 
+# Put the sampleRequests.http file back the way it was
+git restore ./sampleRequests.http
+
+# Remove the myTestFile.txt
+Remove-Item ./tempfiles/myTestFile.txt -ErrorAction SilentlyContinue
+
+# Remove local_secrets.json
+Remove-Item ./azureComponents/local_secrets.json -ErrorAction SilentlyContinue
+
 if ($force.IsPresent) {
     az group delete --resource-group $rgName --no-wait --yes
 }

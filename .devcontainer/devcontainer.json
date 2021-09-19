@@ -25,6 +25,7 @@
 		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
 		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
 		"lldb.executable": "/usr/bin/lldb",
+		"workbench.startupEditor": "none",
 		"files.watcherExclude": {
 			"**/target/**": true
 		},
@@ -52,7 +53,10 @@
 		"ms-azuretools.vscode-bicep",
 		"ms-vscode.PowerShell",
 		"cweijan.vscode-redis-client",
-		"ms-dotnettools.csharp"
+		"ms-dotnettools.csharp",
+		"hookyqr.beautify",
+		"simonsiefke.prettier-vscode",
+		"streetsidesoftware.code-spell-checker"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
