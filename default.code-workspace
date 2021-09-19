@@ -15,10 +15,11 @@
             "Codespace",
             "codespaces",
             "Dapr",
+            "devcontainer",
             "pwsh",
+            "secretstores",
             "statestore",
-            "tempfiles",
-            "devcontainer"
+            "tempfiles"
         ]
     }
 }
