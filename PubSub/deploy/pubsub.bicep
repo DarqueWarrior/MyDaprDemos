@@ -1,5 +1,3 @@
-param location string = 'eastus2'
-
 var sbApiVersion = '2017-04-01'
 var sbName = 'sb${uniqueString(resourceGroup().id)}'
 var defaultSASKeyName = 'RootManageSharedAccessKey'
@@ -11,7 +9,7 @@ var storageAccountId = resourceId('Microsoft.Storage/storageAccounts', stgName)
 
 resource sb 'Microsoft.ServiceBus/namespaces@2017-04-01' = {
   name: sbName
-  location: location
+  location: resourceGroup().location
   sku: {
     name: 'Standard'
     tier: 'Standard'
@@ -21,7 +19,7 @@ resource sb 'Microsoft.ServiceBus/namespaces@2017-04-01' = {
 
 resource stg 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: stgName // must be globally unique
-  location: location
+  location: resourceGroup().location
   kind: 'Storage'
   sku: {
     name: 'Standard_LRS'

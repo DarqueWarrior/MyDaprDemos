@@ -1,11 +1,11 @@
 # Use this command to run local
 # Use fileName for the local store
-# dapr run --app-id local --dapr-http-port 3500 --components-path ./components
+# ./demo.ps1
 @itemName = fileName
 
 # Use this command to run in the cloud
 # Use blobName for the local store
-# dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
+# ./demo.ps1 -cloud
 # @itemName = blobName
 
 

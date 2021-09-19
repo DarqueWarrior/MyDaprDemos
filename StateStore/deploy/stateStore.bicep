@@ -1,12 +1,10 @@
-param location string = 'eastus2'
-
 var dbName = 'StateStore'
 var containerName = 'StateStoreValues'
 var cdbName = 'cdb${uniqueString(resourceGroup().id)}'
 
 resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   name: cdbName
-  location: location
+  location: resourceGroup().location
   kind: 'GlobalDocumentDB'
   properties: {
     consistencyPolicy: {
@@ -14,7 +12,7 @@ resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
     }
     locations: [
       {
-        locationName: location
+        locationName: resourceGroup().location
         failoverPriority: 0
         isZoneRedundant: false
       }

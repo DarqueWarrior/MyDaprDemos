@@ -7,7 +7,6 @@ Open the _demo_statestore.code-workspace_ file and click the **Open Workspace** 
 To provision the infrastructure before the demo execute the following commands in the terminal. This code is automatically run by the demo.ps1 script if the _./azureComponents/local_secrets.json_ file is not found. 
 
 ```
-pwsh
 cd ./deploy/
 ./setup.ps1
 ``` 

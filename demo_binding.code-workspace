@@ -7,7 +7,7 @@
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
-			"binding.code-workspace": true
+			"demo_binding.code-workspace": true
 		},
 		"editor.minimap.enabled": false,
 		"cSpell.words": [

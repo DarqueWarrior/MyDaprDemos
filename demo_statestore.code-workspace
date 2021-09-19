@@ -10,7 +10,7 @@
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
-			"statestore.code-workspace": true
+			"demo_statestore.code-workspace": true
 		},
 		"editor.minimap.enabled": false,
 		"cSpell.words": [
