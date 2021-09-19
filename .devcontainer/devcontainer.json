@@ -47,6 +47,7 @@
 	],
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"ms-azuretools.vscode-dapr",
 		"GitHub.vscode-pull-request-github",
 		"ms-azuretools.vscode-docker",
 		"humao.rest-client",

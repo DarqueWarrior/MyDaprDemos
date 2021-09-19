@@ -13,6 +13,9 @@ param (
     $force
 )
 
+# Remove local_secrets.json
+Remove-Item ./azureComponents/local_secrets.json -ErrorAction SilentlyContinue
+
 if ($force.IsPresent) {
     az group delete --resource-group $rgName --no-wait --yes
 }

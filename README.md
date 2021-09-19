@@ -51,16 +51,18 @@ With the appId, password, and tenant from the service principal and the id from 
 
 ## Running Demos 
 
-To setup the infrastructure to run the demos run the `setup.ps1` PowerShell scripts in the _deploy_ folder under the demo you want to run. 
+All the scripts in the repository are PowerShell scripts. When using Codespaces the terminal should default to PowerShell, if not type `pwsh` to switch. If running locally on macOS, Windows or Linux install [PowerShell](https://github.com/powershell/powershell).
 
-To switch to PowerShell from Bash use the following command in the terminal. 
+Each demo has a workspace file in the root folder. Select the workspace for the demo you want to run and click the *Open Workspace* button in the lower right corner.
 
-```bash 
-pwsh 
-``` 
+![codespace secrets](./Images/OpenWorkspace.png)
 
-This will switch to PowerShell so the setup and tear down scripts can be executed. The setup script uses the Azure CLI to deploy a bicep file to deploy the required infrastructure. 
+This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
- To encourage best practices the components are all configured using secret stores. After the infrastructure is deployed the script will collect all the information needed to configure the components and write the data to a local_secrets.json file. This file is read in a secret store component used to configure the other components. The local_secrets.json file is listed in the .gitignore file of the repository so they are not accidentally committed.
+In the root of each demo workspace is a _demo.ps1_ file. From a terminal execute this file to load the sampleRequest.http file and issue the `dapr run` command. The _demo.ps1_ file can accept a `-cloud` switch to run the demo against cloud resources. When the `-cloud` switch is used the script will provision the cloud resources if needed. The required cloud infrastructure can be deployed ahead of time by running the _setup.ps1_ PowerShell script in the _deploy_ folder. The setup script uses the Azure CLI to deploy a bicep file to deploy the required infrastructure. 
+
+ To encourage best practices the components are all configured using secret stores. After the infrastructure is deployed the script will collect all the information needed to configure the components and write the data to a local_secrets.json file or in environment variables. The file or environment variables are read in a secret store component used to configure the other components. The local_secrets.json file is listed in the .gitignore file of the repository so they are not accidentally committed.
+
+ To delete your cloud resources ane restore the repository to pre-demo state run the _cleanUp.ps1_ file in the root of each workspace.
 
  See the README.md files in each demo folder for instructions on how to run the demo. 

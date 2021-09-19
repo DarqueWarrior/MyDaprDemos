@@ -1,0 +1,24 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+			"**/.devcontainer": true,
+			".gitignore": true,
+			"default.code-workspace": true
+		},
+		"editor.minimap.enabled": false,
+        "cSpell.words": [
+            "Codespace",
+            "codespaces",
+            "Dapr",
+            "pwsh",
+            "statestore",
+            "tempfiles",
+            "devcontainer"
+        ]
+    }
+}
