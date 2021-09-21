@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "./Observability"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.devcontainer": true,
+			"**/bin": true,
+			"**/obj": true,
+			"**/.vscode": true,
+			".gitignore": true,
+			"demo_observability.code-workspace": true
+		},
+		"editor.minimap.enabled": false,
+		"cSpell.words": [
+			"Codespace",
+			"Dapr",
+			"pwsh"
+		]
+	}
+}
