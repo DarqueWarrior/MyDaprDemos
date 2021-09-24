@@ -11,9 +11,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module binding './binding.bicep' = {
   name: 'binding'
   scope: resourceGroup(rg.name)
-  params: {
-    location: location
-  }
 }
 
 output storageAccountKey string = binding.outputs.storageAccountKey

@@ -16,12 +16,12 @@ param (
 $file = Get-Content -Path ./sampleRequests.http
 
 if ($cloud.IsPresent) {
-    $file[5] = '# @itemName = fileName'
-    $file[10] = '@itemName = blobName'
+    $file[3] = '# @itemName = fileName'
+    $file[8] = '@itemName = blobName'
 }
 else {
-    $file[5] = '@itemName = fileName'
-    $file[10] = '# @itemName = blobName'
+    $file[3] = '@itemName = fileName'
+    $file[8] = '# @itemName = blobName'
 }
 
 Set-Content -Path ./sampleRequests.http -Value $file

@@ -11,9 +11,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module pubsub './pubsub.bicep' = {
   name: 'pubsub'
   scope: resourceGroup(rg.name)
-  params: {
-    location: location
-  }
 }
 
 output storageAccountKey string = pubsub.outputs.storageAccountKey

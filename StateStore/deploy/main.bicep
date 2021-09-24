@@ -11,9 +11,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module stateStore './stateStore.bicep' = {
   name: 'stateStore'
   scope: resourceGroup(rg.name)
-  params: {
-    location: location
-  }
 }
 
 output cosmosDbKey string = stateStore.outputs.cosmosDbKey
