@@ -2,6 +2,41 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Open Requests",
+            "command": "code",
+            "type": "process",
+            "args": [
+                "sampleRequests.http"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "dependsOn": [
+                "Setup cloud demo"
+            ],
+        },
+        {
+            "label": "Setup cloud demo",
+            "type": "shell",
+            "command": "./demo.ps1",
+            "args": [
+                "-cloud",
+                "-skipDaprRun"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
@@ -44,7 +79,10 @@
             "httpPort": 3500,
             "label": "daprd-local-debug",
             "type": "daprd",
-            "dependsOn": "build",
+            "dependsOn": [
+                "build",
+                "Open Requests"
+            ],
             "componentsPath": "./components"
         },
         {
@@ -53,7 +91,10 @@
             "httpPort": 3500,
             "label": "daprd-cloud-debug",
             "type": "daprd",
-            "dependsOn": "build",
+            "dependsOn": [
+                "build",
+                "Open Requests"
+            ],
             "componentsPath": "./azureComponents"
         },
         {

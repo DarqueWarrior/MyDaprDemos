@@ -5,11 +5,16 @@
 [CmdletBinding()]
 param (
     [Parameter(
-        Position = 0,
         HelpMessage = "When provided runs demo against cloud resources"
     )]
     [switch]
-    $cloud
+    $cloud,
+
+    [Parameter(
+        HelpMessage = "When provided the dapr run is skipped. This is used from the tasks to launch the debugger because it will call daprd run."
+    )]
+    [switch]
+    $skipDaprRun
 )
 
 # Load the sample requests file for the demo
@@ -27,12 +32,18 @@ if ($cloud.IsPresent) {
         Pop-Location
     }
     
-    Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./azureComponents -- dotnet run --project ./src/ `n"
-    dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./azureComponents -- dotnet run --project ./src/
+    if ($skipDaprRun.IsPresent -eq $false) {
+        Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./azureComponents -- dotnet run --project ./src/ `n"
+        
+        dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./azureComponents -- dotnet run --project ./src/
+    }
 }
 else {
     Write-Output "Running demo with local resources"
-    Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components -- dotnet run --project ./src/ `n"
+    
+    if ($skipDaprRun.IsPresent -eq $false) {
+        Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components -- dotnet run --project ./src/ `n"
 
-    dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components -- dotnet run --project ./src/
+        dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components -- dotnet run --project ./src/
+    }
 }
