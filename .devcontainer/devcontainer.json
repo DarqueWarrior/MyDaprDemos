@@ -5,6 +5,7 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
+	"remoteEnv": { "PATH": "${containerEnv:PATH}:/home/codespace/.dapr/bin" },
 	"settings": {
 		"csharp.suppressDotnetRestoreNotification": true,
 		"csharp.suppressBuildAssetsNotification": true,

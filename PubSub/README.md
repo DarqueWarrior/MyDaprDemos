@@ -32,3 +32,11 @@ When you are done with the demo you can clean up the cloud resources by running 
 ```
 ./cleanUp.ps1
 ```
+
+If you get port errors run:
+
+```
+lsof -i  
+```
+
+And kill the pid running daprd.

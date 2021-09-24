@@ -37,6 +37,29 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "appId": "app1",
+            "appPort": 5013,
+            "httpPort": 3500,
+            "label": "daprd-local-debug",
+            "type": "daprd",
+            "dependsOn": "build",
+            "componentsPath": "./components"
+        },
+        {
+            "appId": "app1",
+            "appPort": 5013,
+            "httpPort": 3500,
+            "label": "daprd-cloud-debug",
+            "type": "daprd",
+            "dependsOn": "build",
+            "componentsPath": "./azureComponents"
+        },
+        {
+            "appId": "app1",
+            "label": "daprd-down",
+            "type": "daprd-down"
         }
     ]
 }

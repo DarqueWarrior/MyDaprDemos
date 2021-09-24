@@ -2,34 +2,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (web)",
+            "name": "Dapr Local",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
+            "preLaunchTask": "daprd-local-debug",
             "program": "${workspaceFolder}/src/bin/Debug/net6.0/src.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src",
             "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
+            "postDebugTask": "daprd-down"
         },
         {
-            "name": ".NET Core Attach",
+            "name": "Dapr Cloud",
             "type": "coreclr",
-            "request": "attach"
+            "request": "launch",
+            "preLaunchTask": "daprd-cloud-debug",
+            "program": "${workspaceFolder}/src/bin/Debug/net6.0/src.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "postDebugTask": "daprd-down"
         }
     ]
 }
