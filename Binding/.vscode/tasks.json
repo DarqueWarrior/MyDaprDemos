@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Open Requests",
+            "command": "code",
+            "type": "process",
+            "args": [
+                "sampleRequests.http"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": "$dapr"
+        },
+        {
+            "appId": "cloud",
+            "type": "daprd-down",
+            "label": "daprd-cloud-down"
+        },
+        {
+            "appId": "local",
+            "type": "daprd-down",
+            "label": "daprd-local-down"
+        }
+    ]
+}

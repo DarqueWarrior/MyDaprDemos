@@ -42,10 +42,12 @@ if ($cloud.IsPresent) {
     }
     
     Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents `n"
+
     dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
 }
 else {
     Write-Output "Running demo with local resources"
+
     Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components `n"
 
     dapr run --app-id local --dapr-http-port 3500 --components-path ./components

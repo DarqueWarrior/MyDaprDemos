@@ -1,9 +1,8 @@
 var dbName = 'StateStore'
 var containerName = 'StateStoreValues'
-var cdbName = 'cdb${uniqueString(resourceGroup().id)}'
 
 resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
-  name: cdbName
+  name: 'cdb${uniqueString(resourceGroup().id)}'
   location: resourceGroup().location
   kind: 'GlobalDocumentDB'
   properties: {
