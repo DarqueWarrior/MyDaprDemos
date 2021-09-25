@@ -1,4 +1,4 @@
-POST http://localhost:46675/v1.0/publish/pubsub/incomingorders
+POST http://localhost:3500/v1.0/publish/pubsub/incomingorders
 Content-Type: application/json
 
 {"orderId":"43"}
