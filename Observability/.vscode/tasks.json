@@ -14,31 +14,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publishServiceA",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/src/serviceA/serviceA.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watchServiceA",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "${workspaceFolder}/src/serviceA/serviceA.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "appId": "serviceA",
             "appPort": 5011,
             "label": "daprd-debug-ServiceA",
@@ -49,6 +24,54 @@
         {
             "appId": "serviceA",
             "label": "daprd-down-ServiceA",
+            "type": "daprd-down"
+        },
+        {
+            "label": "buildserviceB",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/serviceB/serviceB.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "appId": "serviceB",
+            "appPort": 5021,
+            "label": "daprd-debug-serviceB",
+            "type": "daprd",
+            "dependsOn": "build"
+        },
+        {
+            "appId": "serviceB",
+            "label": "daprd-down-serviceB",
+            "type": "daprd-down"
+        },
+        {
+            "label": "buildserviceC",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/serviceC/serviceC.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "appId": "serviceC",
+            "appPort": 5031,
+            "label": "daprd-debug-serviceC",
+            "type": "daprd",
+            "dependsOn": "build"
+        },
+        {
+            "appId": "serviceC",
+            "label": "daprd-down-serviceC",
             "type": "daprd-down"
         }
     ]
