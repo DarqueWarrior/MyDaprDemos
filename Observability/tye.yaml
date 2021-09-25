@@ -1,0 +1,21 @@
+name: store-application
+extensions:
+
+  # Configuration for dapr goes here.
+- name: dapr
+
+# Services to run go here.
+services:  
+  # The name will be used as the app-id. For a .NET project, Tye only needs the path to the project file.
+- name: serviceA
+  project: src/serviceA/serviceA.csproj
+- name: serviceB
+  project: src/serviceB/serviceB.csproj
+- name: serviceC
+  project: src/serviceC/serviceC.csproj
+
+  # Containers you want to run need an image name and set of ports to expose.
+# - name: redis
+#   image: redis
+#   bindings:
+#     - port: 6973

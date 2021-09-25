@@ -1,0 +1,48 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "serviceB",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/serviceB/bin/Debug/net6.0/serviceB.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/serviceB",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://0.0.0.0:5021;https://0.0.0.0:5022"
+            }
+        },
+        {
+            "name": "serviceC",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/serviceC/bin/Debug/net6.0/serviceC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/serviceC",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://0.0.0.0:5031;https://0.0.0.0:5032"
+            }
+        },
+        {
+            "name": "serviceA with Dapr",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "daprd-debug-ServiceA",
+            "program": "${workspaceFolder}/src/serviceA/bin/Debug/net6.0/serviceA.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/serviceA",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://0.0.0.0:5011;https://0.0.0.0:5012"
+            },
+            "postDebugTask": "daprd-down-ServiceA"
+        }
+    ]
+}
