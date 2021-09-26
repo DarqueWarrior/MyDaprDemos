@@ -1,21 +1,43 @@
-name: store-application
-extensions:
-
-  # Configuration for dapr goes here.
-- name: dapr
+name: observability
 
 # Services to run go here.
-services:  
+services:
   # The name will be used as the app-id. For a .NET project, Tye only needs the path to the project file.
 - name: serviceA
   project: src/serviceA/serviceA.csproj
+  bindings:
+  - port: 5000
+  env:
+    - name: DAPR_HTTP_PORT
+      value: 3500
+    - name: DAPR_GRPC_PORT
+      value: 3501
+- name: serviceA-Dapr
+  executable: dapr
+  args: run -a serviceA -p 5000 -H 3500 -G 3501
+
 - name: serviceB
   project: src/serviceB/serviceB.csproj
+  bindings:
+  - port: 5010
+  env:
+    - name: DAPR_HTTP_PORT
+      value: 3510
+    - name: DAPR_GRPC_PORT
+      value: 3511
+- name: serviceB-Dapr
+  executable: dapr
+  args: run -a serviceB -p 5010 -H 3510 -G 3511
+
 - name: serviceC
   project: src/serviceC/serviceC.csproj
-
-  # Containers you want to run need an image name and set of ports to expose.
-# - name: redis
-#   image: redis
-#   bindings:
-#     - port: 6973
+  bindings:
+  - port: 5020
+  env:
+    - name: DAPR_HTTP_PORT
+      value: 3520
+    - name: DAPR_GRPC_PORT
+      value: 3521
+- name: serviceC-Dapr
+  executable: dapr
+  args: run -a serviceC -p 5020 -H 3520 -G 3521
