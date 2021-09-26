@@ -1,0 +1,22 @@
+name: observability
+
+services:
+- name: serviceA
+  executable: dapr
+  args: run -a serviceA -p 5000 -H 3500 -- dotnet run --project ./src/serviceA/serviceA.csproj --urls "http://localhost:5000"
+
+- name: serviceB
+  executable: dapr
+  args: run -a serviceB -p 5010 -- dotnet run --project ./src/serviceB/serviceB.csproj --urls "http://localhost:5010"
+
+- name: serviceC
+  executable: dapr
+  args: run -a serviceC -p 5020 -- dotnet run --project ./src/serviceC/serviceC.csproj --urls "http://localhost:5020"
+
+- name: openTelemetry
+  image: otel/opentelemetry-collector-contrib-dev
+  bindings:
+    - port: 9411
+  volumes:
+    - source: ../azureComponents/otel-local-config.yaml
+      target: /etc/otel/config.yaml

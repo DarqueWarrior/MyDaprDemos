@@ -1,6 +1,5 @@
 receivers:
   zipkin:
-    endpoint: 0.0.0.0:9411
 extensions:
   health_check:
   pprof:
@@ -11,14 +10,13 @@ exporters:
   logging:
     loglevel: debug
   azuremonitor:
-    endpoint: "https://dc.services.visualstudio.com/v2/track"
-    instrumentation_key: "51c4f15a-149d-4d99-8021-8d43cd5af780"
-    # maxbatchsize is the maximum number of items that can be
+    instrumentation_key: ""
+    # max batch size is the maximum number of items that can be
     # queued before calling to the configured endpoint
-    maxbatchsize: 100
-    # maxbatchinterval is the maximum time to wait before calling
+    maxbatchsize: 5
+    # max batch interval is the maximum time to wait before calling
     # the configured endpoint.
-    maxbatchinterval: 10s
+    maxbatchinterval: 5s
 service:
   extensions: [pprof, zpages, health_check]
   pipelines:

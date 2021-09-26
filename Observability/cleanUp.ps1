@@ -13,8 +13,8 @@ param (
     $force
 )
 
-# Remove local_secrets.json
-Remove-Item ./azureComponents/local_secrets.json -ErrorAction SilentlyContinue
+# Put the otel-local-config.yaml file back the way it was
+git restore ./azureComponents/otel-local-config.yaml
 
 if ($force.IsPresent) {
     az group delete --resource-group $rgName --no-wait --yes

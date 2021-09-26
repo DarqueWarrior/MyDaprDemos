@@ -41,14 +41,12 @@ $instrumentationKey = $deployment.properties.outputs.instrumentationKey.value
 
 Write-Verbose "instrumentationKey = $instrumentationKey"
 
-# Creating azureComponents/local_secrets.json
+# Populating azureComponents/otel-local-config.yaml
+$config = $(Get-Content ../azureComponents/otel-local-config.yaml | Convertfrom-Yaml)
+$config.exporters.azuremonitor.instrumentation_key = $instrumentationKey
 
-$secrets = [PSCustomObject]@{
-    instrumentationKey = $instrumentationKey
-}
-
-Write-Output 'Creating local_secrets.json for local secret store'
-$secrets | ConvertTo-Json | Set-Content ../azureComponents/local_secrets.json
+Write-Output 'Saving otel-local-config.yaml'
+$config | ConvertTo-Yaml | Set-Content ../azureComponents/otel-local-config.yaml
 
 # After running move up a level so I don't forget and run dapr run from wrong
 # location 

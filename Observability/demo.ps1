@@ -17,22 +17,32 @@ code ./sampleRequests.http
 
 if ($cloud.IsPresent) {
     Write-Output "Running demo with cloud resources"
+
+    $config = $(Get-Content ./azureComponents/otel-local-config.yaml | Convertfrom-Yaml)
     
     # If you don't find the ./azureComponents/local_secrets.json run the setup.ps1 in deploy folder
-    if ($(Test-Path -Path './azureComponents/local_secrets.json') -eq $false) {
+    if ($config.exporters.azuremonitor.instrumentation_key -eq "") {
         Write-Output "./azureComponents/local_secrets.json not found running setup"
         Push-Location
         Set-Location -Path './deploy'
         ./setup.ps1
         Pop-Location
     }
+
+    # Make sure the dapr_zipkin container is not running.
+    docker stop dapr_zipkin
     
-    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents `n"
+    Write-Output "dapr run -a serviceA -p 5000 -H 3500 --components-path ./azureComponents -- dotnet run --project ./serviceA/serviceA.csproj --urls "http://localhost:5000" `n"
+    Write-Output "dapr run -a serviceB -p 5010 --components-path ./azureComponents -- dotnet run --project ./serviceB/serviceB.csproj --urls "http://localhost:5010" `n"
+    Write-Output "dapr run -a serviceC -p 5020 --components-path ./azureComponents -- dotnet run --project ./serviceC/serviceC.csproj --urls "http://localhost:5020" `n"
 
     tye run ./src/tye_cloud.yaml
 }
 else {
     Write-Output "Running demo with local resources"
+
+    # Make sure the dapr_zipkin container is running.
+    docker start dapr_zipkin
 
     Write-Output "dapr run -a serviceA -p 5000 -H 3500 -- dotnet run --project ./serviceA/serviceA.csproj --urls "http://localhost:5000" `n"
     Write-Output "dapr run -a serviceB -p 5010 -- dotnet run --project ./serviceB/serviceB.csproj --urls "http://localhost:5010" `n"
