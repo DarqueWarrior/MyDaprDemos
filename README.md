@@ -78,7 +78,7 @@ az account show -o json
 
 With the appId, password, and tenant from the service principal and the id from the subscription you can set the Codespace secrets. You can learn how to set them on the [Managing encrypted secrets for your codespaces](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-encrypted-secrets-for-your-codespaces) page. Make sure you assign them permission to the fork of this repository. 
 
-![codespace secrets](./Images/CodespaceSecrets.png) 
+![codespace secrets](./.images/CodespaceSecrets.png) 
 
 ## Running Demos 
 
@@ -86,13 +86,13 @@ All the scripts in the repository are PowerShell scripts. When using Codespaces 
 
 Each demo has a workspace file in the root folder. Select the workspace for the demo you want to run and click the *Open Workspace* button in the lower right corner.
 
-![codespace secrets](./Images/OpenWorkspace.png)
+![codespace secrets](./.images/OpenWorkspace.png)
 
 This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
 When you are ready to load another workspace select **Open Workspace...** from the file menu.
 
-![open workspace](./Images/OpenWorkspaceFileMenu.png)
+![open workspace](./.images/OpenWorkspaceFileMenu.png)
 
 In the root of each demo workspace is a _demo.ps1_ file. From a terminal execute this file to load the sampleRequest.http file and issue the `dapr run` command. The _demo.ps1_ file can accept a `-cloud` switch to run the demo against cloud resources. When the `-cloud` switch is used the script will provision the cloud resources if needed. The required cloud infrastructure can be deployed ahead of time by running the _setup.ps1_ PowerShell script in the _deploy_ folder. The setup script uses the Azure CLI to deploy a bicep file to deploy the required infrastructure. 
 
