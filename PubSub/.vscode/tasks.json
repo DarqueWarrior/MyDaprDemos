@@ -19,6 +19,26 @@
                 "showReuseMessage": true,
                 "clear": false
             },
+            "isBackground": true
+        },
+        {
+            "label": "Open Cloud Requests",
+            "command": "code",
+            "type": "process",
+            "args": [
+                "sampleRequests.http"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
             "isBackground": true,
             "dependsOn": [
                 "Setup cloud demo"
@@ -93,7 +113,7 @@
             "type": "daprd",
             "dependsOn": [
                 "build",
-                "Open Requests"
+                "Open Cloud Requests"
             ],
             "componentsPath": "./azureComponents"
         },
