@@ -1,6 +1,37 @@
-# MyDaprDemos 
+# My Dapr Demos 
 
-To use these [Dapr](https://dapr.io) demos fork this repo and setup the Codespace secrets and assign them to your fork. 
+This repo is a collection of demos of the [Dapr](https://dapr.io) building blocks. Each demo provides a local and cloud based configuration to demonstrate the ability to run on multiple platforms. They are self contained and automatically provision the required infrastructure using the provided Bicep files.
+
+Demo | Building Blocks | Local | Cloud | Language
+--- | --- | --- | --- | ---:
+[Binding](./Binding) | [Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/) | File Share | Azure Storage | HTTP
+[Observability](./Observability) | [Observability](https://docs.dapr.io/developing-applications/building-blocks/observability/) | Zipkin | Azure Application Insights | C#, HTTP
+[PubSub](./PubSub) | [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis <br> Redis | Azure Service Bus <br> Azure Storage | C#, HTTP
+[Secrets](./Secrets) | [Secrets management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) | Local | Azure Key Vault | HTTP
+[StateStore](./StateStore) | [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis | Azure Storage | HTTP
+## Usage
+
+The easiest way to use these demos is with CodeSpaces. This repo is configured to create a CodeSpace with all the required tools. Simply fork this repo and setup the Codespace secrets and assign them to your fork. 
+
+To run these locally clone the repo and install all the required tools listed below. Then start a PowerShell terminal and log into the Azure with the Azure CLI.
+
+### Requirements
+
+All the software below can be installed on macOS, Windows and Linux
+
+- [Dapr v1.4](https://docs.dapr.io/getting-started/)
+- [PowerShell v7.1.4](https://github.com/powershell/powershell)
+  - [PowerShell-Yaml v0.4.2](https://www.powershellgallery.com/packages/powershell-yaml/0.4.2)
+- [Visual Studio Code v1.60.2](https://visualstudio.microsoft.com/)
+  - [Dapr extension v0.5.0](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr)
+  - [REST Client extension v0.24.5](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+  - [PowerShell extension v2021.9.0](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
+  - [C# extension v1.23.15](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+  - [Redis extension v1.2.8](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-redis-client)
+- [Azure CLI v2.27.2](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+- [.NET v6](https://dotnet.microsoft.com/download/dotnet/6.0)
+  - [Tye v0.10.0](https://github.com/dotnet/tye)
+- [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Create Codespace Secrets 
 
