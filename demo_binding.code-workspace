@@ -2,11 +2,15 @@
 	"folders": [
 		{
 			"path": "./Binding"
+		},
+		{
+			"path": "./.images"
 		}
 	],
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
+			"**/.images": true,
 			"demo_binding.code-workspace": true
 		},
 		"editor.minimap.enabled": false,

@@ -1,3 +1,9 @@
+# Use this command to run local
+# ./demo.ps1
+
+# Use this command to run in the cloud
+# ./demo.ps1 -cloud
+
 POST http://localhost:3500/v1.0/publish/pubsub/incomingorders
 Content-Type: application/json
 

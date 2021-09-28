@@ -11,7 +11,7 @@ Demo | Building Blocks | Local | Cloud | Language
 [StateStore](./StateStore) | [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis | Azure Storage | HTTP
 ## Usage
 
-The easiest way to use these demos is with CodeSpaces. This repo is configured to create a CodeSpace with all the required tools. Simply fork this repo and setup the Codespace secrets and assign them to your fork. 
+The easiest way to use these demos is with [CodeSpaces](https://github.com/features/codespaces). This repo is configured to create a CodeSpace with all the required tools. Simply fork this repo and setup the Codespace secrets and assign them to your fork. 
 
 To run these locally clone the repo and install all the required tools listed below. Then start a PowerShell terminal and log into the Azure with the Azure CLI.
 
@@ -82,7 +82,13 @@ With the appId, password, and tenant from the service principal and the id from 
 
 ## Running Demos 
 
-All the scripts in the repository are PowerShell scripts. When using Codespaces the terminal should default to PowerShell, if not type `pwsh` to switch. If running locally on macOS, Windows or Linux install [PowerShell](https://github.com/powershell/powershell).
+All the scripts in the repository are PowerShell scripts. When using Codespaces the terminal should default to PowerShell, if not type `pwsh` to switch. 
+
+```
+$ pwsh
+```
+
+If running locally on macOS, Windows or Linux install [PowerShell](https://github.com/powershell/powershell).
 
 Each demo has a workspace file in the root folder. Select the workspace for the demo you want to run and click the *Open Workspace* button in the lower right corner.
 
@@ -94,9 +100,9 @@ When you are ready to load another workspace select **Open Workspace...** from t
 
 ![open workspace](./.images/OpenWorkspaceFileMenu.png)
 
-In the root of each demo workspace is a _demo.ps1_ file. From a terminal execute this file to load the sampleRequest.http file and issue the `dapr run` command. The _demo.ps1_ file can accept a `-cloud` switch to run the demo against cloud resources. When the `-cloud` switch is used the script will provision the cloud resources if needed. The required cloud infrastructure can be deployed ahead of time by running the _setup.ps1_ PowerShell script in the _deploy_ folder. The setup script uses the Azure CLI to deploy a bicep file to deploy the required infrastructure. 
+In the root of each demo workspace is a _demo.ps1_ file. From a terminal execute this file to load the _sampleRequest.http_ file and issue the `dapr run` command. The _demo.ps1_ file can accept a `-cloud` switch to run the demo against cloud resources. When the `-cloud` switch is used the script will provision the cloud resources if needed. The required cloud infrastructure can be deployed ahead of time by running the _demo.ps1_ with the `-deployOnly` switch. The script uses the Azure CLI to deploy a [bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) file to deploy the required infrastructure. 
 
- To encourage best practices the components are all configured using secret stores. After the infrastructure is deployed the script will collect all the information needed to configure the components and write the data to a local_secrets.json file or in environment variables. The file or environment variables are read in a secret store component used to configure the other components. The local_secrets.json file is listed in the .gitignore file of the repository so they are not accidentally committed.
+ To encourage best practices the [components are all configured using secret stores](https://docs.dapr.io/operations/components/component-secrets/). After the infrastructure is deployed the script will collect all the information needed to configure the components and write the data to a _local_secrets.json_ file or in environment variables. The file or environment variables are read in a secret store component used to configure the other components. The _local_secrets.json_ file is listed in the .gitignore file of the repository so they are not accidentally committed.
 
  To delete your cloud resources ane restore the repository to pre-demo state run the _cleanUp.ps1_ file in the root of each workspace.
 

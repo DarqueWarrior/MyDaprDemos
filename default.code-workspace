@@ -6,10 +6,11 @@
     ],
     "settings": {
         "files.exclude": {
-			"**/.devcontainer": true,
-			".gitignore": true,
-			"default.code-workspace": true
-		},
+            ".gitignore": true,
+            "**/.devcontainer": true,
+            "**/.images": true,
+            "default.code-workspace": true
+        },
 		"editor.minimap.enabled": false,
         "cSpell.words": [
             "Codespace",

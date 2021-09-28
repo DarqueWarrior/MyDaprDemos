@@ -18,5 +18,5 @@ services:
   bindings:
     - port: 9411
   volumes:
-    - source: ../azureComponents/otel-local-config.yaml
+    - source: ../azureConfig/otel-local-config.yaml
       target: /etc/otel/config.yaml

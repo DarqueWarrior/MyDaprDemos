@@ -2,12 +2,16 @@
 	"folders": [
 		{
 			"path": "./PubSub"
+		},
+		{
+			"path": "./.images"
 		}
 	],
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
 			"**/bin": true,
+			"**/.images": true,
 			"**/obj": true,
 			"**/.vscode": true,
 			".gitignore": true,

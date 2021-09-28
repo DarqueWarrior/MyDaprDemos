@@ -4,11 +4,10 @@ The purpose of this demo is to show the use of [state store components](https://
 
 Open the _demo_statestore.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
-To provision the infrastructure before the demo execute the following commands in the terminal. This code is automatically run by the demo.ps1 script if the _./azureComponents/local_secrets.json_ file is not found. 
+To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the -cloud switch is passed and *./azureComponents/local_secrets.json* file is not found.
 
 ```
-cd ./deploy/
-./setup.ps1
+./demo.ps1 -deployOnly
 ``` 
 
 The workspace consists of two top level folders _StateStore_ and _components_. The components folder is the folder installed during the `dapr init` run during the creation of the Codespace. This folder holds the default components pointing at [Redis](https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-redis/). This folder is in the workspace so you can show the difference between that default component and the component in the _StateStore/azureComponents_ folder. The component in the _azureComponents_ folder is configured to use [Azure CosmosDB](https://docs.dapr.io/reference/components-reference/supported-state-stores/setup-azure-cosmosdb/). The point to make comparing the files is that as long as the name of the component does not change the code will work no matter what backing service is used. 
