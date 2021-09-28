@@ -4,10 +4,11 @@ The purpose of this demo is to show the use of [binding components](https://docs
 
 Open the _demo_binding.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
-To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the -cloud switch is passed and *./azureComponents/local_secrets.json* file is not found. 
+To provision the infrastructure before the demo execute the following commands in the terminal. This code is automatically run by the _demo.ps1_ script if the *./azureComponents/local_secrets.json* file is not found. 
 
 ```
-./demo.ps1 -deployOnly
+cd ./deploy/
+./setup.ps1
 ``` 
 
 The workspace consists of one top level folder _Binding_. This folder holds the _azureComponents_, _components_, _deploy_, and _tempfiles_ folders. The _azureComponents_ and _components_ folders are in the workspace so you can show the difference between a local component and a component configured for the cloud. The component in the _azureComponents_ folder is configured to use [Azure Blob Storage](https://docs.dapr.io/reference/components-reference/supported-bindings/blobstorage/) while the local component is configured to use local file storage. The point to make comparing the files is that as long as the name of the component does not change the code will work no matter what backing service is used. 

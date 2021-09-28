@@ -1,12 +1,12 @@
 # Use this command to run local
 # Use fileName for the local store
 # ./demo.ps1
-@itemName = fileName
+# @itemName = fileName
 
 # Use this command to run in the cloud
 # Use blobName for the local store
 # ./demo.ps1 -cloud
-# @itemName = blobName
+@itemName = blobName
 
 
 POST http://localhost:3500/v1.0/bindings/files
