@@ -11,6 +11,8 @@
 		"files.exclude": {
 			"**/.devcontainer": true,
 			"**/.images": true,
+			"**/.scripts": true,
+			"**/.vscode": true,
 			"demo_binding.code-workspace": true
 		},
 		"editor.minimap.enabled": false,

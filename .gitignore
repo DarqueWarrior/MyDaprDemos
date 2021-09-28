@@ -1,5 +1,2 @@
-Binding/azureComponents/local_secrets.json
-StateStore/azureComponents/local_secrets.json
-PubSub/azureComponents/local_secrets.json
-Binding/tempfiles/myTestFile.txt
-Observability/azureComponents/local_secrets.json
+**/local_secrets.json
+**/tempfiles/*

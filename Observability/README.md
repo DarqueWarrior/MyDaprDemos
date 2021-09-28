@@ -4,7 +4,7 @@ The purpose of this demo is to show the configuration of [observability](https:/
 
 Open the _demo_observability.code-workspace_ file and click the **Open Workspace** button in the lower right corner.
 
-![codespace secrets](../.images/OpenWorkspace.png)
+![open workspace](../.images/OpenWorkspace.png)
 
 This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
@@ -20,7 +20,7 @@ The workspace consists of one top level folder _Observability_. This folder hold
 
 The core of the demo is in the _src_ folder. This folder holds three services, Service A, B, and C. Service A subscribes to the **PubSub** component. When a new order is received (1) Service A calls Service B using service to service invocation (2). When Service A gets a response from Service B, Service A stores the processed order using the **StateStore** component (3). Finally, Service A publishes the order to the **PubSub** component where Service C reads it (4).
 
-![codespace secrets](../.images/Services.png) 
+![services architecture](../.images/Services.png) 
 
 
 To start this demo open the _sampleRequests.http_ file. At the top of the file are two _demo.ps1_ commands. One for running the requests with a local configuration and one for running with the cloud configuration. Copy the desired command and run it in the terminal. This will start all three services with the appropriate configuration for the demo. The Dapr run commands issued are output if you want to explain during the demo.

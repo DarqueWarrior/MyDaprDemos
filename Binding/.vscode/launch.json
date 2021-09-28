@@ -13,13 +13,16 @@
             "postDebugTask": "daprd-local-down"
         },
         {
-            "name": "Dapr Cloud",
+            "name": "Dapr Azure",
             "type": "PowerShell",
             "request": "launch",
             "script": "./demo.ps1",
-            "args": ["-cloud"],
+            "args": [
+                "-env",
+                "azure"
+            ],
             "preLaunchTask": "Open Requests",
-            "postDebugTask": "daprd-cloud-down"
+            "postDebugTask": "daprd-azure-down"
         }
     ]
 }
