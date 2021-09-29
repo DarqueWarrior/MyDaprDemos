@@ -4,12 +4,16 @@
 			"path": "./StateStore"
 		},
 		{
+			"path": "./.images"
+		},
+		{
 			"path": "./../../home/codespace/.dapr/components"
 		}
 	],
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
+			"**/.images": true,
 			"demo_statestore.code-workspace": true
 		},
 		"editor.minimap.enabled": false,

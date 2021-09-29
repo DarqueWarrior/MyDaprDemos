@@ -1,21 +1,53 @@
 # This script issues and displays the correct dapr run command for running with
-# local or cloud resources. To run in the clould add the -cloud switch. If the 
-# script determines the infrastructure has not been deployed it will call the
-# setup script first. 
+# local or cloud resources. To run in the clould add the -env azure parameter.
+# If the script determines the infrastructure has not been deployed it will 
+# call the setup script first.
 [CmdletBinding()]
 param (
     [Parameter(
         Position = 0,
-        HelpMessage = "When provided runs demo against cloud resources"
+        HelpMessage = "The name of the resource group to be created. All resources will be place in the resource group and start with name."
+    )]
+    [string]
+    $rgName = "dapr_binding_demo",
+
+    [Parameter(
+        Position = 1,
+        HelpMessage = "The location to store the meta data for the deployment."
+    )]
+    [string]
+    $location = "eastus",
+
+    [Parameter(
+        HelpMessage = "Set to the location of the resources to use."
+    )]
+    [ValidateSet("local", "azure")]
+    [string]
+    $env = "local",
+
+    [Parameter(
+        HelpMessage = "When provided deploys the cloud infrastructure without running the demo."
     )]
     [switch]
-    $cloud
+    $deployOnly
 )
 
-# We need to change which @itemName line is used
+. "./.scripts/Deploy-AzureInfrastructure.ps1"
+
+# This will deploy the infrastructure without running the demo. You can use
+# this flag to set everything up before you run the demos to save time. Some
+# infrastucture can take some time to deploy.
+if ($deployOnly.IsPresent) {
+    Deploy-AzureInfrastructure -rgName $rgName -location $location
+    return
+}
+
+# We need to change which @itemName line is used. With the local local storage
+# component the item name is fileName whereas with the blob storage component
+# it is blobName.
 $file = Get-Content -Path ./sampleRequests.http
 
-if ($cloud.IsPresent) {
+if ($env -eq "azure") {
     $file[3] = '# @itemName = fileName'
     $file[8] = '@itemName = blobName'
 }
@@ -29,26 +61,23 @@ Set-Content -Path ./sampleRequests.http -Value $file
 # Load the sample requests file for the demo
 code ./sampleRequests.http
 
-if ($cloud.IsPresent) {
-    Write-Output "Running demo with cloud resources"
-    
-    # If you don't find the ./azureComponents/local_secrets.json run the setup.ps1 in deploy folder
-    if ($(Test-Path -Path './azureComponents/local_secrets.json') -eq $false) {
-        Write-Output "./azureComponents/local_secrets.json not found running setup"
-        Push-Location
-        Set-Location -Path './deploy'
-        ./setup.ps1
-        Pop-Location
-    }
-    
-    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents `n"
+if ($env -eq "azure") {
+    Write-Output "Running demo with Azure resources"
 
-    dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
+    # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
+    if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
+        Write-Output "./components/azure/local_secrets.json not found running setup"
+        Deploy-AzureInfrastructure -rgName $rgName -location $location
+    }
+
+    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure `n"
+
+    dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure
 }
 else {
     Write-Output "Running demo with local resources"
 
-    Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components `n"
+    Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local `n"
 
-    dapr run --app-id local --dapr-http-port 3500 --components-path ./components
+    dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
 }

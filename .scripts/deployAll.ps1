@@ -3,13 +3,12 @@
 [CmdletBinding()]
 param ()
 
-$demos = @('Binding')
-# $demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets')
+$demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets')
 
 foreach ($demo in $demos) {
     Write-Host "Setting up $demo"
     
-    Push-Location "../$demo/deploy"
-    ./setup.ps1
+    Push-Location "../$demo"
+    ./demo.ps1 -deployOnly
     Pop-Location   
 }

@@ -14,7 +14,7 @@ param (
 )
 
 # Put the otel-local-config.yaml file back the way it was
-git restore ./azureComponents/otel-local-config.yaml
+git restore ./components/azure/otel-local-config.yaml
 
 if ($force.IsPresent) {
     az group delete --resource-group $rgName --no-wait --yes

@@ -2,22 +2,37 @@
 	"folders": [
 		{
 			"path": "./Observability"
+		},
+		{
+			"path": "./.images"
+		},
+		{
+			"path": "./../../home/codespace/.dapr"
 		}
 	],
 	"settings": {
 		"files.exclude": {
-			"**/.devcontainer": true,
-			"**/bin": true,
-			"**/obj": true,
-			"**/.vscode": true,
 			".gitignore": true,
+			"**/.devcontainer": true,
+			"**/.images": true,
+			"**/.vscode": true,
+			"**/bin": true,
+			"**/components": true,
+			"**/obj": true,
 			"demo_observability.code-workspace": true
 		},
 		"editor.minimap.enabled": false,
 		"cSpell.words": [
+			"azuremonitor",
 			"Codespace",
 			"Dapr",
-			"pwsh"
+			"loglevel",
+			"maxbatchinterval",
+			"maxbatchsize",
+			"pprof",
+			"pwsh",
+			"zipkin",
+			"zpages"
 		]
 	}
 }
