@@ -115,7 +115,7 @@
                 "build",
                 "Open Cloud Requests"
             ],
-            "componentsPath": "./azureComponents"
+            "componentsPath": "./components/azure"
         },
         {
             "appId": "app1",

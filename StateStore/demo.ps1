@@ -19,10 +19,11 @@ param (
     $location = "eastus",
     
     [Parameter(
-        HelpMessage = "When provided runs demo against cloud resources"
+        HelpMessage = "Set to the location of the resources to use."
     )]
-    [switch]
-    $cloud,
+    [ValidateSet("local", "azure")]
+    [string]
+    $env = "local",
 
     [Parameter(
         HelpMessage = "When provided deploys the cloud infrastructure without running the demo"
@@ -31,87 +32,30 @@ param (
     $deployOnly
 )
 
-# This function will run an bicep deployment to deploy all the required
-# resources into Azure. All the keys, tokens and endpoints will be
-# automatically retreived and written to ./azureComponents/local_secrets.json.
-# PowerShell Core 7 (runs on macOS, Linux and Windows)
-# Azure CLI (log in, runs on macOS, Linux and Windows)
-function Deploy-Infrastructure {
-    [CmdletBinding()]
-    param (
-        [Parameter(
-            Position = 0,
-            HelpMessage = "The name of the resource group to be created. All resources will be place in the resource group and start with name."
-        )]
-        [string]
-        $rgName,
-
-        [Parameter(
-            Position = 1,
-            HelpMessage = "The location to store the meta data for the deployment."
-        )]
-        [string]
-        $location
-    )
-
-    begin {
-        Push-Location -Path './deploy'
-    }
-
-    process {
-        Write-Output 'Deploying the infrastructure'
-        $deployment = $(az deployment sub create --name $rgName `
-                --location $location `
-                --template-file ./main.bicep `
-                --parameters location=$location `
-                --parameters rgName=$rgName `
-                --output json) | ConvertFrom-Json
-
-        # Store the outputs from the deployment to create
-        # ./azureComponents/local_secrets.json
-        $cosmosDbKey = $deployment.properties.outputs.cosmosDbKey.value
-        $cosmosDbEndpoint = $deployment.properties.outputs.cosmosDbEndpoint.value
-
-        Write-Verbose "cosmosDbKey = $cosmosDbKey"
-        Write-Verbose "cosmosDbEndpoint = $cosmosDbEndpoint"
-
-        # Creating azureComponents/local_secrets.json
-        $secrets = [PSCustomObject]@{
-            url = $cosmosDbEndpoint
-            key = $cosmosDbKey
-        }
-
-        Write-Output 'Saving ./azureComponents/local_secrets.json for local secret store'
-        $secrets | ConvertTo-Json | Set-Content ../azureComponents/local_secrets.json
-    }
-
-    end {
-        Pop-Location
-    }
-}
+. "./.scripts/Deploy-AzureInfrastructure.ps1"
 
 # This will deploy the infrastructure without running the demo. You can use
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
-    Deploy-Infrastructure -rgName $rgName -location $location
+    Deploy-AzureInfrastructure -rgName $rgName -location $location
     return
 }
 
 # Load the sample requests file for the demo
 code ./sampleRequests.http
 
-if ($cloud.IsPresent) {
+if ($env -eq "azure") {
     Write-Output "Running demo with cloud resources"
     
-    # If you don't find the ./azureComponents/local_secrets.json run the setup.ps1 in deploy folder
-    if ($(Test-Path -Path './azureComponents/local_secrets.json') -eq $false) {
-        Write-Output "./azureComponents/local_secrets.json not found running setup"
-        Deploy-Infrastructure -rgName $rgName -location $location
+    # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
+    if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
+        Write-Output "./components/azure/local_secrets.json not found running setup"
+        Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
     
-    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents `n"
-    dapr run --app-id cloud --dapr-http-port 3500 --components-path ./azureComponents
+    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure `n"
+    dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure
 }
 else {
     Write-Output "Running demo with local resources"
