@@ -3,6 +3,8 @@ targetScope = 'subscription'
 param ipAddress string
 param adminPassword string
 param location string = 'eastus'
+param serviceName string = 'app1'
+param topicName string = 'neworder'
 param rgName string = 'dapr_pubsub_demo'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -15,6 +17,8 @@ module pubsub './pubsub.bicep' = {
   scope: resourceGroup(rg.name)
   params: {
     ipAddress: ipAddress
+    topicName: topicName
+    serviceName: serviceName
     adminPassword: adminPassword
   }
 }

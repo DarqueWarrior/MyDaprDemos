@@ -1,10 +1,10 @@
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
 metadata:
-  name: eventhubs-subscription
+  name: myevent-subscription
 spec:
   topic: neworder
   route: /neworder
-  pubsubname: pubsub2
+  pubsubname: pubsub1
 scopes:
 - app1

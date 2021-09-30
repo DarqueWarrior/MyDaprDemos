@@ -66,10 +66,10 @@ if ($env -eq "azure") {
         $myIp -ne $(Get-Content -Path './components/azure/local_secrets.json' | ConvertFrom-Json).ipAddress
     ) {
         if ($fileMissing) {
-            Write-Output "./components/azure/local_secrets.json not found running setup"
+            Write-Output "Could not found ./components/azure/local_secrets.json"
         }
         else {
-            Write-Output "IP Address has changed running setup"
+            Write-Output "IP Address has changed"
         }
         
         Deploy-AzureInfrastructure -rgName $rgName -location $location
