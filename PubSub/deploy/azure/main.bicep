@@ -20,6 +20,9 @@ module pubsub './pubsub.bicep' = {
 }
 
 output databaseName string = pubsub.outputs.databaseName
+output storageAccountKey string = pubsub.outputs.storageAccountKey
+output eventHubsEndpoint string = pubsub.outputs.eventHubsEndpoint
 output serviceBusEndpoint string = pubsub.outputs.serviceBusEndpoint
 output administratorLogin string = pubsub.outputs.administratorLogin
+output storageAccountName string = pubsub.outputs.storageAccountName
 output fullyQualifiedDomainName string = pubsub.outputs.fullyQualifiedDomainName

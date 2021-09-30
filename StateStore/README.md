@@ -4,7 +4,7 @@ The purpose of this demo is to show the use of [state store components](https://
 
 Open the _demo_statestore.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
-To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the -cloud switch is passed and *./components/azure/local_secrets.json* file is not found.
+To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the `-env` parameter is passed and *./components/azure/local_secrets.json* file is not found.
 
 ```
 ./demo.ps1 -deployOnly

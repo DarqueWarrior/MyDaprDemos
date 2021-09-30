@@ -2,12 +2,19 @@
 # ./demo.ps1
 
 # Use this command to run in the cloud
-# ./demo.ps1 -cloud
+# ./demo.ps1 -env azure
 
-POST http://localhost:3500/v1.0/publish/pubsub/neworder
+POST http://localhost:3500/v1.0/publish/servicebus/neworder
 Content-Type: application/json
 
-{"orderId":"44"}
+{"orderId":"45"}
+
+###
+
+POST http://localhost:3500/v1.0/publish/eventhubs/neworder
+Content-Type: application/json
+
+{"orderId":"46"}
 
 ###
 

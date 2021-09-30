@@ -54,12 +54,17 @@ function Deploy-AzureInfrastructure {
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
         $databaseName = $deployment.properties.outputs.databaseName.value
+        $storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
         $administratorLogin = $deployment.properties.outputs.administratorLogin.value
-        $fullyQualifiedDomainName = $deployment.properties.outputs.fullyQualifiedDomainName.value
-
         $serviceBusEndpoint = $deployment.properties.outputs.serviceBusEndpoint.value
+        $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+        $fullyQualifiedDomainName = $deployment.properties.outputs.fullyQualifiedDomainName.value
+        $eventHubsEndpoint = "$($deployment.properties.outputs.eventHubsEndpoint.value);EntityPath=neworder"
 
         Write-Verbose "databaseName = $databaseName"
+        Write-Verbose "storageAccountKey = $storageAccountKey"
+        Write-Verbose "eventHubsEndpoint = $eventHubsEndpoint"
+        Write-Verbose "storageAccountName = $storageAccountName"
         Write-Verbose "administratorLogin = $administratorLogin"
         Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
         Write-Verbose "fullyQualifiedDomainName = $fullyQualifiedDomainName"
@@ -71,7 +76,10 @@ function Deploy-AzureInfrastructure {
             ipAddress           = $myIp
             databaseName        = $databaseName
             sqlConnectionString = $connectionString
-            connectionString    = $serviceBusEndpoint
+            eventHubsEndpoint   = $eventHubsEndpoint
+            serviceBusEndpoint  = $serviceBusEndpoint
+            storageAccountName  = $storageAccountName
+            storageAccountKey   = $storageAccountKey
         }
 
         Write-Output 'Saving ./components/azure/local_secrets.json for local secret store'

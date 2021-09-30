@@ -14,7 +14,7 @@ To provision the infrastructure before the demo execute the following command in
 ./demo.ps1 -deployOnly
 ``` 
 
-This code is automatically run by the _demo.ps1_ script if the `-cloud` switch is passed and *./azureConfig/otel-local-config.yaml* file is missing the Azure Application Insights instrumentation key.
+This code is automatically run by the _demo.ps1_ script if the `-env` parameter is passed and *./azureConfig/otel-local-config.yaml* file is missing the Azure Application Insights instrumentation key.
 
 The workspace consists of one top level folder _Observability_. This folder holds the _azureConfig_, _deploy_, and _src_ folders. The _azureConfig_ folder holds the _otel-local-config.yaml_ file that contains the configuration for the [Open Telemetry Collector used to send the data to Application Insights](https://docs.dapr.io/operations/monitoring/tracing/open-telemetry-collector-appinsights/). The Open Telemetry Collector is run in a local container.  
 
@@ -32,7 +32,7 @@ Running local
 
 Running in cloud
 ```
- ./demo.ps1 -cloud
+ ./demo.ps1 -env azure
 ```
 
 Click the Send Request button above of the request to post a new order to Service A to start the demo. After clicking the link a few times you can view the tracing information. If running locally click the 

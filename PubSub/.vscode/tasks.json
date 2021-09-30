@@ -49,7 +49,8 @@
             "type": "shell",
             "command": "./demo.ps1",
             "args": [
-                "-cloud",
+                "-env",
+                "azure",
                 "-skipDaprRun"
             ],
             "options": {
@@ -69,31 +70,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/src/src.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "${workspaceFolder}/src/src.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
@@ -103,7 +79,7 @@
                 "build",
                 "Open Requests"
             ],
-            "componentsPath": "./components"
+            "componentsPath": "./components/local"
         },
         {
             "appId": "app1",

@@ -1,5 +1,5 @@
 # This script issues and displays the correct dapr run command for running with
-# local or cloud resources. To run in the clould add the -cloud switch. If the 
+# local or cloud resources. To run in the clould add -env azure parameter. If the 
 # script determines the infrastructure has not been deployed it will call the
 # setup script first. 
 [CmdletBinding()]

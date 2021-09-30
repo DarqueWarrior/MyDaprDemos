@@ -2,7 +2,7 @@
 # ./demo.ps1
 
 # Use this command to run in the cloud
-# ./demo.ps1 -cloud
+# ./demo.ps1 -env azure
 
 POST http://localhost:3500/v1.0/state/statestore
 

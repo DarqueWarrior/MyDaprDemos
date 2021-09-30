@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: servicebus
 auth:
   secretStore: strongbox  
 spec:
@@ -10,4 +10,4 @@ spec:
   metadata:
   - name: connectionString
     secretKeyRef:
-      name: connectionString
+      name: serviceBusEndpoint

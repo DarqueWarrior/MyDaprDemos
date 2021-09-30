@@ -6,7 +6,7 @@ The purpose of this demo is to show the use of [Pub/sub components](https://docs
 
 Open the _demo_pubsub.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
-To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the -cloud switch is passed and *./components/azure/local_secrets.json* file is not found.
+To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the `-env` parameter is passed and *./components/azure/local_secrets.json* file is not found.
 
 ```
 ./demo.ps1 -deployOnly
@@ -25,7 +25,7 @@ Running local
 
 Running in cloud
 ```
- ./demo.ps1 -cloud
+ ./demo.ps1 -env azure
 ```
 
 Click the Send Request button above each of the requests to execute them.

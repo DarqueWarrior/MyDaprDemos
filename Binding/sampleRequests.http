@@ -5,7 +5,7 @@
 
 # Use this command to run in the cloud
 # Use blobName for the local store
-# ./demo.ps1 -cloud
+# ./demo.ps1 -env azure
 @itemName = blobName
 
 

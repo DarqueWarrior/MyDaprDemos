@@ -4,7 +4,7 @@ The purpose of this demo is to show the use of [secrets components](https://docs
 
 Open the _demo_secrets.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
-To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the -cloud switch is passed and *VAULTNAME* environment variable is not found. 
+To provision the infrastructure before the demo execute the following command in the terminal. This code is automatically run by the _demo.ps1_ script if the `-env` parameter is passed and *VAULTNAME* environment variable is not found. 
 
 ```
 ./demo.ps1 -deployOnly

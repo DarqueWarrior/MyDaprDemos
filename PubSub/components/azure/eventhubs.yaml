@@ -1,0 +1,21 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: eventhubs
+auth:
+  secretStore: strongbox    
+spec:
+  type: pubsub.azure.eventhubs
+  version: v1
+  metadata:
+  - name: connectionString
+    secretKeyRef:
+      name: eventHubsEndpoint
+  - name: storageAccountName
+    secretKeyRef:
+      name: storageAccountName
+  - name: storageAccountKey
+    secretKeyRef:
+      name: storageAccountKey
+  - name: storageContainerName
+    value: "neworder"
