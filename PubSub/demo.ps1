@@ -55,8 +55,23 @@ if ($env -eq "azure") {
     Write-Output "Running demo with cloud resources"
 
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
-    if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
-        Write-Output "./components/azure/local_secrets.json not found running setup"
+    $fileMissing = $(Test-Path -Path './components/azure/local_secrets.json') -eq $false
+
+    # Or if the ./components/azure/local_secrets.json is present make sure
+    # the IP address in there matches our current IP. If not we need to deploy
+    # again to update the firewall rules.
+    $myIp = $(Invoke-WebRequest https://ifconfig.me/ip).Content
+    
+    if ($fileMissing -or
+        $myIp -ne $(Get-Content -Path './components/azure/local_secrets.json' | ConvertFrom-Json).ipAddress
+    ) {
+        if ($fileMissing) {
+            Write-Output "./components/azure/local_secrets.json not found running setup"
+        }
+        else {
+            Write-Output "IP Address has changed running setup"
+        }
+        
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
 
