@@ -26,35 +26,58 @@ function Deploy-AzureInfrastructure {
     }
 
     process {
+        # Generate password
+        $uppercase = "ABCDEFGHKLMNOPRSTUVWXYZ".tochararray()
+        $lowercase = "abcdefghiklmnoprstuvwxyz".tochararray()
+        $number = "0123456789".tochararray()
+        $special = "$%&/()=?}{@#*+!".tochararray()
+
+        $password = ($uppercase | Get-Random -count 2) -join ''
+        $password += ($lowercase | Get-Random -count 5) -join ''
+        $password += ($number | Get-Random -count 2) -join ''
+        $password += ($special | Get-Random -count 2) -join ''
+
+        # Get the IP address for the firewall runs
+        $myIp = $(Invoke-WebRequest https://ifconfig.me/ip).Content
+        Write-Verbose "IP Address = $myIp"
+
         Write-Output 'Deploying the infrastructure'
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
                 --template-file ./azure/main.bicep `
                 --parameters location=$location `
                 --parameters rgName=$rgName `
+                --parameters adminPassword=$password `
+                --parameters ipAddress=$myIp `
                 --output json) | ConvertFrom-Json
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
-        $storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
-        $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+        $databaseName = $deployment.properties.outputs.databaseName.value
+        $administratorLogin = $deployment.properties.outputs.administratorLogin.value
+        $fullyQualifiedDomainName = $deployment.properties.outputs.fullyQualifiedDomainName.value
+
         $serviceBusEndpoint = $deployment.properties.outputs.serviceBusEndpoint.value
 
-        Write-Verbose "storageAccountKey = $storageAccountKey"
-        Write-Verbose "storageAccountName = $storageAccountName"
+        Write-Verbose "databaseName = $databaseName"
+        Write-Verbose "administratorLogin = $administratorLogin"
         Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
+        Write-Verbose "fullyQualifiedDomainName = $fullyQualifiedDomainName"
+
+        $connectionString = "server=$fullyQualifiedDomainName;database=$databaseName;user id=$administratorLogin;Password=$password;port=1433;"
 
         # Creating components/azure/local_secrets.json
         $secrets = [PSCustomObject]@{
-            connectionString   = $serviceBusEndpoint
-            storageAccountKey  = $storageAccountKey
-            storageAccountName = $storageAccountName
+            ipAddress           = $myIp
+            databaseName        = $databaseName
+            sqlConnectionString = $connectionString
+            connectionString    = $serviceBusEndpoint
         }
 
         Write-Output 'Saving ./components/azure/local_secrets.json for local secret store'
         $secrets | ConvertTo-Json | Set-Content ../components/azure/local_secrets.json
     }
-    
+
     end {
         Pop-Location
     }

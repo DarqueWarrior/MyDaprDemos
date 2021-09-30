@@ -5,14 +5,9 @@ metadata:
 auth:
   secretStore: strongbox
 spec:
-  type: state.azure.tablestorage
+  type: state.sqlserver
   version: v1
   metadata:
-  - name: accountName
+  - name: connectionString
     secretKeyRef:
-      name: storageAccountName
-  - name: accountKey
-    secretKeyRef:
-      name: storageAccountKey
-  - name: tableName
-    value: orders
+      name: sqlConnectionString

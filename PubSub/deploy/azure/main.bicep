@@ -1,5 +1,7 @@
 targetScope = 'subscription'
 
+param ipAddress string
+param adminPassword string
 param location string = 'eastus'
 param rgName string = 'dapr_pubsub_demo'
 
@@ -11,8 +13,13 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module pubsub './pubsub.bicep' = {
   name: 'pubsub'
   scope: resourceGroup(rg.name)
+  params: {
+    ipAddress: ipAddress
+    adminPassword: adminPassword
+  }
 }
 
-output storageAccountKey string = pubsub.outputs.storageAccountKey
-output storageAccountName string = pubsub.outputs.storageAccountName
+output databaseName string = pubsub.outputs.databaseName
 output serviceBusEndpoint string = pubsub.outputs.serviceBusEndpoint
+output administratorLogin string = pubsub.outputs.administratorLogin
+output fullyQualifiedDomainName string = pubsub.outputs.fullyQualifiedDomainName
