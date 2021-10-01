@@ -42,6 +42,9 @@ if ($deployOnly.IsPresent) {
     return
 }
 
+# Make sure the Zipkin container is running. The Observiblity demo stops it.
+docker start dapr_zipkin
+
 # Load the sample requests file for the demo
 code ./sampleRequests.http
 
