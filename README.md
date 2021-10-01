@@ -72,7 +72,7 @@ Each demo has a workspace file in the root folder. Select the workspace for the 
 
 ![open workspace](./.images/OpenWorkspace.png)
 
-This will reload your Codespace and scope your Explorer to just the folders needed for this demo.
+This will reload your Codespace and scope your **Explorer** to just the folders needed for this demo.
 
 When you are ready to load another workspace select **Open Workspace...** from the file menu.
 
