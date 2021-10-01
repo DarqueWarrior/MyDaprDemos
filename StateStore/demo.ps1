@@ -50,7 +50,7 @@ if ($env -eq "azure") {
     
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
-        Write-Output "./components/azure/local_secrets.json not found running setup"
+        Write-Output "Could not find ./components/azure/local_secrets.json"
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
     

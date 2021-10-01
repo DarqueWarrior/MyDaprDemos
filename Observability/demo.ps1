@@ -52,7 +52,7 @@ if ($env -eq "azure") {
 
     # If you don't find the ./config/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($config.exporters.azuremonitor.instrumentation_key -eq "") {
-        Write-Output "./config/azure/local_secrets.json not found running setup"
+        Write-Output "Could not find ./config/azure/local_secrets.json"
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
 

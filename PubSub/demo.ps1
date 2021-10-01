@@ -66,7 +66,7 @@ if ($env -eq "azure") {
         $myIp -ne $(Get-Content -Path './components/azure/local_secrets.json' | ConvertFrom-Json).ipAddress
     ) {
         if ($fileMissing) {
-            Write-Output "Could not found ./components/azure/local_secrets.json"
+            Write-Output "Could not find ./components/azure/local_secrets.json"
         }
         else {
             Write-Output "IP Address has changed"
