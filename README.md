@@ -68,8 +68,6 @@ All the scripts in the repository are PowerShell scripts. When using Codespaces 
 $ pwsh
 ```
 
-If running locally on macOS, Windows or Linux install [PowerShell](https://github.com/powershell/powershell).
-
 Each demo has a workspace file in the root folder. Select the workspace for the demo you want to run and click the *Open Workspace* button in the lower right corner.
 
 ![open workspace](./.images/OpenWorkspace.png)
