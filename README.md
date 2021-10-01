@@ -82,6 +82,6 @@ In the root of each demo workspace is a _demo.ps1_ file. From a terminal execute
 
  To encourage best practices the [components are all configured using secret stores](https://docs.dapr.io/operations/components/component-secrets/). After the infrastructure is deployed the script will collect all the information needed to configure the components and write the data to a _local_secrets.json_ file or in environment variables. The file or environment variables are read in a secret store component used to configure the other components. The _local_secrets.json_ file is listed in the .gitignore file of the repository so they are not accidentally committed.
 
- To delete your cloud resources ane restore the repository to pre-demo state run the _cleanUp.ps1_ file in the root of each workspace.
+ To delete your cloud resources and restore the repository to pre-demo state run the _cleanUp.ps1_ file in the root of each workspace.
 
  See the README.md files in each demo folder for instructions on how to run the demo.
