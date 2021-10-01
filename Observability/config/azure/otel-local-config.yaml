@@ -23,6 +23,6 @@ exporters:
     loglevel: debug
   azuremonitor:
     maxbatchinterval: 5s
-    instrumentation_key: e755f218-c26e-4602-bfeb-b6b3ebdd7824
+    instrumentation_key: ''
     maxbatchsize: 5
 
