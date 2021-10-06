@@ -71,6 +71,7 @@
 		"8000": { "label": "Tye" },
 		"9411": { "label": "Zipkin" },
 	},
+	"waitFor": "postCreateCommand",
 	// "oryx build" will automatically install your dependencies and attempt to build your project
 	"postCreateCommand": "oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'",
 	// Use 'onCreateCommand' to run commands as part of container creation. 
