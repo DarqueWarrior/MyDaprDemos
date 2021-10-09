@@ -55,11 +55,11 @@ function Deploy-AzureInfrastructure {
             cognitiveServiceEndpoint = $cognitiveServiceEndpoint
         }
 
-        Write-Output 'Saving ./components/azure/local_secrets.json for local secret store'
-        $secrets | ConvertTo-Json | Set-Content ../components/azure/local_secrets.json
+        Write-Output 'Saving ./components/local/local_secrets.json for local secret store'
+        $secrets | ConvertTo-Json | Set-Content ../components/local/local_secrets.json
 
         # Now write the env file
-        "CS_TOKEN=$cognitiveServiceKey`nCS_ENDPOINT=$cognitiveServiceEndpoint" | Set-Content ../components/azure/local.env
+        "CS_TOKEN=$cognitiveServiceKey`nCS_ENDPOINT=$cognitiveServiceEndpoint" | Set-Content ../components/local/local.env
     }
 
     end {

@@ -19,23 +19,10 @@ param (
     $location = "eastus",
 
     [Parameter(
-        HelpMessage = "Set to the location of the resources to use."
-    )]
-    [ValidateSet("local", "azure")]
-    [string]
-    $env = "local",
-
-    [Parameter(
         HelpMessage = "When provided deploys the cloud infrastructure without running the demo"
     )]
     [switch]
-    $deployOnly,
-
-    [Parameter(
-        HelpMessage = "When provided the dapr run is skipped. This is used from the tasks to launch the debugger because it will call daprd run."
-    )]
-    [switch]
-    $skipDaprRun
+    $deployOnly
 )
 
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
@@ -48,56 +35,20 @@ if ($deployOnly.IsPresent) {
     return
 }
 
-if ($env -eq "azure") {
-    Write-Output "Running demo with cloud resources"
-
-    # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
-    $fileMissing = $(Test-Path -Path './components/azure/local_secrets.json') -eq $false
-
-    # Or if the ./components/azure/local_secrets.json is present make sure
-    # the IP address in there matches our current IP. If not we need to deploy
-    # again to update the firewall rules.
-    $myIp = $(Invoke-WebRequest https://ifconfig.me/ip).Content
-    
-    if ($fileMissing -or
-        $myIp -ne $(Get-Content -Path './components/azure/local_secrets.json' | ConvertFrom-Json).ipAddress
-    ) {
-        if ($fileMissing) {
-            Write-Output "Could not find ./components/azure/local_secrets.json"
-        }
-        else {
-            Write-Output "IP Address has changed"
-        }
+# If you don't find the ./components/local/local_secrets.json run the setup.ps1 in deploy folder
+if ($(Test-Path -Path './components/local/local_secrets.json') -eq $false) {
+    Write-Output "Could not find ./components/local/local_secrets.json"
         
-        Deploy-AzureInfrastructure -rgName $rgName -location $location
-    }
-
-    if ($skipDaprRun.IsPresent -eq $false) {
-        Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/azure -- dotnet run --project ./src/ `n"
-
-        dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/azure -- dotnet run --project ./src/
-    }
+    Deploy-AzureInfrastructure -rgName $rgName -location $location
 }
-else {
-    Write-Output "Running demo with local resources"
 
-    # Make sure the dapr_zipkin container is running.
-    docker start dapr_zipkin
-    
-    # Creating components/azure/local_secrets.json
-    $secrets = [PSCustomObject]@{
-        apiKey            = $env:APIKEY
-        apiKeySecret      = $env:APIKEYSECRET
-        accessToken       = $env:ACCESSTOKEN
-        accessTokenSecret = $env:ACCESSTOKENSECRET
-    }
+Write-Output "Running demo with local resources"
 
-    Write-Output 'Saving ./components/azure/local_secrets.json for local secret store'
-    $secrets | ConvertTo-Json | Set-Content ./components/local/local_secrets.json
+# Make sure the dapr_zipkin container is running.
+docker start dapr_zipkin
 
-    Write-Output "dapr run --app-id viewer --app-port 5000 --components-path ./components/local -- dotnet run --project ./src/viewer/viewer.csproj --urls "http://localhost:5000" `n"
-    Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/processor/processor.csproj --urls "http://localhost:5030" `n"
-    Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- dotnet run --project ./src/provider/provider.csproj --urls "http://localhost:5040" `n"
+Write-Output "dapr run --app-id viewer --app-port 5000 --components-path ./components/local -- dotnet run --project ./src/viewer/viewer.csproj --urls "http://localhost:5000" `n"
+Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/processor/processor.csproj --urls "http://localhost:5030" `n"
+Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- dotnet run --project ./src/provider/provider.csproj --urls "http://localhost:5040" `n"
 
-    tye run ./src/tye_local.yaml
-}
+tye run ./src/tye_local.yaml
