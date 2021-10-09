@@ -28,32 +28,22 @@ connection.on("ReceiveTweet", function (t) {
 
     var item = document.createElement("div");
     item.className = "item";
-    
+
     var postURL = t.tweet.user.name;
     if (t.tweet.user.screen_name) {
-        postURL =
-            t.tweet.user.screen_name +
-            "<a href='https://twitter.com/" +
-            t.tweet.user.screen_name +
-            "/status/" +
-            t.tweet.id_str +
-            "' target='_blank'><img src='img/tw.svg' class='tweet-link' /></a></b>";
+        postURL = `
+        <b>${t.tweet.user.screen_name}</b>
+        <a href='https://twitter.com/${t.tweet.user.screen_name}/status/${t.tweet.id_str}' target='_blank'><img src='img/tw.svg' class='tweet-link' /></a>
+        `;
     }
 
-    var tweetMsg =
-        "<img src='" +
-        t.tweet.user.profile_image_url_https +
-        "' class='profile-pic' />" +
-        "<div class='item-text'><b><img src='img/" +
-        scoreStr +
-        ".svg' title='" +
-        scoreAlt +
-        "' class='sentiment' />" +
-        postURL +
-        "<br /><i>" +
-        tweetText +
-        "</i></div>";
-
+    var tweetMsg = `
+    <img src='${t.tweet.user.profile_image_url_https}' class='profile-pic' />
+    <div class='item-text'>
+        <img src='img/${scoreStr}.svg' title='${scoreAlt}' class='sentiment' />${postURL}<br /><i>${tweetText}</i>
+    </div>
+    `;
+    
     item.innerHTML = tweetMsg;
     appendLog(item);
 });
