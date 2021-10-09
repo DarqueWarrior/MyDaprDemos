@@ -1,10 +1,12 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Dapr Tweet Viewer";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
 </div>
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/tweet.js"></script>

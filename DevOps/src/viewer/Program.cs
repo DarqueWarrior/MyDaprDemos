@@ -10,6 +10,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -28,7 +29,11 @@ else
 app.UseStaticFiles();
 app.UseCloudEvents();
 app.UseRouting();
-app.UseEndpoints(endpoints => endpoints.MapSubscribeHandler());
+app.UseEndpoints(endpoints => 
+{
+    endpoints.MapSubscribeHandler();
+    endpoints.MapHub<viewer.Hubs.TweetHub>("/tweetHub");
+});
 
 app.UseAuthorization();
 

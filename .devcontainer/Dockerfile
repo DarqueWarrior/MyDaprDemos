@@ -13,3 +13,4 @@ USER codespace
 
 # Install Tye
 RUN dotnet tool install -g Microsoft.Tye --version "0.10.0-alpha.21420.1"
+RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
