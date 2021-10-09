@@ -14,12 +14,16 @@ connection.on("ReceiveTweet", function (t) {
     }
 
     var scoreStr = "unknown";
-    var scoreAlt = "unknown: ?";
-
-    if (t.sentiment.sentiment.length > 0) {
-        scoreStr = t.sentiment.sentiment;
-        scoreAlt = scoreStr + ": " + t.sentiment.confidence;
+    var score = parseFloat(t.score)
+    if (score <= parseFloat(0.3)) {
+        scoreStr = "negative"
+    } else if (score >= parseFloat(0.6)) {
+        scoreStr = "positive"
+    } else {
+        scoreStr = "neutral"
     }
+
+    var scoreAlt = `${scoreStr}: ${t.score}`;
 
     var tweetText = t.tweet.text;
     if (t.tweet.fullText != null) {
@@ -43,7 +47,7 @@ connection.on("ReceiveTweet", function (t) {
         <img src='img/${scoreStr}.svg' title='${scoreAlt}' class='sentiment' />${postURL}<br /><i>${tweetText}</i>
     </div>
     `;
-    
+
     item.innerHTML = tweetMsg;
     appendLog(item);
 });

@@ -8,6 +8,8 @@ services:
 - name: processor
   executable: dapr
   args: run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/processor/processor.csproj --urls "http://localhost:5030"
+  env_file:
+    - ../components/local/local.env
 
 - name: provider
   executable: dapr

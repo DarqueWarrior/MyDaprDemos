@@ -33,7 +33,5 @@ public record Tweet([property: JsonPropertyName("id_str")] string Id,
                     [property: JsonPropertyName("full_text")] string FullText,
                     string Text);
 
-public record SentimentScore(string Sentiment, float confidence);
-
-public record AnalyzedTweet(Tweet Tweet, 
-                            SentimentScore Sentiment);
+public record AnalyzedTweet(Tweet Tweet,
+                            float score);

@@ -26,64 +26,40 @@ function Deploy-AzureInfrastructure {
     }
 
     process {
-        # Generate password
-        $uppercase = "ABCDEFGHKLMNOPRSTUVWXYZ".tochararray()
-        $lowercase = "abcdefghiklmnoprstuvwxyz".tochararray()
-        $number = "0123456789".tochararray()
-        $special = "$%&/()=?}{@#*+!".tochararray()
-
-        $password = ($uppercase | Get-Random -count 2) -join ''
-        $password += ($lowercase | Get-Random -count 5) -join ''
-        $password += ($number | Get-Random -count 2) -join ''
-        $password += ($special | Get-Random -count 2) -join ''
-
-        # Get the IP address for the firewall runs
-        $myIp = $(Invoke-WebRequest https://ifconfig.me/ip).Content
-        Write-Verbose "IP Address = $myIp"
-
         Write-Output 'Deploying the infrastructure'
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
                 --template-file ./azure/main.bicep `
                 --parameters location=$location `
                 --parameters rgName=$rgName `
-                --parameters adminPassword=$password `
-                --parameters ipAddress=$myIp `
                 --output json) | ConvertFrom-Json
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
-        $databaseName = $deployment.properties.outputs.databaseName.value
-        $eventHubsEndpoint = $deployment.properties.outputs.eventHubsEndpoint.value
-        $storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
-        $administratorLogin = $deployment.properties.outputs.administratorLogin.value
-        $serviceBusEndpoint = $deployment.properties.outputs.serviceBusEndpoint.value
-        $storageAccountName = $deployment.properties.outputs.storageAccountName.value
-        $fullyQualifiedDomainName = $deployment.properties.outputs.fullyQualifiedDomainName.value
-
-        Write-Verbose "databaseName = $databaseName"
+        $cognitiveServiceKey = $deployment.properties.outputs.cognitiveServiceKey.value
+        $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
+       
+        Write-Verbose "cognitiveServiceKey = $cognitiveServiceKey"
         Write-Verbose "storageAccountKey = $storageAccountKey"
-        Write-Verbose "eventHubsEndpoint = $eventHubsEndpoint"
-        Write-Verbose "storageAccountName = $storageAccountName"
-        Write-Verbose "administratorLogin = $administratorLogin"
-        Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
-        Write-Verbose "fullyQualifiedDomainName = $fullyQualifiedDomainName"
 
-        $connectionString = "server=$fullyQualifiedDomainName;database=$databaseName;user id=$administratorLogin;Password=$password;port=1433;"
-
+        $env:CS_TOKEN = $cognitiveServiceKey
+        $env:CS_ENDPOINT = $cognitiveServiceEndpoint
+       
         # Creating components/azure/local_secrets.json
         $secrets = [PSCustomObject]@{
-            ipAddress           = $myIp
-            databaseName        = $databaseName
-            sqlConnectionString = $connectionString
-            eventHubsEndpoint   = $eventHubsEndpoint
-            serviceBusEndpoint  = $serviceBusEndpoint
-            storageAccountName  = $storageAccountName
-            storageAccountKey   = $storageAccountKey
+            apiKey                   = $env:APIKEY
+            apiKeySecret             = $env:APIKEYSECRET
+            accessToken              = $env:ACCESSTOKEN
+            accessTokenSecret        = $env:ACCESSTOKENSECRET
+            cognitiveServiceKey      = $cognitiveServiceKey
+            cognitiveServiceEndpoint = $cognitiveServiceEndpoint
         }
 
         Write-Output 'Saving ./components/azure/local_secrets.json for local secret store'
         $secrets | ConvertTo-Json | Set-Content ../components/azure/local_secrets.json
+
+        # Now write the env file
+        "CS_TOKEN=$cognitiveServiceKey`nCS_ENDPOINT=$cognitiveServiceEndpoint" | Set-Content ../components/azure/local.env
     }
 
     end {

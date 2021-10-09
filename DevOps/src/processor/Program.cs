@@ -1,41 +1,63 @@
 using System.Text.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Configure and enable middlewares
-var app = builder.Build();
+var app = WebApplication.Create(args);
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
-string API_TOKEN = Environment.GetEnvironmentVariable("CS_TOKEN") ?? "";
-string ENDPOINT = Environment.GetEnvironmentVariable("CS_ENDPOINT ") ?? "";
+string API_TOKEN = app.Configuration.GetValue("CS_TOKEN", "");
+string ENDPOINT = app.Configuration.GetValue("CS_ENDPOINT", "");
+
 // The full URL to the sentiment service
 var apiURL = $"{ENDPOINT}text/analytics/v2.1/sentiment";
 
-app.MapPost("/score", (Tweet t) =>
- {
-     app.Logger.LogInformation($"processing tweet: {t.Author.Name}, {t.Language}, {t.Author.Picture}");
-     return new AnalyzedTweet(t, new SentimentScore("unknown", 0.5f));
- });
+app.MapPost("/score", async (Tweet t) =>
+{
+    app.Logger.LogInformation($"processing tweet: {t.Author.Name}, {t.Language}, {t.Text}");
+
+    // this allows the demo to run locally with no cloud resources provisioned.
+    if(string.IsNullOrEmpty(ENDPOINT))
+    {
+       return new AnalyzedTweet(t, 0.0f);
+    }
+
+    var request = new HttpRequestMessage(HttpMethod.Post, new Uri(apiURL));
+    request.Headers.Add("Ocp-Apim-Subscription-Key", API_TOKEN);
+    request.Content = new StringContent($"{{documents: [{{id: \"1\", language: \"{t.Language}\", text: \"{t.Text}\"}},],}}");
+    request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+    
+    var result = await new HttpClient().SendAsync(request);
+    var scores = await result.Content.ReadFromJsonAsync<ScoreResult>();
+
+    if(scores == null)
+    {
+        return null;
+    }
+
+    app.Logger.LogInformation($"tweet score: {scores.Documents[0].score}");
+
+    // Score it
+    return new AnalyzedTweet(t, scores.Documents[0].score);
+});
 
 await app.RunAsync();
 
 app.Run();
 
-public record TwitterUser([property: JsonPropertyName("screen_name")] string ScreenName, 
-                          [property: JsonPropertyName("profile_image_url_https")] string Picture, 
+public record TwitterUser([property: JsonPropertyName("screen_name")] string ScreenName,
+                          [property: JsonPropertyName("profile_image_url_https")] string Picture,
                           string Name);
 
-public record Tweet([property: JsonPropertyName("id_str")] string Id, 
+public record Tweet([property: JsonPropertyName("id_str")] string Id,
                     [property: JsonPropertyName("lang")] string Language,
                     [property: JsonPropertyName("user")] TwitterUser Author,
                     [property: JsonPropertyName("full_text")] string FullText,
                     string Text);
 
-public record SentimentScore(string Sentiment, float confidence);
+public record AnalyzedTweet(Tweet Tweet,
+                            float score);
 
-public record AnalyzedTweet(Tweet Tweet, 
-                            SentimentScore Sentiment);
+public record ScoreResult(Document[] Documents);
+public record Document(int id, float score);
