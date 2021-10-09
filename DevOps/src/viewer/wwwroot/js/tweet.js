@@ -2,13 +2,60 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/tweetHub").build();
 
-connection.on("ReceiveMessage", function (user, message) {
-    var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
-    // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
-    // should be aware of possible script injection concerns.
-    li.textContent = `${user} says ${message}`;
+connection.on("ReceiveTweet", function (t) {
+    var log = document.getElementById("tweets");
+
+    function appendLog(item) {
+        var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+        log.appendChild(item);
+        if (doScroll) {
+            log.scrollTop = log.scrollHeight - log.clientHeight;
+        }
+    }
+
+    var scoreStr = "unknown";
+    var scoreAlt = "unknown: ?";
+
+    if (t.sentiment.sentiment.length > 0) {
+        scoreStr = t.sentiment.sentiment;
+        scoreAlt = scoreStr + ": " + t.sentiment.confidence;
+    }
+
+    var tweetText = t.tweet.text;
+    if (t.tweet.fullText != null) {
+        tweetText = t.tweet.full_text;
+    }
+
+    var item = document.createElement("div");
+    item.className = "item";
+    
+    var postURL = t.tweet.user.name;
+    if (t.tweet.user.screen_name) {
+        postURL =
+            t.tweet.user.screen_name +
+            "<a href='https://twitter.com/" +
+            t.tweet.user.screen_name +
+            "/status/" +
+            t.tweet.id_str +
+            "' target='_blank'><img src='img/tw.svg' class='tweet-link' /></a></b>";
+    }
+
+    var tweetMsg =
+        "<img src='" +
+        t.tweet.user.profile_image_url_https +
+        "' class='profile-pic' />" +
+        "<div class='item-text'><b><img src='img/" +
+        scoreStr +
+        ".svg' title='" +
+        scoreAlt +
+        "' class='sentiment' />" +
+        postURL +
+        "<br /><i>" +
+        tweetText +
+        "</i></div>";
+
+    item.innerHTML = tweetMsg;
+    appendLog(item);
 });
 
 connection.start().then(function () {
