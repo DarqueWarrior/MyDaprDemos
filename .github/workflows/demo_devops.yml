@@ -106,13 +106,12 @@ jobs:
           Write-Output "::endgroup::"
 
           dapr status --kubernetes
-        working-directory: ./twitter-sentiment-processor/demos/demo3
 
-      - name: Publish Chart
-        uses: actions/upload-artifact@v2
-        with:
-          name: chart
-          path: "./twitter-sentiment-processor/demos/demo3/demochart"
+      # - name: Publish Chart
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: chart
+      #     path: "./twitter-sentiment-processor/demos/demo3/demochart"
     outputs:
       aksName: ${{ steps.azure-deployment.outputs.aksName }}
       storageAccountKey: ${{ steps.azure-deployment.outputs.storageAccountKey }}
