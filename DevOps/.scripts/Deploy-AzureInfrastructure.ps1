@@ -29,7 +29,7 @@ function Deploy-AzureInfrastructure {
         Write-Output 'Deploying the infrastructure'
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
-                --template-file ./azure/main.bicep `
+                --template-file ./local/main.bicep `
                 --parameters location=$location `
                 --parameters rgName=$rgName `
                 --output json) | ConvertFrom-Json
