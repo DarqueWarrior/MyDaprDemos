@@ -1,0 +1,18 @@
+
+# Default values for demochart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+demoName: "twitterSentimentProcessor"
+
+dapr:
+   port: 3500
+   # Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error.
+   loglevel: "info"
+
+image:
+   tag: "latest"
+   imagePullPolicy: "Always"
+   
+provider:
+   port: 80
+   image: "darquewarrior/nodeprovider"
