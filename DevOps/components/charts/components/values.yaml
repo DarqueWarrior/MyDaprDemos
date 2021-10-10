@@ -16,13 +16,18 @@ zipkin:
 serviceBus:
    connectionString: ""
 
+cognitiveService:
+   token: ""
+   endpoint: ""
+
 tableStorage:
-   name: ""
    key: ""
+   name: ""
 
 twitter:
    consumerKey: ""
-   consumerSecret: ""
    accessToken: ""
    accessSecret: ""
+   consumerSecret: ""
+   query: "Microsoft"
    

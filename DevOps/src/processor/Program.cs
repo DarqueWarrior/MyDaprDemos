@@ -33,6 +33,19 @@ app.MapPost("/score", async (Tweet t) =>
 
     if(scores == null)
     {
+        app.Logger.LogTrace($"scores is null");
+        return null;
+    }
+
+    if(scores.Documents == null)
+    {
+        app.Logger.LogTrace($"scores.Documents is null");
+        return null;
+    }
+
+    if(scores.Documents.Length == 0)
+    {
+        app.Logger.LogTrace($"scores.Documents is empty");
         return null;
     }
 

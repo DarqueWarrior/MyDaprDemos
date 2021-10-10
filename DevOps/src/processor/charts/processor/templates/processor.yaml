@@ -40,7 +40,10 @@ spec:
         - name: SECRET_STORE_NAMESPACE
           value: "default"
         - name: CS_ENDPOINT
-          value: {{ .Values.cognitiveService.endpoint | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: demo-processor-secret
+              key: endpoint
         - name: CS_TOKEN
           valueFrom:
             secretKeyRef:

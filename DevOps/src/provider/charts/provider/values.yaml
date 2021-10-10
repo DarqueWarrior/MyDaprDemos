@@ -1,5 +1,4 @@
-
-# Default values for demochart.
+# Default values for demo chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 demoName: "twitterSentimentProcessor"
@@ -10,9 +9,9 @@ dapr:
    loglevel: "info"
 
 image:
-   tag: "latest"
+   tag: "local"
    imagePullPolicy: "Always"
 
 provider:
    port: 80
-   image: "darquewarrior/csharpprovider"
+   image: "k3d-registry.localhost:5500/csharpprovider"
