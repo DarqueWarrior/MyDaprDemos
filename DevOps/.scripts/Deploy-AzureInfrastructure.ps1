@@ -64,22 +64,24 @@ function Deploy-AzureInfrastructure {
         # To deploy the helm charts locally in K3d you need the secrets
         # to pass to helm to override the values.yaml file
         $yaml = [PSCustomObject]@{
-            serviceBus   = [PSCustomObject]@{
-                connectionString = $serviceBusEndpoint
-            }
-            tableStorage = [PSCustomObject]@{
-                name = $storageAccountName
-                key  = $storageAccountKey
-            }
-            twitter      = [PSCustomObject]@{
-                consumerKey    = $env:APIKEY
-                consumerSecret = $env:APIKEYSECRET
-                accessToken    = $env:ACCESSTOKEN
-                accessSecret   = $env:ACCESSTOKENSECRET
+            components = [PSCustomObject]@{
+                serviceBus   = [PSCustomObject]@{
+                    connectionString = $serviceBusEndpoint
+                }
+                tableStorage = [PSCustomObject]@{
+                    name = $storageAccountName
+                    key  = $storageAccountKey
+                }
+                twitter      = [PSCustomObject]@{
+                    consumerKey    = $env:APIKEY
+                    consumerSecret = $env:APIKEYSECRET
+                    accessToken    = $env:ACCESSTOKEN
+                    accessSecret   = $env:ACCESSTOKENSECRET
+                }
             }
         }
 
-        $yaml | ConvertTo-Yaml | Set-Content ../components/charts/components/local.yaml
+        $yaml | ConvertTo-Yaml | Set-Content ../charts/local.yaml
 
         Write-Output 'Saving ./components/local/local_secrets.json for local secret store'
         $secrets | ConvertTo-Json | Set-Content ../components/local/local_secrets.json
