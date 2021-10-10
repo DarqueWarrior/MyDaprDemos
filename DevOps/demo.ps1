@@ -34,15 +34,15 @@ param (
 
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
-if ($env -eq "local") {
-    # This will deploy the infrastructure without running the demo. You can use
-    # this flag to set everything up before you run the demos to save time. Some
-    # infrastucture can take some time to deploy.
-    if ($deployOnly.IsPresent) {
-        Deploy-AzureInfrastructure -rgName $rgName -location $location
-        return
-    }
+# This will deploy the infrastructure without running the demo. You can use
+# this flag to set everything up before you run the demos to save time. Some
+# infrastucture can take some time to deploy.
+if ($deployOnly.IsPresent) {
+    Deploy-AzureInfrastructure -rgName $rgName -location $location
+    return
+}
 
+if ($env -eq "local") {
     # If you don't find the ./components/local/local_secrets.json run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './components/local/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/local/local_secrets.json"
@@ -62,12 +62,24 @@ if ($env -eq "local") {
     tye run ./src/tye_local.yaml
 }
 else {
-    # Build all the images
-    docker build -f ./src/viewer/Dockerfile -t k3d-registry.localhost:5500/csharpviewer:local ./src/viewer/
-    docker build -f ./src/provider/Dockerfile -t k3d-registry.localhost:5500/csharpprovider:local ./src/provider/
-    docker build -f ./src/processor/Dockerfile -t k3d-registry.localhost:5500/csharpprocessor:local ./src/processor/
+    if ($null -eq $(docker images "k3d-registry.localhost:5500/*" -q)) {
+        # Build all the images
+        docker build -f ./src/viewer/Dockerfile -t k3d-registry.localhost:5500/csharpviewer:local ./src/viewer/
+        docker build -f ./src/provider/Dockerfile -t k3d-registry.localhost:5500/csharpprovider:local ./src/provider/
+        docker build -f ./src/processor/Dockerfile -t k3d-registry.localhost:5500/csharpprocessor:local ./src/processor/
 
-    docker push k3d-registry.localhost:5500/csharpviewer:local
-    docker push k3d-registry.localhost:5500/csharpprovider:local
-    docker push k3d-registry.localhost:5500/csharpprocessor:local
+        docker push k3d-registry.localhost:5500/csharpviewer:local
+        docker push k3d-registry.localhost:5500/csharpprovider:local
+        docker push k3d-registry.localhost:5500/csharpprocessor:local
+    }
+
+    helm dependency update ./charts/
+
+    helm upgrade twitter ./charts/ -f ./charts/local.yaml -i
+
+    # Find the pod so we can forward the port
+    $viewerPod = $(kubectl get pods | Select-String "^viewer[^ ]+")
+    $podName = $viewerPod.Matches.Value
+
+    kubectl port-forward pods/$podName 8080:80 -n default
 }

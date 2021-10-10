@@ -64,7 +64,7 @@ function Deploy-AzureInfrastructure {
         # To deploy the helm charts locally in K3d you need the secrets
         # to pass to helm to override the values.yaml file
         $yaml = [PSCustomObject]@{
-            components = [PSCustomObject]@{
+            components       = [PSCustomObject]@{
                 serviceBus   = [PSCustomObject]@{
                     connectionString = $serviceBusEndpoint
                 }
@@ -78,17 +78,17 @@ function Deploy-AzureInfrastructure {
                     accessToken    = $env:ACCESSTOKEN
                     accessSecret   = $env:ACCESSTOKENSECRET
                 }
-            }
-            processor  = [PSCustomObject]@{
                 cognitiveService = [PSCustomObject]@{
+                    token    = $cognitiveServiceKey
                     endpoint = $cognitiveServiceEndpoint
                 }
             }
         }
 
+        Write-Output 'Saving ../charts/local.yaml for local kubernetes'
         $yaml | ConvertTo-Yaml | Set-Content ../charts/local.yaml
 
-        Write-Output 'Saving ./components/local/local_secrets.json for local secret store'
+        Write-Output 'Saving ./components/local/local_secrets.json for local run'
         $secrets | ConvertTo-Json | Set-Content ../components/local/local_secrets.json
 
         # Now write the env file
