@@ -10,6 +10,9 @@ tracing:
    zipkin:
       endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 
+zipkin:
+   externalPort: 80
+   
 serviceBus:
    connectionString: ""
 
