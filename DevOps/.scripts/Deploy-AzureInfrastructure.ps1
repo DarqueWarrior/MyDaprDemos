@@ -79,6 +79,11 @@ function Deploy-AzureInfrastructure {
                     accessSecret   = $env:ACCESSTOKENSECRET
                 }
             }
+            processor  = [PSCustomObject]@{
+                cognitiveService = [PSCustomObject]@{
+                    endpoint = $cognitiveServiceEndpoint
+                }
+            }
         }
 
         $yaml | ConvertTo-Yaml | Set-Content ../charts/local.yaml
