@@ -9,3 +9,6 @@ components:
     consumerSecret: ""
     accessToken: ""
     accessSecret: ""
+processor:
+  cognitiveService:
+    endpoint: ""

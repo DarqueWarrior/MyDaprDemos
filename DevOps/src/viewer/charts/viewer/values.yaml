@@ -1,4 +1,3 @@
-
 # Default values for demochart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -13,6 +12,7 @@ image:
    tag: "latest"
    imagePullPolicy: "Always"
 
-provider:
-   port: 80
-   image: "darquewarrior/csharpprovider"
+viewer:
+   port: 8083
+   externalPort: 80
+   image: "darquewarrior/csharpviewer"

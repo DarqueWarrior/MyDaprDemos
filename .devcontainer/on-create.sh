@@ -5,6 +5,27 @@ echo "on-create start" >> ~/status
 # initialize dapr
 dapr init
 
+# create local registry
+# docker network create k3d
+# k3d registry create registry.localhost --port 5500
+# docker network connect k3d k3d-registry.localhost
+
+# create cluster using network and registry
+k3d cluster create demo-cluster --registry-create registry.localhost:5500
+
+# You can now use the registry like this (example):
+# 1. create a new cluster that uses this registry
+# k3d cluster create --registry-use k3d-registry.localhost:5500
+
+# 2. tag an existing local image to be pushed to the registry
+# docker tag nginx:latest k3d-registry.localhost:5500/mynginx:v0.1
+
+# 3. push that image to the registry
+# docker push k3d-registry.localhost:5500/mynginx:v0.1
+
+# 4. run a pod that uses this image
+# kubectl run mynginx --image k3d-registry.localhost:5500/mynginx:v0.1
+
 # log into azure cli
 az login --service-principal -t $TENANT -u $APPID -p $PASSWORD
 
