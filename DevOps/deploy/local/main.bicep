@@ -15,5 +15,8 @@ module devops './devops.bicep' = {
   }
 }
 
+output storageAccountKey string = devops.outputs.storageAccountKey
+output storageAccountName string = devops.outputs.storageAccountName
+output serviceBusEndpoint string = devops.outputs.serviceBusEndpoint
 output cognitiveServiceKey string = devops.outputs.cognitiveServiceKey
 output cognitiveServiceEndpoint string = devops.outputs.cognitiveServiceEndpoint

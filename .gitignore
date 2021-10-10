@@ -1,3 +1,4 @@
 **/*.env
 **/local_secrets.json
 **/tempfiles/*
+**/local.yaml

@@ -9,6 +9,9 @@ RUN wget -q https://dot.net/v1/dotnet-install.sh -O - | /bin/bash -s - -Channel 
 # Install Dapr CLI
 RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 
+# Install K3d CLI
+ RUN wget -q https://raw.githubusercontent.com/rancher/k3d/main/install.sh -O - | /bin/bash
+
 USER codespace
 
 # Install Tye

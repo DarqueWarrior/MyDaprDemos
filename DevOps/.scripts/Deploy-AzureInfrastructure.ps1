@@ -36,11 +36,17 @@ function Deploy-AzureInfrastructure {
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
+        $storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
+        $serviceBusEndpoint = $deployment.properties.outputs.serviceBusEndpoint.value
+        $storageAccountName = $deployment.properties.outputs.storageAccountName.value
         $cognitiveServiceKey = $deployment.properties.outputs.cognitiveServiceKey.value
         $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
        
-        Write-Verbose "cognitiveServiceKey = $cognitiveServiceKey"
         Write-Verbose "storageAccountKey = $storageAccountKey"
+        Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
+        Write-Verbose "storageAccountName = $storageAccountName"
+        Write-Verbose "cognitiveServiceKey = $cognitiveServiceKey"
+        Write-Verbose "cognitiveServiceEndpoint = $cognitiveServiceEndpoint"
 
         $env:CS_TOKEN = $cognitiveServiceKey
         $env:CS_ENDPOINT = $cognitiveServiceEndpoint
@@ -54,6 +60,26 @@ function Deploy-AzureInfrastructure {
             cognitiveServiceKey      = $cognitiveServiceKey
             cognitiveServiceEndpoint = $cognitiveServiceEndpoint
         }
+
+        # To deploy the helm charts locally in K3d you need the secrets
+        # to pass to helm to override the values.yaml file
+        $yaml = [PSCustomObject]@{
+            serviceBus   = [PSCustomObject]@{
+                connectionString = $serviceBusEndpoint
+            }
+            tableStorage = [PSCustomObject]@{
+                name = $storageAccountName
+                key  = $storageAccountKey
+            }
+            twitter      = [PSCustomObject]@{
+                consumerKey    = $env:APIKEY
+                consumerSecret = $env:APIKEYSECRET
+                accessToken    = $env:ACCESSTOKEN
+                accessSecret   = $env:ACCESSTOKENSECRET
+            }
+        }
+
+        $yaml | ConvertTo-Yaml | Set-Content ../components/charts/components/local.yaml
 
         Write-Output 'Saving ./components/local/local_secrets.json for local secret store'
         $secrets | ConvertTo-Json | Set-Content ../components/local/local_secrets.json

@@ -1,0 +1,25 @@
+# Default values for components chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+demoName: "twitterSentimentProcessor"
+
+dapr:
+   port: 3500
+
+tracing:
+   zipkin:
+      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
+
+serviceBus:
+   connectionString: ""
+
+tableStorage:
+   name: ""
+   key: ""
+
+twitter:
+   consumerKey: ""
+   consumerSecret: ""
+   accessToken: ""
+   accessSecret: ""
+   
