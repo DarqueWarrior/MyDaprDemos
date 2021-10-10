@@ -1,0 +1,11 @@
+components:
+  serviceBus:
+    connectionString: ""
+  tableStorage:
+    name: ""
+    key: ""
+  twitter:
+    consumerKey: ""
+    consumerSecret: ""
+    accessToken: ""
+    accessSecret: ""
