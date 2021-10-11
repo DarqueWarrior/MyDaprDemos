@@ -20,10 +20,17 @@ Remove-Item ./components/local/local.env -Force -ErrorAction SilentlyContinue
 Remove-Item ./components/local/local_secrets.json -Force -ErrorAction SilentlyContinue
 
 if ($force.IsPresent) {
-    az group delete --resource-group $rgName --no-wait --yes
+    az group delete --resource-group $rgName --yes
 }
 else {
-    az group delete --resource-group $rgName --no-wait
+    az group delete --resource-group $rgName
 }
 
-az group show -g $rgName -o yaml
+Write-Output "Getting soft deleted cognitive services"
+$cs = $(az cognitiveservices account list-deleted --subscription $env:SUBID --query [].name --output tsv)
+$loc = $(az cognitiveservices account list-deleted --subscription $env:SUBID --query [].location --output tsv)
+
+if ($null -ne $cs) {
+    Write-Output "Purging cognitive services $cs"
+    az cognitiveservices account purge --subscription $env:SUBID --name $cs --resource-group $rgName --location $loc
+}
