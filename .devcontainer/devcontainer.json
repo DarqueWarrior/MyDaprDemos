@@ -71,10 +71,13 @@
 	],
 	// add labels
 	"portsAttributes": {
+		"6379": { "label": "dapr_Redis"},
+		"6443": { "label": "k3d_Api"},
 		"8000": { "label": "Tye" },
-		"9411": { "label": "Zipkin" },
+		"9411": { "label": "dapr_Zipkin" },
 		"30000":{ "label": "k3d-Demo" },
-		"30001": { "label": "k3d-Zipkin"}
+		"30001": { "label": "k3d-Zipkin"},
+		"50005": { "label": "dapr_Placement"}
 	},
 	// "oryx build" will automatically install your dependencies and attempt to build your project
 	"postCreateCommand": "oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'",
