@@ -63,10 +63,28 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
+      - name: Install helm
+        uses: azure/setup-helm@v1
+
+      - name: Install Dapr
+        uses: dapr/setup-dapr@v1
+
       - name: Login to Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Helm upgrade
+        shell: pwsh
+        run: |
+          helm dependency update ./charts/
+        working-directory: ./DevOps/
+
+      - name: Publish Chart
+        uses: actions/upload-artifact@v2
+        with:
+          name: chart
+          path: "./DevOps/charts/
 
       - name: Deploy infrastructure
         id: azure-deployment
@@ -88,9 +106,6 @@ jobs:
           Write-Output "::set-output name=cognitiveServiceEndpoint::$($deployment.properties.outputs.cognitiveServiceEndpoint.value)"
         working-directory: ./DevOps/deploy/azure/
 
-      - name: Install Dapr
-        uses: dapr/setup-dapr@v1
-
       - name: Initialize Dapr
         shell: pwsh
         run: |
@@ -106,12 +121,6 @@ jobs:
           Write-Output "::endgroup::"
 
           dapr status --kubernetes
-
-      # - name: Publish Chart
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: chart
-      #     path: "./twitter-sentiment-processor/demos/demo3/demochart"
     outputs:
       aksName: ${{ steps.azure-deployment.outputs.aksName }}
       storageAccountKey: ${{ steps.azure-deployment.outputs.storageAccountKey }}
