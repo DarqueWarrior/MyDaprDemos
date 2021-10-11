@@ -1,0 +1,19 @@
+# Default values for demo chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+demoName: "twitterSentimentProcessor"
+
+dapr:
+   port: 3500
+   # Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error.
+   loglevel: "info"
+
+image:
+   tag: "local"
+   imagePullPolicy: "Always"
+
+viewer:
+   port: 80
+   externalPort: 8080
+   nodePort: 30000
+   image: "k3d-registry.localhost:5500/csharpviewer"

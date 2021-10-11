@@ -59,17 +59,25 @@
 		"hookyqr.beautify",
 		"simonsiefke.prettier-vscode",
 		"streetsidesoftware.code-spell-checker",
-		"ms-azuretools.vscode-tye"
+		"ms-azuretools.vscode-tye",
+		"ms-kubernetes-tools.vscode-kubernetes-tools"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		8000,
-		9411
+		9411,
+		30000,
+		30001
 	],
 	// add labels
 	"portsAttributes": {
+		"6379": { "label": "dapr_Redis"},
+		"6443": { "label": "k3d_Api"},
 		"8000": { "label": "Tye" },
-		"9411": { "label": "Zipkin" },
+		"9411": { "label": "dapr_Zipkin" },
+		"30000":{ "label": "k3d-Demo" },
+		"30001": { "label": "k3d-Zipkin"},
+		"50005": { "label": "dapr_Placement"}
 	},
 	"waitFor": "postCreateCommand",
 	// "oryx build" will automatically install your dependencies and attempt to build your project

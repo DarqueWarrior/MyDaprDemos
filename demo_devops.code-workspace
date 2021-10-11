@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "./DevOps"
+		},
+		{
+			"path": "./.images"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.devcontainer": true,
+			"**/.images": true,
+			"**/.scripts": true,
+			"**/.vscode": true,
+			"**/bin": true,
+			"**/obj": true,
+			"demo_devops.code-workspace": true
+		},
+		"editor.minimap.enabled": false,
+		"cSpell.words": [
+			"Codespace",
+			"Dapr",
+			"pwsh",
+			"tempfiles"
+		]
+	}
+}

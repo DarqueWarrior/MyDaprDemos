@@ -6,7 +6,7 @@ param (
     $Force
 )
 
-$demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets')
+$demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets', 'DevOps')
 
 foreach ($demo in $demos) {
     Write-Host "Cleaning up $demo"
