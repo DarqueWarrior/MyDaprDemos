@@ -130,78 +130,79 @@ jobs:
       cognitiveServiceKey: ${{ steps.azure-deployment.outputs.cognitiveServiceKey }}
       cognitiveServiceEndpoint: ${{ steps.azure-deployment.outputs.cognitiveServiceEndpoint }}
 
-  # deployApp:
-  #   name: deploy application
-  #   needs: [buildImages, deployInfrastructure]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download module
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: chart
-  #         path: chart
+  deployApp:
+    name: deploy application
+    needs: [buildImages, deployInfrastructure]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download module
+        uses: actions/download-artifact@v2
+        with:
+          name: chart
+          path: chart
 
-  #     - name: Login to Azure CLI
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #     - name: Install helm
-  #       uses: azure/setup-helm@v1
+      - name: Install helm
+        uses: azure/setup-helm@v1
 
-  #     - name: Helm upgrade
-  #       shell: pwsh
-  #       run: |
-  #         # Get the credentials to use with dapr init and helm install
-  #         az aks get-credentials `
-  #           --resource-group ${{ env.RG_NAME }} `
-  #           --name "${{ needs.deployInfrastructure.outputs.aksName }}"
+      - name: Helm upgrade
+        shell: pwsh
+        run: |
+          # Get the credentials to use with dapr init and helm install
+          az aks get-credentials `
+            --resource-group ${{ env.RG_NAME }} `
+            --name "${{ needs.deployInfrastructure.outputs.aksName }}"
 
-  #         # Install the demo into the cluster
-  #         helm upgrade --install csharpdemo ./chart `
-  #           --set usingPowerShell=True `
-  #           --set viewer.port='3000' `
-  #           --set provider.port='3000' `
-  #           --set processor.port='3000' `
-  #           --set image.tag='${{ github.run_number }}' `
-  #           --set twitter.consumerKey='${{ secrets.TWITTER_CONSUMERKEY }}' `
-  #           --set twitter.accessToken='${{ secrets.TWITTER_ACCESSTOKEN }}' `
-  #           --set twitter.accessSecret='${{ secrets.TWITTER_ACCESSSECRET }}' `
-  #           --set twitter.consumerSecret='${{ secrets.TWITTER_CONSUMERSECRET }}' `
-  #           --set viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
-  #           --set provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
-  #           --set processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprocessor' `
-  #           --set tableStorage.key='${{ needs.deployInfrastructure.outputs.storageAccountKey }}' `
-  #           --set tableStorage.name='${{ needs.deployInfrastructure.outputs.storageAccountName }}' `
-  #           --set cognitiveService.token='${{ needs.deployInfrastructure.outputs.cognitiveServiceKey }}' `
-  #           --set serviceBus.connectionString='${{ needs.deployInfrastructure.outputs.serviceBusEndpoint }}' `
-  #           --set cognitiveService.endpoint='${{ needs.deployInfrastructure.outputs.cognitiveServiceEndpoint }}'
+          # Install the demo into the cluster
+          helm upgrade --install csharpdemo ./chart `
+            --set usingPowerShell=True `
+            --set viewer.image.tag='${{ github.run_number }}' `
+            --set provider.image.tag='${{ github.run_number }}' `
+            --set processor.image.tag='${{ github.run_number }}' `
+            --set viewer.viewer.externalPort='80' `
+            --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
+            --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
+            --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprocessor' `
+            --set components.zipkin.externalPort='9411' `
+            --set components.twitter.consumerKey='${{ secrets.TWITTER_CONSUMERKEY }}' `
+            --set components.twitter.accessToken='${{ secrets.TWITTER_ACCESSTOKEN }}' `
+            --set components.twitter.accessSecret='${{ secrets.TWITTER_ACCESSSECRET }}' `
+            --set components.twitter.consumerSecret='${{ secrets.TWITTER_CONSUMERSECRET }}' `
+            --set components.tableStorage.key='${{ needs.deployInfrastructure.outputs.storageAccountKey }}' `
+            --set components.tableStorage.name='${{ needs.deployInfrastructure.outputs.storageAccountName }}' `
+            --set components.cognitiveService.token='${{ needs.deployInfrastructure.outputs.cognitiveServiceKey }}' `
+            --set components.serviceBus.connectionString='${{ needs.deployInfrastructure.outputs.serviceBusEndpoint }}' `
+            --set components.cognitiveService.endpoint='${{ needs.deployInfrastructure.outputs.cognitiveServiceEndpoint }}'
 
-  #     - name: Get IPs
-  #       shell: pwsh
-  #       run: |
-  #         function Get-IP {
-  #           [CmdletBinding()]
-  #           param (
-  #               [string]
-  #               $serviceName
-  #           )
+      - name: Get IPs
+        shell: pwsh
+        run: |
+          function Get-IP {
+            [CmdletBinding()]
+            param (
+                [string]
+                $serviceName
+            )
 
-  #           # Make sure service is ready
-  #           $ip = $(kubectl get services $serviceName --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+            # Make sure service is ready
+            $ip = $(kubectl get services $serviceName --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-  #           while ($null -eq $ip) {
-  #               Start-Sleep -Seconds 30
-  #               $ip = $(kubectl get services $serviceName --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-  #           }
+            while ($null -eq $ip) {
+                Start-Sleep -Seconds 30
+                $ip = $(kubectl get services $serviceName --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+            }
 
-  #           Write-Output $ip
-  #         }
+            Write-Output $ip
+          }
 
-  #         # Make sure services are ready
-  #         Write-Output "`nGetting IP addresses. Please wait..."
-  #         $viewerIp = Get-IP -serviceName viewer
-  #         $zipkinIp = Get-IP -serviceName publiczipkin
+          # Make sure services are ready
+          Write-Output "`nGetting IP addresses. Please wait..."
+          $viewerIp = Get-IP -serviceName viewer
+          $zipkinIp = Get-IP -serviceName publiczipkin
 
-  #         Write-Output "`nYour app is accessible from http://$viewerIp"
-  #         Write-Output "Zipkin is accessible from http://$zipkinIp`n"
+          Write-Output "`nYour app is accessible from http://$viewerIp"
+          Write-Output "Zipkin is accessible from http://$zipkinIp`n"
