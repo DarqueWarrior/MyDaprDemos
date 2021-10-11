@@ -77,14 +77,14 @@ jobs:
       - name: Helm upgrade
         shell: pwsh
         run: |
-          helm dependency update ./charts/
+          helm dependency update ./charts/          
         working-directory: ./DevOps/
 
       - name: Publish Chart
         uses: actions/upload-artifact@v2
         with:
           name: chart
-          path: "./DevOps/charts/
+          path: "./DevOps/charts/"
 
       - name: Deploy infrastructure
         id: azure-deployment
@@ -121,6 +121,7 @@ jobs:
           Write-Output "::endgroup::"
 
           dapr status --kubernetes
+
     outputs:
       aksName: ${{ steps.azure-deployment.outputs.aksName }}
       storageAccountKey: ${{ steps.azure-deployment.outputs.storageAccountKey }}
