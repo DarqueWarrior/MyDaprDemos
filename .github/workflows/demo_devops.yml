@@ -167,7 +167,7 @@ jobs:
             --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
             --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
             --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprocessor' `
-            --set components.zipkin.externalPort='9411' `
+            --set components.zipkin.externalPort='80' `
             --set components.twitter.consumerKey='${{ secrets.TWITTER_CONSUMERKEY }}' `
             --set components.twitter.accessToken='${{ secrets.TWITTER_ACCESSTOKEN }}' `
             --set components.twitter.accessSecret='${{ secrets.TWITTER_ACCESSSECRET }}' `
