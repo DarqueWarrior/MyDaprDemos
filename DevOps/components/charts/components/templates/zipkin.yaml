@@ -29,6 +29,7 @@ spec:
   - port: {{ .Values.zipkin.externalPort }}
     protocol: TCP
     targetPort: 9411
+    nodePort: {{ .Values.zipkin.nodePort }}
   selector:
     app: zipkin
   type: LoadBalancer

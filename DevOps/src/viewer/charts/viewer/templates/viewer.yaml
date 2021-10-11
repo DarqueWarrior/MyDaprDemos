@@ -43,6 +43,7 @@ spec:
   - port:  {{ .Values.viewer.externalPort }}
     protocol: TCP
     targetPort: {{ .Values.viewer.port }}
+    nodePort: {{ .Values.viewer.nodePort }}
   selector:
     app: viewer
   type: LoadBalancer

@@ -42,14 +42,14 @@ if ($deployOnly.IsPresent) {
     return
 }
 
-if ($env -eq "local") {
-    # If you don't find the ./components/local/local_secrets.json run the setup.ps1 in deploy folder
-    if ($(Test-Path -Path './components/local/local_secrets.json') -eq $false) {
-        Write-Output "Could not find ./components/local/local_secrets.json"
-        
-        Deploy-AzureInfrastructure -rgName $rgName -location $location
-    }
+# If you don't find the ./components/local/local_secrets.json run the setup.ps1 in deploy folder
+if ($(Test-Path -Path './components/local/local_secrets.json') -eq $false) {
+    Write-Output "Could not find ./components/local/local_secrets.json"
+    
+    Deploy-AzureInfrastructure -rgName $rgName -location $location
+}
 
+if ($env -eq "local") {
     Write-Output "Running demo with local resources"
 
     # Make sure the dapr_zipkin container is running.
@@ -76,10 +76,4 @@ else {
     helm dependency update ./charts/
 
     helm upgrade twitter ./charts/ -f ./charts/local.yaml -i
-
-    # Find the pod so we can forward the port
-    $viewerPod = $(kubectl get pods | Select-String "^viewer[^ ]+")
-    $podName = $viewerPod.Matches.Value
-
-    kubectl port-forward pods/$podName 8080:80 -n default
 }

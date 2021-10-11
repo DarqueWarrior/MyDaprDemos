@@ -15,4 +15,5 @@ image:
 viewer:
    port: 80
    externalPort: 8080
+   nodePort: 30000
    image: "k3d-registry.localhost:5500/csharpviewer"

@@ -12,6 +12,7 @@ tracing:
 
 zipkin:
    externalPort: 8411
+   nodePort: 30001
    
 serviceBus:
    connectionString: ""

@@ -8,7 +8,7 @@ k3d registry create registry.localhost --port 5500
 docker network connect k3d k3d-registry.localhost
 
 # create cluster using network and registry
-k3d cluster create demo-cluster --registry-use k3d-registry.localhost:5500 --network k3d
+k3d cluster create demo-cluster --registry-use k3d-registry.localhost:5500 --network k3d --api-port 6443 -p 30000-30001:30000-30001@server:0
 
 # You can now use the registry like this (example):
 # 1. create a new cluster that uses this registry

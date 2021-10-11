@@ -3,7 +3,7 @@
 [CmdletBinding()]
 param ()
 
-$demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets')
+$demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets', 'DevOps')
 
 foreach ($demo in $demos) {
     Write-Host "Setting up $demo"
