@@ -9,6 +9,8 @@ Demo | Building Blocks | Local | Cloud | Language
 [PubSub](./PubSub) | [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis <br>Redis <br> Redis | Azure Service Bus <br> Azure Event Hubs <br> Azure SQL Server | C#, HTTP
 [Secrets](./Secrets) | [Secrets management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) | Local | Azure Key Vault | HTTP
 [StateStore](./StateStore) | [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis | Azure Cosmos DB | HTTP
+[DevOps](./DevOps) | [Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/) <br> [Observability](./Observability) <br> [PubSub](./PubSub) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Twitter <br> Zipkin <br> Redis <br> Redis |  Twitter <br> Zipkin <br> Azure Service Bus <br> Azure Storage | C#
+
 ## Usage
 
 These demos require [CodeSpaces](https://github.com/features/codespaces). This repo is configured to create a CodeSpace with all the required tools. Simply fork this repo and setup the Codespace secrets and assign them to your fork.

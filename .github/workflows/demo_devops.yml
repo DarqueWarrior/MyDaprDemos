@@ -74,7 +74,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Helm upgrade
+      - name: Helm dependency update
         shell: pwsh
         run: |
           helm dependency update ./charts/          
