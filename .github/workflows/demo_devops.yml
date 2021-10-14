@@ -135,7 +135,7 @@ jobs:
     needs: [buildImages, deployInfrastructure]
     runs-on: ubuntu-latest
     steps:
-      - name: Download module
+      - name: Download Helm chart
         uses: actions/download-artifact@v2
         with:
           name: chart
