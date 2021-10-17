@@ -2,3 +2,9 @@
 **/local_secrets.json
 **/tempfiles/*
 **/local.yaml
+**/.terraform
+StateStore/deploy/aws/terraform.tfvars
+StateStore/deploy/aws/terraform.tfstate
+StateStore/deploy/aws/terraform.tfstate.backup
+StateStore/deploy/aws/.terraform.lock.hcl
+StateStore/terraform.tfstate

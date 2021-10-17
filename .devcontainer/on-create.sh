@@ -29,6 +29,7 @@ dapr init
 # initialize dapr in K8s
 dapr init -k
 
+### Azure
 # log into azure cli
 az login --service-principal -t $TENANT -u $APPID -p $PASSWORD
 
@@ -37,6 +38,10 @@ az account set -s $SUBID
 
 # set defaults
 az config set core.output=table
+
+### AWS
+# set output to table
+aws configure set output table
 
 # install PowerShell modules
 pwsh -Command "& {Install-Module -Name Trackyon.Utils, VSTeam, powershell-yaml -Force}"

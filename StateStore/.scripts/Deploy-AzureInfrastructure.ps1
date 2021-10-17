@@ -26,7 +26,7 @@ function Deploy-AzureInfrastructure {
     }
 
     process {
-        Write-Output 'Deploying the infrastructure'
+        Write-Output 'Deploying the Azure infrastructure'
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
                 --template-file ./azure/main.bicep `
