@@ -18,9 +18,7 @@ POST http://localhost:3500/v1.0/state/statestore
 ]
 
 ###
-
 http://localhost:3500/v1.0/state/statestore/Dog
 
 ###
-
 DELETE http://localhost:3500/v1.0/state/statestore/Dog
