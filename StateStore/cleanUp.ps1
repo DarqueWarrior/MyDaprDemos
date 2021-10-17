@@ -13,6 +13,7 @@ param (
     $force
 )
 
+### Azure
 # Remove local_secrets.json
 Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 
@@ -22,3 +23,18 @@ if ($force.IsPresent) {
 else {
     az group delete --resource-group $rgName --no-wait
 }
+
+### AWS
+# Delete AWS resources
+if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
+    Push-Location ./deploy/aws
+    terraform destroy -auto-approve
+    Pop-Location
+}
+
+# Remove all terraform files
+Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
+Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
+Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
+Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
+Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue

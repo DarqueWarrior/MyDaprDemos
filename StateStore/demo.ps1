@@ -39,6 +39,7 @@ param (
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
+    Deploy-AWSInfrastructure
     Deploy-AzureInfrastructure -rgName $rgName -location $location
     return
 }
