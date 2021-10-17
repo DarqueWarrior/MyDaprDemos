@@ -5,15 +5,14 @@
 		},
 		{
 			"path": "./.images"
-		},
-		{
-			"path": "./../../home/codespace/.dapr/components"
 		}
 	],
 	"settings": {
 		"files.exclude": {
 			"**/.devcontainer": true,
 			"**/.images": true,
+			"**/.scripts": true,
+			"**/.vscode": true,
 			"demo_statestore.code-workspace": true
 		},
 		"editor.minimap.enabled": false,

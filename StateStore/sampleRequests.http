@@ -1,8 +1,12 @@
 # Use this command to run local
 # ./demo.ps1
 
-# Use this command to run in the cloud
+# Use this command to run in azure
 # ./demo.ps1 -env azure
+
+# Use this command to run in aws
+# ./demo.ps1 -env aws
+# aws dynamodb get-item --table-name dapr_store --key '{""key"": {""S"": ""aws||Dog""}}' --output json
 
 POST http://localhost:3500/v1.0/state/statestore
 
