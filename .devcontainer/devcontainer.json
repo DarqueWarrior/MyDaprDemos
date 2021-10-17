@@ -60,7 +60,8 @@
 		"simonsiefke.prettier-vscode",
 		"streetsidesoftware.code-spell-checker",
 		"ms-azuretools.vscode-tye",
-		"ms-kubernetes-tools.vscode-kubernetes-tools"
+		"ms-kubernetes-tools.vscode-kubernetes-tools",
+		"HashiCorp.terraform"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [

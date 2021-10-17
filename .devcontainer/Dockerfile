@@ -17,6 +17,11 @@ RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh
  RUN apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
  RUN apt install terraform
 
+ # Install aws CLI
+ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+ RUN unzip awscliv2.zip
+ RUN ./aws/install
+
 USER codespace
 
 # Install Tye
