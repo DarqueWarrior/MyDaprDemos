@@ -7,8 +7,8 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-string API_TOKEN = app.Configuration.GetValue("CS_TOKEN", "");
-string ENDPOINT = app.Configuration.GetValue("CS_ENDPOINT", "");
+string API_TOKEN = app.Configuration.GetValue("AZURE_CS_TOKEN", "");
+string ENDPOINT = app.Configuration.GetValue("AZURE_CS_ENDPOINT", "");
 
 // The full URL to the sentiment service
 var apiURL = $"{ENDPOINT}text/analytics/v2.1/sentiment";

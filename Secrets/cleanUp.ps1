@@ -14,7 +14,7 @@ param (
 )
 
 # Remove clear out the vault name environment variable 
-$env:VAULTNAME = $null 
+$env:AZURE_KEY_VAULT_NAME = $null 
 
 Write-Output "Waiting for resource group to be deleted so the keyvault can be purged"
 if ($force.IsPresent) {
@@ -25,9 +25,9 @@ else {
 }
 
 Write-Output "Getting soft deleted key vaults"
-$vault = $(az keyvault list-deleted --subscription $env:SUBID --resource-type vault --query [].name --output tsv)
+$vault = $(az keyvault list-deleted --subscription $env:AZURE_SUB_ID --resource-type vault --query [].name --output tsv)
 
 if ($null -ne $vault) {
     Write-Output "Purging key vault $vault"
-    az keyvault purge --subscription $env:SUBID --name $vault
+    az keyvault purge --subscription $env:AZURE_SUB_ID --name $vault
 }

@@ -48,15 +48,15 @@ function Deploy-AzureInfrastructure {
         Write-Verbose "cognitiveServiceKey = $cognitiveServiceKey"
         Write-Verbose "cognitiveServiceEndpoint = $cognitiveServiceEndpoint"
 
-        $env:CS_TOKEN = $cognitiveServiceKey
-        $env:CS_ENDPOINT = $cognitiveServiceEndpoint
+        $env:AZURE_CS_TOKEN = $cognitiveServiceKey
+        $env:AZURE_CS_ENDPOINT = $cognitiveServiceEndpoint
        
         # Creating components/azure/local_secrets.json
         $secrets = [PSCustomObject]@{
-            apiKey                   = $env:APIKEY
-            apiKeySecret             = $env:APIKEYSECRET
-            accessToken              = $env:ACCESSTOKEN
-            accessTokenSecret        = $env:ACCESSTOKENSECRET
+            apiKey                   = $env:TWITTER_API_KEY
+            apiKeySecret             = $env:TWITTER_API_KEY_SECRET
+            accessToken              = $env:TWITTER_ACCESS_TOKEN
+            accessTokenSecret        = $env:TWITTER_ACCESS_TOKEN_SECRET
             cognitiveServiceKey      = $cognitiveServiceKey
             cognitiveServiceEndpoint = $cognitiveServiceEndpoint
         }
@@ -73,10 +73,10 @@ function Deploy-AzureInfrastructure {
                     key  = $storageAccountKey
                 }
                 twitter      = [PSCustomObject]@{
-                    consumerKey    = $env:APIKEY
-                    consumerSecret = $env:APIKEYSECRET
-                    accessToken    = $env:ACCESSTOKEN
-                    accessSecret   = $env:ACCESSTOKENSECRET
+                    consumerKey    = $env:TWITTER_API_KEY
+                    consumerSecret = $env:TWITTER_API_KEY_SECRET
+                    accessToken    = $env:TWITTER_ACCESS_TOKEN
+                    accessSecret   = $env:TWITTER_ACCESS_TOKEN_SECRET
                 }
                 cognitiveService = [PSCustomObject]@{
                     token    = $cognitiveServiceKey
@@ -92,7 +92,7 @@ function Deploy-AzureInfrastructure {
         $secrets | ConvertTo-Json | Set-Content ../components/local/local_secrets.json
 
         # Now write the env file
-        "CS_TOKEN=$cognitiveServiceKey`nCS_ENDPOINT=$cognitiveServiceEndpoint" | Set-Content ../components/local/local.env
+        "AZURE_CS_TOKEN=$cognitiveServiceKey`nAZURE_CS_ENDPOINT=$cognitiveServiceEndpoint" | Set-Content ../components/local/local.env
     }
 
     end {

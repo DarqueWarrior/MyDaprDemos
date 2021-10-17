@@ -27,7 +27,7 @@ function Deploy-AzureInfrastructure {
 
     process {
         # We need to get the object id for the service principal
-        $objectId = $(az ad sp show --id $env:APPID --query objectId --output tsv)
+        $objectId = $(az ad sp show --id $env:AZURE_APP_ID --query objectId --output tsv)
 
         Write-Output 'Deploying the infrastructure'
         $deployment = $(az deployment sub create --name $rgName `
@@ -35,7 +35,7 @@ function Deploy-AzureInfrastructure {
                 --parameters rgName=$rgName `
                 --parameters objectId=$objectId `
                 --parameters location=$location `
-                --parameters tenantId=$env:TENANT `
+                --parameters tenantId=$env:AZURE_TENANT `
                 --template-file ./azure/main.bicep `
                 --output json) | ConvertFrom-Json
         
@@ -43,8 +43,8 @@ function Deploy-AzureInfrastructure {
         
         Write-Verbose "keyvaultName = $keyvaultName"
         
-        Write-Output 'Setting VAULTNAME environment variable'
-        $env:VAULTNAME = $keyvaultName
+        Write-Output 'Setting AZURE_KEY_VAULT_NAME environment variable'
+        $env:AZURE_KEY_VAULT_NAME = $keyvaultName
     }
     
     end {

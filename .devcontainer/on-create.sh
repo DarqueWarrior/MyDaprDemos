@@ -31,10 +31,10 @@ dapr init -k
 
 ### Azure
 # log into azure cli
-az login --service-principal -t $TENANT -u $APPID -p $PASSWORD
+az login --service-principal -t $AZURE_TENANT -u $AZURE_APP_ID -p $AZURE_PASSWORD
 
 # set the subscription
-az account set -s $SUBID
+az account set -s $AZURE_SUB_ID
 
 # set defaults
 az config set core.output=table

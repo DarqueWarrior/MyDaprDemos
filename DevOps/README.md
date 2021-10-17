@@ -1,6 +1,6 @@
 # DevOps demo
 
-The purpose of this demo is to show how to deploy a Daprized application to Azure Kubernetes Service, using the [Dapr tool installer](https://github.com/marketplace/actions/dapr-tool-installer) GitHub Action. 
+The purpose of this demo is to show how to deploy a Daprized application to a cloud based Kubernetes Service, using the [Dapr tool installer](https://github.com/marketplace/actions/dapr-tool-installer) GitHub Action. 
 
 Open the _demo_devops.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
 
@@ -14,11 +14,11 @@ The workspace consists of one top level folders _DevOps_. The components folder 
 
 ## Set Actions secrets
 
-For the GitHub Actions workflow to succeed you must configure the following secrets:
+For the GitHub Actions workflow to succeed you must configure the following secrets. These are **not** the CodeSpaces secrets you set earlier. These are set as _Repository secrets_. Review [Configure Azure credentials as GitHub Secret](https://github.com/marketplace/actions/azure-cli-action#configure-azure-credentials-as-github-secret) to set your **AZURE_CREDENTIALS** secret. 
 
 ![codespace secrets](../.images/ActionsSecrets.png)
 
-The core of the demo is in the _sampleRequests.http_ file. At the top of the file are two _demo.ps1_ commands. One for running the requests against local resources and one for running against the cloud resources. Copy the desired command and run it in the terminal. This will start Dapr pointing to the appropriate components for the demo. The Dapr run command issued is output if you want to explain during the demo.
+Running this demo will deploy the application to a Kubernetes cluster or run locally using [Project Tye](https://github.com/dotnet/tye). To show the demo running use the _PORTS_ tab to Open port **5000** with running local or **k3d-Demo (30000)** when running with k8s in a browser.
 
 Running local
 ```
@@ -27,8 +27,6 @@ Running local
 
 Running in cloud
 ![codespace secrets](../.images/RunWorkflow.png)
-
-When running locally against Redis you can use the Redis Visual Studio Code extension installed in the Codespace to see the state being stored there. 
 
 When you are done with the demo you can clean up the cloud resources by running the _cleanUp.ps1_ script using the following commands: 
 

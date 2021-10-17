@@ -52,8 +52,8 @@ if ($env -eq "azure") {
     Write-Output "Running demo with cloud resources"
 
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
-    if ($null -eq $env:VAULTNAME) {
-        Write-Output "Could not find VAULTNAME environment variable"
+    if ($null -eq $env:AZURE_KEY_VAULT_NAME) {
+        Write-Output "Could not find AZURE_KEY_VAULT_NAM environment variable"
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
 

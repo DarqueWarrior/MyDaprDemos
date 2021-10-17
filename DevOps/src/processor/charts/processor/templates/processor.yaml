@@ -39,12 +39,12 @@ spec:
           value: "demo-processor-secret"
         - name: SECRET_STORE_NAMESPACE
           value: "default"
-        - name: CS_ENDPOINT
+        - name: AZURE_CS_ENDPOINT
           valueFrom:
             secretKeyRef:
               name: demo-processor-secret
               key: endpoint
-        - name: CS_TOKEN
+        - name: AZURE_CS_TOKEN
           valueFrom:
             secretKeyRef:
               name: demo-processor-secret

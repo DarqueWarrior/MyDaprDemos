@@ -27,10 +27,10 @@ else {
 }
 
 Write-Output "Getting soft deleted cognitive services"
-$cs = $(az cognitiveservices account list-deleted --subscription $env:SUBID --query [].name --output tsv)
-$loc = $(az cognitiveservices account list-deleted --subscription $env:SUBID --query [].location --output tsv)
+$cs = $(az cognitiveservices account list-deleted --subscription $env:AZURE_SUB_ID --query [].name --output tsv)
+$loc = $(az cognitiveservices account list-deleted --subscription $env:AZURE_SUB_ID --query [].location --output tsv)
 
 if ($null -ne $cs) {
     Write-Output "Purging cognitive services $cs"
-    az cognitiveservices account purge --subscription $env:SUBID --name $cs --resource-group $rgName --location $loc
+    az cognitiveservices account purge --subscription $env:AZURE_SUB_ID --name $cs --resource-group $rgName --location $loc
 }
