@@ -1,7 +1,7 @@
 # This script issues and displays the correct dapr run command for running with
-# local or cloud resources. To run in the clould add -env azure parameter. If the 
+# local or cloud resources. To run in the clould add -env azure parameter. If the
 # script determines the infrastructure has not been deployed it will call the
-# setup script first. 
+# setup script first.
 [CmdletBinding()]
 param (
     [Parameter(
@@ -17,7 +17,7 @@ param (
     )]
     [string]
     $location = "eastus",
-    
+
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
@@ -44,7 +44,7 @@ if ($deployOnly.IsPresent) {
     $sw.Stop()
 
     Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS DynamoDB"
-    
+
     $sw.Start()
     Deploy-AzureInfrastructure -rgName $rgName -location $location
     $sw.Stop()
@@ -56,7 +56,7 @@ if ($deployOnly.IsPresent) {
 # Load the sample requests file for the demo
 code ./sampleRequests.http
 
-if ($env -eq "azure") {    
+if ($env -eq "azure") {
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/azure/local_secrets.json"
@@ -67,7 +67,7 @@ if ($env -eq "azure") {
         Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Cosmos DB"
     }
 }
-elseif ($env -eq "aws") {    
+elseif ($env -eq "aws") {
     # If you don't find the ./deploy/aws/terraform.tfvars run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"

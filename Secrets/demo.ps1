@@ -21,7 +21,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("local", "azure")]
+    [ValidateSet("local", "azure", "aws")]
     [string]
     $env = "local",
 
@@ -32,6 +32,7 @@ param (
     $deployOnly
 )
 
+. "./.scripts/Deploy-AWSInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
 # This will deploy the infrastructure without running the demo. You can use
@@ -48,21 +49,29 @@ docker start dapr_zipkin
 # Load the sample requests file for the demo
 code ./sampleRequests.http
 
-if ($env -eq "azure") {
-    Write-Output "Running demo with cloud resources"
-
+if ($env -eq "azure") {    
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($null -eq $env:AZURE_KEY_VAULT_NAME) {
         Write-Output "Could not find AZURE_KEY_VAULT_NAM environment variable"
+        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AzureInfrastructure -rgName $rgName -location $location
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Key Vault"
     }
-
-    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure `n"
-    dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure
 }
-else {
-    Write-Output "Running demo with local resources"
-    Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local `n"
-
-    dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
+elseif ($env -eq "aws") {
+    # If you don't find the ./deploy/aws/terraform.tfvars run the setup.ps1 in deploy folder
+    if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
+        Write-Output "Could not find ./deploy/aws/terraform.tfvars"
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+        Deploy-AWSInfrastructure
+        $sw.Stop()
+    
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS Secrets Manager"
+    }
 }
+
+Write-Output "Running demo with $env resources"
+Write-Output "dapr run --app-id $env --dapr-http-port 3500 --components-path ./components/$env `n"
+dapr run --app-id $env --dapr-http-port 3500 --components-path ./components/$env

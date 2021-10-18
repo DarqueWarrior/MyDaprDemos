@@ -36,9 +36,9 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
 }
 
 resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
-  name: '${kvName}/my-secret'
+  name: '${kvName}/dapr-secret'
   properties: {
-    value: 'My_Secret_From_Azure_KeyVault'
+    value: 'Dapr_Secret_From_Azure_KeyVault'
   }
   dependsOn: [
     keyVault

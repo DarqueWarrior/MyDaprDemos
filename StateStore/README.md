@@ -14,17 +14,17 @@ The workspace consists of one top level folder _StateStore_. The components sub 
 
 The core of the demo is in the _sampleRequests.http_ file. At the top of the file are _demo.ps1_ commands. One for running the requests against local resources and two for running against the cloud resources. Copy the desired command and run it in the terminal. This will start Dapr pointing to the appropriate components for the demo. The Dapr run command issued is output if you want to explain during the demo.
 
-Running local
+## Running local
 ```
 dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
 ```
 
-Running in Azure
+## Running in Azure
 ```
 dapr run --app-id azure --dapr-http-port 3500 --components-path ./components/azure
 ```
 
-Running in AWS
+## Running in AWS
 ```
 dapr run --app-id aws --dapr-http-port 3500 --components-path ./components/aws
 ```
