@@ -39,8 +39,17 @@ param (
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
+    $sw = [Diagnostics.Stopwatch]::StartNew()
     Deploy-AWSInfrastructure
+    $sw.Stop()
+
+    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS DynamoDB"
+    
+    $sw.Start()
     Deploy-AzureInfrastructure -rgName $rgName -location $location
+    $sw.Stop()
+
+    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Cosmos DB"
     return
 }
 
@@ -51,14 +60,22 @@ if ($env -eq "azure") {
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/azure/local_secrets.json"
+        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AzureInfrastructure -rgName $rgName -location $location
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Cosmos DB"
     }
 }
 elseif ($env -eq "aws") {    
     # If you don't find the ./deploy/aws/terraform.tfvars run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"
+        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AWSInfrastructure
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS DynamoDB"
     }
 }
 

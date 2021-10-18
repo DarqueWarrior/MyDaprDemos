@@ -10,25 +10,48 @@ param (
     $rgName = "dapr_statestore_demo",
 
     [switch]
-    $force
+    $force,
+
+    [switch]
+    $timing
 )
 
 ### Azure
 # Remove local_secrets.json
 Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 
-if ($force.IsPresent) {
-    az group delete --resource-group $rgName --no-wait --yes
+if ($timing.IsPresent) {
+    $sw = [Diagnostics.Stopwatch]::StartNew()
+
+    if ($force.IsPresent) {
+        az group delete --resource-group $rgName --yes
+    }
+    else {
+        az group delete --resource-group $rgName
+    }
+
+    $sw.Stop()
+
+    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a Azure Cosmos DB"
 }
-else {
-    az group delete --resource-group $rgName --no-wait
+else {    
+    if ($force.IsPresent) {
+        az group delete --resource-group $rgName --no-wait --yes
+    }
+    else {
+        az group delete --resource-group $rgName --no-wait
+    }
 }
 
 ### AWS
 # Delete AWS resources
 if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
     Push-Location ./deploy/aws
+    $sw = [Diagnostics.Stopwatch]::StartNew()
     terraform destroy -auto-approve
+    $sw.Stop()
+
+    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS DynamoDB"
     Pop-Location
 }
 
