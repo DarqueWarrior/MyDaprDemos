@@ -1,0 +1,19 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub1
+auth:
+  secretStore: strongbox  
+spec:
+  type: pubsub.snssqs
+  version: v1
+  metadata:
+    - name: region
+      secretKeyRef:
+        name: AWS_DEFAULT_REGION
+    - name: accessKey
+      secretKeyRef:
+        name: AWS_ACCESS_KEY_ID
+    - name: secretKey
+      secretKeyRef:
+        name: AWS_SECRET_ACCESS_KEY
