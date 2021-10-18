@@ -47,7 +47,7 @@ if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
     terraform destroy -auto-approve
     $sw.Stop()
 
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS DynamoDB"
+    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS Secrets Manager"
     Pop-Location
 }
 

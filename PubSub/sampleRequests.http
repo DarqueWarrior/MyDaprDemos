@@ -1,8 +1,11 @@
 # Use this command to run local
 # ./demo.ps1
 
-# Use this command to run in the cloud
+# Use this command to run in the azure
 # ./demo.ps1 -env azure
+
+# Use this command to run in the aws
+# ./demo.ps1 -env aws
 
 POST http://localhost:3500/v1.0/publish/pubsub1/neworder
 Content-Type: application/json

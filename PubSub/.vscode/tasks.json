@@ -22,7 +22,7 @@
             "isBackground": true
         },
         {
-            "label": "Open Cloud Requests",
+            "label": "Open AWS Requests",
             "command": "code",
             "type": "process",
             "args": [
@@ -41,16 +41,52 @@
             },
             "isBackground": true,
             "dependsOn": [
-                "Setup cloud demo"
+                "Setup aws demo"
             ],
         },
         {
-            "label": "Setup cloud demo",
+            "label": "Open Azure Requests",
+            "command": "code",
+            "type": "process",
+            "args": [
+                "sampleRequests.http"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "dependsOn": [
+                "Setup azure demo"
+            ],
+        },
+        {
+            "label": "Setup azure demo",
             "type": "shell",
             "command": "./demo.ps1",
             "args": [
                 "-env",
                 "azure",
+                "-skipDaprRun"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Setup aws demo",
+            "type": "shell",
+            "command": "./demo.ps1",
+            "args": [
+                "-env",
+                "aws",
                 "-skipDaprRun"
             ],
             "options": {
@@ -85,13 +121,25 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
-            "label": "daprd-cloud-debug",
+            "label": "daprd-azure-debug",
             "type": "daprd",
             "dependsOn": [
                 "build",
-                "Open Cloud Requests"
+                "Open Azure Requests"
             ],
             "componentsPath": "./components/azure"
+        },
+        {
+            "appId": "app1",
+            "appPort": 5013,
+            "httpPort": 3500,
+            "label": "daprd-aws-debug",
+            "type": "daprd",
+            "dependsOn": [
+                "build",
+                "Open AWS Requests"
+            ],
+            "componentsPath": "./components/aws"
         },
         {
             "appId": "app1",

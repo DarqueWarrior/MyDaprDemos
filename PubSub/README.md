@@ -18,14 +18,19 @@ The workspace consists of one top level folder _PubSub_. This folder holds the _
 
 The core of the demo is in the _sampleRequests.http_ file. At the top of the file are two _demo.ps1_ commands. One for running the requests against local resources and one for running against the cloud resources. Copy the desired command and run it in the terminal. This will start Dapr pointing to the appropriate components for the demo. The Dapr run command issued is output if you want to explain during the demo.
 
-Running local
+## Running local
 ```
  ./demo.ps1
 ```
 
-Running in cloud
+## Running in azure
 ```
  ./demo.ps1 -env azure
+```
+
+## Running in aws
+```
+ ./demo.ps1 -env aws
 ```
 
 Click the Send Request button above each of the requests to execute them.
