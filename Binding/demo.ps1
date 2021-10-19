@@ -21,7 +21,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("local", "azure")]
+    [ValidateSet("local", "azure", "aws")]
     [string]
     $env = "local",
 
@@ -32,13 +32,18 @@ param (
     $deployOnly
 )
 
+. "./.scripts/Deploy-AWSInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
 # This will deploy the infrastructure without running the demo. You can use
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
-if ($deployOnly.IsPresent) {
-    Deploy-AzureInfrastructure -rgName $rgName -location $location
+# This will deploy the infrastructure without running the demo. You can use
+# this flag to set everything up before you run the demos to save time. Some
+# infrastucture can take some time to deploy.
+if ($deployOnly.IsPresent) {    
+    Deploy-AWSInfrastructure
+    Deploy-AzureInfrastructure -rgName $rgName -location $location    
     return
 }
 
@@ -50,10 +55,17 @@ $file = Get-Content -Path ./sampleRequests.http
 if ($env -eq "azure") {
     $file[3] = '# @itemName = fileName'
     $file[8] = '@itemName = blobName'
+    $file[13] = '# @itemName = key'
+}
+elseif ($env -eq "aws") {
+    $file[3] = '# @itemName = fileName'
+    $file[8] = '# @itemName = blobName'
+    $file[13] = '@itemName = key'
 }
 else {
     $file[3] = '@itemName = fileName'
     $file[8] = '# @itemName = blobName'
+    $file[13] = '# @itemName = key'
 }
 
 Set-Content -Path ./sampleRequests.http -Value $file
@@ -61,23 +73,22 @@ Set-Content -Path ./sampleRequests.http -Value $file
 # Load the sample requests file for the demo
 code ./sampleRequests.http
 
-if ($env -eq "azure") {
-    Write-Output "Running demo with Azure resources"
-
+if ($env -eq "azure") {    
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/azure/local_secrets.json"
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
-
-    Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure `n"
-
-    dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure
 }
-else {
-    Write-Output "Running demo with local resources"
-
-    Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local `n"
-
-    dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
+elseif ($env -eq "aws") {
+    # If you don't find the ./deploy/aws/terraform.tfvars run the setup.ps1 in deploy folder
+    if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
+        Write-Output "Could not find ./deploy/aws/terraform.tfvars"
+        Deploy-AWSInfrastructure
+    }
 }
+
+Write-Output "Running demo with $env resources"
+Write-Output "dapr run --app-id $env --dapr-http-port 3500 --components-path ./components/$env `n"
+
+dapr run --app-id $env --dapr-http-port 3500 --components-path ./components/$env

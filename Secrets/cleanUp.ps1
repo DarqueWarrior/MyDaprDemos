@@ -45,6 +45,9 @@ if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
     Push-Location ./deploy/aws
     $sw = [Diagnostics.Stopwatch]::StartNew()
     terraform destroy -auto-approve
+
+    # If you don't do this you will have to wait 7 days to create a secret with the same name
+    aws secretsmanager delete-secret --secret-id dapr-secret --region $env:AWS_DEFAULT_REGION --force-delete-without-recovery
     $sw.Stop()
 
     Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS Secrets Manager"

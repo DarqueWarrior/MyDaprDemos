@@ -42,6 +42,9 @@ function Deploy-AzureInfrastructure {
         Write-Verbose "IP Address = $myIp"
 
         Write-Output 'Deploying the infrastructure'
+        
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
                 --template-file ./azure/main.bicep `
@@ -50,6 +53,10 @@ function Deploy-AzureInfrastructure {
                 --parameters adminPassword=$password `
                 --parameters ipAddress=$myIp `
                 --output json) | ConvertFrom-Json
+
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Key Vault"
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json

@@ -30,6 +30,9 @@ function Deploy-AzureInfrastructure {
         $objectId = $(az ad sp show --id $env:AZURE_APP_ID --query objectId --output tsv)
 
         Write-Output 'Deploying the infrastructure'
+
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+        
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
                 --parameters rgName=$rgName `
@@ -38,6 +41,10 @@ function Deploy-AzureInfrastructure {
                 --parameters tenantId=$env:AZURE_TENANT `
                 --template-file ./azure/main.bicep `
                 --output json) | ConvertFrom-Json
+
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Key Vault"
         
         $keyvaultName = $deployment.properties.outputs.keyvaultName.value
         

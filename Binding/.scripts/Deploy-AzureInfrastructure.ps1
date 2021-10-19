@@ -27,12 +27,19 @@ function Deploy-AzureInfrastructure {
 
     process {
         Write-Output 'Deploying the infrastructure'
+
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+
         $deployment = $(az deployment sub create --name $rgName `
                 --location $location `
                 --template-file ./azure/main.bicep `
                 --parameters location=$location `
                 --parameters rgName=$rgName `
                 --output json) | ConvertFrom-Json
+
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying Microsoft.Storage/storageAccounts@2019-06-01"
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
