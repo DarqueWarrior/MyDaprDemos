@@ -5,13 +5,11 @@ provider "aws" {
 }
 
 resource "aws_sqs_queue" "aws_queue" {
-  name                        = "terraform-example-queue.fifo"
-  fifo_queue                  = true
-  content_based_deduplication = true
+  name = "app1"
 }
 
 resource "aws_sns_topic" "aws_notification" {
-  name = "user-aws_notification-topic"
+  name = "neworder"
 }
 
 resource "aws_dynamodb_table" "dapr_state_store" {

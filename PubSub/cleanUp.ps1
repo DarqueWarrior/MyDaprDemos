@@ -9,6 +9,13 @@ param (
     [string]
     $rgName = "dapr_pubsub_demo",
 
+    [Parameter(
+        HelpMessage = "Set to the location of the resources to use."
+    )]
+    [ValidateSet("all", "azure", "aws")]
+    [string]
+    $env = "all",
+
     [switch]
     $force,
 
@@ -19,44 +26,48 @@ param (
 # Remove local_secrets.json
 Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 
-if ($timing.IsPresent) {
-    $sw = [Diagnostics.Stopwatch]::StartNew()
+if ($env -eq 'all' -or $env -eq 'azure') {
+    if ($timing.IsPresent) {
+        $sw = [Diagnostics.Stopwatch]::StartNew()
 
-    if ($force.IsPresent) {
-        az group delete --resource-group $rgName --yes
-    }
-    else {
-        az group delete --resource-group $rgName
-    }
+        if ($force.IsPresent) {
+            az group delete --resource-group $rgName --yes
+        }
+        else {
+            az group delete --resource-group $rgName
+        }
 
-    $sw.Stop()
+        $sw.Stop()
 
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a Azure Event Hubs, Service Bus & SQL Server"
-}
-else {    
-    if ($force.IsPresent) {
-        az group delete --resource-group $rgName --no-wait --yes
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a Azure Event Hubs, Service Bus & SQL Server"
     }
-    else {
-        az group delete --resource-group $rgName --no-wait
+    else {    
+        if ($force.IsPresent) {
+            az group delete --resource-group $rgName --no-wait --yes
+        }
+        else {
+            az group delete --resource-group $rgName --no-wait
+        }
     }
 }
 
 ### AWS
-# Delete AWS resources
-if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
-    Push-Location ./deploy/aws
-    $sw = [Diagnostics.Stopwatch]::StartNew()
-    terraform destroy -auto-approve
-    $sw.Stop()
+if ($env -eq 'all' -or $env -eq 'aws') {
+    # Delete AWS resources
+    if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
+        Push-Location ./deploy/aws
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+        terraform destroy -auto-approve
+        $sw.Stop()
 
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS DynamoDB & SQS Queue"
-    Pop-Location
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS DynamoDB & SQS Queue"
+        Pop-Location
+    }
+
+    # Remove all terraform files
+    Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
 }
-
-# Remove all terraform files
-Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
