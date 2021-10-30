@@ -21,7 +21,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("local", "azure", "aws")]
+    [ValidateSet("local", "azure", "aws", "gcp")]
     [string]
     $env = "local",
 
@@ -39,6 +39,7 @@ param (
 )
 
 . "./.scripts/Deploy-AWSInfrastructure.ps1"
+. "./.scripts/Deploy-GCPInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
 # This will deploy the infrastructure without running the demo. You can use
@@ -47,6 +48,10 @@ param (
 if ($deployOnly.IsPresent) {
     if ($env -eq 'local' -or $env -eq 'aws') {
         Deploy-AWSInfrastructure
+    }
+
+    if ($env -eq 'local' -or $env -eq 'gcp') {
+        Deploy-GCPInfrastructure
     }
 
     if ($env -eq 'local' -or $env -eq 'azure') {
@@ -86,6 +91,13 @@ elseif ($env -eq "aws") {
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"
         Deploy-AWSInfrastructure
+    }
+}
+elseif ($env -eq "gcp") {
+    # If you don't find the ./deploy/gcp/terraform.tfvars run the setup.ps1 in deploy folder
+    if ($(Test-Path -Path './deploy/gcp/terraform.tfvars') -eq $false) {
+        Write-Output "Could not find ./deploy/gcp/terraform.tfvars"
+        Deploy-GCPInfrastructure
     }
 }
 

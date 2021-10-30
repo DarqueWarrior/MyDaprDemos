@@ -3,8 +3,9 @@
 **/tempfiles/*
 **/local.yaml
 **/.terraform
-**/deploy/aws/terraform.tfvars
-**/deploy/aws/terraform.tfstate
-**/deploy/aws/terraform.tfstate.backup
-**/deploy/aws/.terraform.lock.hcl
+**/deploy/**/terraform.tfvars
+**/deploy/**/terraform.tfstate
+**/deploy/**/terraform.tfstate.backup
+**/deploy/**/.terraform.lock.hcl
 **/terraform.tfstate
+**/CREDENTIALS_FILE.json

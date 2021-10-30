@@ -12,7 +12,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("all", "azure", "aws")]
+    [ValidateSet("all", "azure", "aws", "gcp")]
     [string]
     $env = "all",
 
@@ -70,4 +70,26 @@ if ($env -eq 'all' -or $env -eq 'aws') {
     Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
     Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
     Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
+}
+
+### GCP
+if ($env -eq 'all' -or $env -eq 'gcp') {
+    # Delete GCP resources
+    if ($(Test-Path ./deploy/gcp/terraform.tfvars)) {
+        Push-Location ./deploy/gcp
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+        terraform destroy -auto-approve
+        $sw.Stop()
+
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a gcp DynamoDB & PubSub"
+        Pop-Location
+    }
+
+    # Remove all terraform files
+    Remove-Item ./deploy/gcp/terraform.tfvars -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/gcp/terraform.tfstate -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/gcp/.terraform -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/gcp/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/gcp/CREDENTIALS_FILE.json -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/gcp/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
 }

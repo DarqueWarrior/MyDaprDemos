@@ -2,9 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/codespaces-linux
 {
 	"name": "GitHub Codespaces (Default)",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
+	"image": "darquewarrior/mydaprdemos:latest",
 	"remoteEnv": { "PATH": "${containerEnv:PATH}:/home/codespace/.dapr/bin" },
 	"settings": {
 		"csharp.suppressDotnetRestoreNotification": true,
