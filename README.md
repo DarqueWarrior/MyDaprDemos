@@ -4,9 +4,9 @@ This repo is a collection of demos of the [Dapr](https://dapr.io) building block
 
 Demo | Building Blocks | Local | Azure | AWS | Language
 --- | --- | --- | --- | --- | ---:
-[Binding](./Binding) | [Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/) | File Share | Azure Storage | | HTTP
+[Binding](./Binding) | [Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/) | File Share | Azure Storage | Amazon S3 | HTTP
 [Observability](./Observability) | [Observability](https://docs.dapr.io/developing-applications/building-blocks/observability/) | Zipkin | Azure Application Insights | | C#, HTTP
-[PubSub](./PubSub) | [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis <br>Redis <br> Redis | Azure Service Bus <br> Azure Event Hubs <br> Azure SQL Server | | C#, HTTP
+[PubSub](./PubSub) | [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [Publish & Subscribe](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis <br>Redis <br> Redis | Azure Service Bus <br> Azure Event Hubs <br> Azure SQL Server | Amazon SNS <br> Amazon SQS <br> Amazon DynamoDB | C#, HTTP
 [Secrets](./Secrets) | [Secrets management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) | Local | Azure Key Vault | | HTTP
 [StateStore](./StateStore) | [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis | Azure Cosmos DB | Amazon DynamoDB | HTTP
 [DevOps](./DevOps) | [Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/) <br> [Observability](./Observability) <br> [PubSub](./PubSub) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Twitter <br> Zipkin <br> Redis <br> Redis |  Twitter <br> Zipkin <br> Azure Service Bus <br> Azure Storage | | C#
