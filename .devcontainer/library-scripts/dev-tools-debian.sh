@@ -10,6 +10,9 @@ export PATH=$PATH:$HOME/dotnet
 
 wget -q https://aka.ms/install-dotnet-preview -O - | /bin/bash -s - --install-dir $DOTNET_ROOT
 
+# Install AZ CLI
+curl -sL https://aka.ms/InstallAzureCLIDeb | /bin/bash
+
 # Install Dapr CLI
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 
@@ -19,7 +22,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
  # Install terraform
  curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
  apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
- apt install terraform
+ apt-get install terraform -y
 
  # Install aws CLI
  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
