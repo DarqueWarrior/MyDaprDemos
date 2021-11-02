@@ -1,29 +1,9 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/codespaces-linux/.devcontainer/base.Dockerfile
-FROM mcr.microsoft.com/vscode/devcontainers/universal:1-focal
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/alpine/.devcontainer/base.Dockerfile
 
-USER root
+# [Choice] Alpine version: 3.14, 3.13, 3.12, 3.11
+ARG VARIANT="3.14"
+FROM mcr.microsoft.com/vscode/devcontainers/base:0-alpine-${VARIANT}
 
-# Install .net 6
-RUN wget -q https://dot.net/v1/dotnet-install.sh -O - | /bin/bash -s - -Channel 6.0.1xx -Quality preview --install-dir $DOTNET_ROOT
-
-# Install Dapr CLI
-RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
-
-# Install K3d CLI
- RUN wget -q https://raw.githubusercontent.com/rancher/k3d/main/install.sh -O - | /bin/bash
-
- # Install terraform
- RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
- RUN apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
- RUN apt install terraform
-
- # Install aws CLI
- RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
- RUN unzip awscliv2.zip
- RUN ./aws/install
-
-USER codespace
-
-# Install Tye
-RUN dotnet tool install -g Microsoft.Tye --version "0.10.0-alpha.21420.1"
-RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+# ** [Optional] Uncomment this section to install additional packages. **
+# RUN apk update \
+#     && apk add --no-cache <your-package-list-here>
