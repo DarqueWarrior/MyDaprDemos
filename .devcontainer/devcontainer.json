@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/alpine
 {
 	"name": "MyDaprDemos",
-	"image": "darquewarrior/daprdevcontainer:latest",
+	"image": "darquewarrior/daprdevcontainer:0.0.1",
 	//"build": {
 	//	"dockerfile": "Dockerfile",
 	//	// Update 'VARIANT' to pick an Alpine version: 3.11, 3.12, 3.13, 3.14
