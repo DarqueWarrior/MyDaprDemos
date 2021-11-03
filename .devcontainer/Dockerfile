@@ -28,6 +28,8 @@ RUN apt-get update \
 
 RUN /bin/bash /tmp/library-scripts/dev-tools-debian.sh
 
+RUN /bin/bash /tmp/library-scripts/powershell-debian.sh
+
 RUN /bin/bash /tmp/library-scripts/cloud-clis-debian.sh \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/    
