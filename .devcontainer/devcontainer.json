@@ -3,35 +3,78 @@
 {
 	"name": "MyDaprDemos",
 	"image": "darquewarrior/daprdevcontainer:0.0.4",
-	//"build": {
-	//	"dockerfile": "Dockerfile",
-	//	// Update 'VARIANT' to pick an Alpine version: 3.11, 3.12, 3.13, 3.14
-	//	"args": { "VARIANT": "3.14" }
-	//},
-	
-	// Set *default* container specific settings.json values on container create. 
-	"settings": {},
-
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/home/codespace/.dapr/bin"
+	},
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"editor.minimap.enabled": false,
+		"workbench.startupEditor": "none",
+		"terminal.integrated.defaultProfile.linux": "pwsh"
+	},
 	// Add the IDs of extensions you want installed when the container is created.
 	// Note that some extensions may not work in Alpine Linux. See https://aka.ms/vscode-remote/linux.
 	"extensions": [
-		"ms-azuretools.vscode-docker"
+		"ms-azuretools.vscode-dapr",
+		"GitHub.vscode-pull-request-github",
+		"ms-azuretools.vscode-docker",
+		"humao.rest-client",
+		"ms-azuretools.vscode-bicep",
+		"ms-vscode.PowerShell",
+		"cweijan.vscode-redis-client",
+		"ms-dotnettools.csharp",
+		"hookyqr.beautify",
+		"simonsiefke.prettier-vscode",
+		"streetsidesoftware.code-spell-checker",
+		"ms-azuretools.vscode-tye",
+		"ms-kubernetes-tools.vscode-kubernetes-tools",
+		"HashiCorp.terraform"
 	],
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
+	"forwardPorts": [
+		8000,
+		9411,
+		30000,
+		30001
+	],
+	// add labels
+	"portsAttributes": {
+		"6379": {
+			"label": "dapr_Redis"
+		},
+		"6443": {
+			"label": "k3d_Api"
+		},
+		"8000": {
+			"label": "Tye"
+		},
+		"9411": {
+			"label": "dapr_Zipkin"
+		},
+		"30000": {
+			"label": "k3d-Demo"
+		},
+		"30001": {
+			"label": "k3d-Zipkin"
+		},
+		"50005": {
+			"label": "dapr_Placement"
+		}
+	},
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "uname -a",
-
 	// Replace when using a ptrace-based debugger like C++, Go, and Rust
 	// "runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
-	"runArgs": ["--init", "--privileged"],
-
-	"mounts": ["source=dind-var-lib-docker,target=/var/lib/docker,type=volume"],
-	
+	"runArgs": [
+		"--init",
+		"--privileged"
+	],
+	"mounts": [
+		"source=dind-var-lib-docker,target=/var/lib/docker,type=volume"
+	],
 	"overrideCommand": false,
-
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	// Use 'onCreateCommand' to run commands as part of container creation. 
+	"onCreateCommand": "/bin/bash -c .devcontainer/on-create.sh",
 }
