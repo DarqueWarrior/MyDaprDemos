@@ -1,52 +1,19 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/codespaces-linux
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/alpine
 {
-	"name": "GitHub Codespaces (Default)",
-	"build": {
-		"dockerfile": "Dockerfile"
+	"name": "MyDaprDemos",
+	"image": "darquewarrior/daprdevcontainer:0.0.4",
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/home/codespace/.dapr/bin"
 	},
-	"remoteEnv": { "PATH": "${containerEnv:PATH}:/home/codespace/.dapr/bin" },
+	// Set *default* container specific settings.json values on container create.
 	"settings": {
-		"csharp.suppressDotnetRestoreNotification": true,
-		"csharp.suppressBuildAssetsNotification": true,
-		"go.toolsManagement.checkForUpdates": "local",
-		"go.useLanguageServer": true,
-		"go.gopath": "/go",
-		"go.goroot": "/usr/local/go",
-		"python.pythonPath": "/opt/python/latest/bin/python",
-		"python.linting.enabled": true,
-		"python.linting.pylintEnabled": true,
-		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
-		"lldb.executable": "/usr/bin/lldb",
-		"workbench.startupEditor": "none",
-		"files.watcherExclude": {
-			"**/target/**": true
-		},
 		"editor.minimap.enabled": false,
-		"terminal.integrated.defaultProfile.linux": "pwsh",
-		"terminal.integrated.defaultProfile.windows": "PowerShell"
+		"workbench.startupEditor": "none",
+		"terminal.integrated.defaultProfile.linux": "pwsh"
 	},
-	"remoteUser": "codespace",
-	"overrideCommand": false,
-	"mounts": [
-		"source=codespaces-linux-var-lib-docker,target=/var/lib/docker,type=volume"
-	],
-	"runArgs": [
-		"--cap-add=SYS_PTRACE",
-		"--security-opt",
-		"seccomp=unconfined",
-		"--privileged",
-		"--init"
-	],
 	// Add the IDs of extensions you want installed when the container is created.
+	// Note that some extensions may not work in Alpine Linux. See https://aka.ms/vscode-remote/linux.
 	"extensions": [
 		"ms-azuretools.vscode-dapr",
 		"GitHub.vscode-pull-request-github",
@@ -72,17 +39,42 @@
 	],
 	// add labels
 	"portsAttributes": {
-		"6379": { "label": "dapr_Redis"},
-		"6443": { "label": "k3d_Api"},
-		"8000": { "label": "Tye" },
-		"9411": { "label": "dapr_Zipkin" },
-		"30000":{ "label": "k3d-Demo" },
-		"30001": { "label": "k3d-Zipkin"},
-		"50005": { "label": "dapr_Placement"}
+		"6379": {
+			"label": "dapr_Redis"
+		},
+		"6443": {
+			"label": "k3d_Api"
+		},
+		"8000": {
+			"label": "Tye"
+		},
+		"9411": {
+			"label": "dapr_Zipkin"
+		},
+		"30000": {
+			"label": "k3d-Demo"
+		},
+		"30001": {
+			"label": "k3d-Zipkin"
+		},
+		"50005": {
+			"label": "dapr_Placement"
+		}
 	},
-	"waitFor": "postCreateCommand",
-	// "oryx build" will automatically install your dependencies and attempt to build your project
-	"postCreateCommand": "oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'",
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "uname -a",
+	// Replace when using a ptrace-based debugger like C++, Go, and Rust
+	// "runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+	"runArgs": [
+		"--init",
+		"--privileged"
+	],
+	"mounts": [
+		"source=dind-var-lib-docker,target=/var/lib/docker,type=volume"
+	],
+	"overrideCommand": false,
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
 	// Use 'onCreateCommand' to run commands as part of container creation. 
 	"onCreateCommand": "/bin/bash -c .devcontainer/on-create.sh",
 }
