@@ -4,15 +4,15 @@ apt-get update
 
 apt-get install -y software-properties-common apt-transport-https gnupg2
 
-# Install .net 6
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$DOTNET_ROOT
+# # Install .net 6
+# export DOTNET_ROOT=$HOME/dotnet
+# export PATH=$PATH:$DOTNET_ROOT
 
-wget -q https://aka.ms/install-dotnet-preview -O - | /bin/bash
+# wget -q https://aka.ms/install-dotnet-preview -O - | /bin/bash
 
-# Install Tye
-dotnet tool install --tool-path $DOTNET_ROOT --prerelease Microsoft.Tye
-dotnet tool install --tool-path $DOTNET_ROOT Microsoft.Web.LibraryManager.Cli
+# # Install Tye
+# dotnet tool install --tool-path $DOTNET_ROOT --prerelease Microsoft.Tye
+# dotnet tool install --tool-path $DOTNET_ROOT Microsoft.Web.LibraryManager.Cli
 
 # Install Dapr CLI
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
