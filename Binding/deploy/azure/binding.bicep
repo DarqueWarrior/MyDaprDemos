@@ -1,6 +1,8 @@
+param location string
+
 resource stg 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: toLower('stg${uniqueString(resourceGroup().id)}') // must be globally unique
-  location: resourceGroup().location
+  location: location
   kind: 'Storage'
   sku: {
     name: 'Standard_LRS'
@@ -8,4 +10,3 @@ resource stg 'Microsoft.Storage/storageAccounts@2019-06-01' = {
 }
 
 output storageAccountName string = stg.name
-output storageAccountKey string = stg.listKeys().keys[0].value
