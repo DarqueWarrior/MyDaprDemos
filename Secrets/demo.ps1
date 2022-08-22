@@ -45,17 +45,22 @@ if ($deployOnly.IsPresent) {
 # Make sure the Zipkin container is running. The Observiblity demo stops it.
 docker start dapr_zipkin
 
-# Load the sample requests file for the demo
-code ./sampleRequests.http
-
 if ($env -eq "azure") {
     Write-Output "Running demo with cloud resources"
 
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($null -eq $env:AZURE_KEY_VAULT_NAME) {
-        Write-Output "Could not find AZURE_KEY_VAULT_NAM environment variable"
+        Write-Output "Could not find AZURE_KEY_VAULT_NAME environment variable"
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
+
+    if($error[0]) {
+        Write-Error $error[0]
+        return
+    }
+
+    # Load the sample requests file for the demo
+    code ./sampleRequests.http
 
     Write-Output "dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure `n"
     dapr run --app-id cloud --dapr-http-port 3500 --components-path ./components/azure
@@ -63,6 +68,9 @@ if ($env -eq "azure") {
 else {
     Write-Output "Running demo with local resources"
     Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local `n"
+
+    # Load the sample requests file for the demo
+    code ./sampleRequests.http
 
     dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
 }

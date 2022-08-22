@@ -38,6 +38,11 @@ function Deploy-AzureInfrastructure {
                 --parameters tenantId=$env:AZURE_TENANT `
                 --template-file ./azure/main.bicep `
                 --output json) | ConvertFrom-Json
+
+        if(-not $deployment) {
+            Pop-Location
+            throw "Deployment failed"
+        }
         
         $keyvaultName = $deployment.properties.outputs.keyvaultName.value
         

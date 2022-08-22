@@ -1,11 +1,12 @@
 param tenantId string
 param objectId string
+param location string
 
 var kvName = 'kv${uniqueString(resourceGroup().id)}'
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: kvName
-  location: resourceGroup().location
+  location: location
   properties: {
     enabledForDeployment: true
     enabledForTemplateDeployment: true
