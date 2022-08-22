@@ -12,6 +12,7 @@ module devops './devops.bicep' = {
   name: 'devops'
   scope: resourceGroup(rg.name)
   params: {
+    location: location
   }
 }
 
