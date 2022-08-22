@@ -1,12 +1,14 @@
+param location string
+
 resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
   name: 'ws${uniqueString(resourceGroup().id)}'
-  location: resourceGroup().location
+  location: location
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: 'appi${uniqueString(resourceGroup().id)}'
   kind: 'web'
-  location: resourceGroup().location
+  location: location
   properties: {
     Application_Type: 'web'
     WorkspaceResourceId: workspace.id

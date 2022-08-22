@@ -30,6 +30,9 @@ az config set core.output=table
 # set output to table
 aws configure set output table
 
+# Install tye
+dotnet tool install --tool-path ~/bin Microsoft.Tye --version "0.11.0-alpha.22111.1"
+
 # install PowerShell modules
 pwsh -Command "& {Install-Module -Name Trackyon.Utils, VSTeam, powershell-yaml -Force}"
  

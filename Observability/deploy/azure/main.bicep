@@ -11,6 +11,9 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module observability './observability.bicep' = {
   name: 'observability'
   scope: resourceGroup(rg.name)
+  params: {
+    location: location
+  }
 }
 
 output instrumentationKey string = observability.outputs.instrumentationKey

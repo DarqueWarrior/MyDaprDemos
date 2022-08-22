@@ -36,8 +36,8 @@ function Deploy-AzureInfrastructure {
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
-        $storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
         $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+        $storageAccountKey = $(az storage account keys list --account-name $storageAccountName --query [0].value -o tsv)
 
         Write-Verbose "storageAccountKey = $storageAccountKey"
         Write-Verbose "storageAccountName = $storageAccountName"

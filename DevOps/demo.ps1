@@ -59,7 +59,7 @@ if ($env -eq "local") {
     Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/processor/processor.csproj --urls "http://localhost:5030" `n"
     Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- dotnet run --project ./src/provider/provider.csproj --urls "http://localhost:5040" `n"
 
-    tye run ./src/tye_local.yaml
+    ~/bin/tye run ./src/tye_local.yaml
 }
 else {
     if ($null -eq $(docker images "k3d-registry.localhost:5500/*" -q)) {

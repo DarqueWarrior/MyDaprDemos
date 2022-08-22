@@ -27,7 +27,8 @@ function Deploy-AzureInfrastructure {
 
     process {
         # We need to get the object id for the service principal
-        $objectId = $(az ad sp show --id $env:AZURE_APP_ID --query objectId --output tsv)
+        $objectId = $(az ad sp show --id $env:AZURE_APP_ID --query id --output tsv)
+        Write-Verbose "ObjectID = $objectId"
 
         Write-Output 'Deploying the infrastructure'
         $deployment = $(az deployment sub create --name $rgName `
@@ -38,6 +39,11 @@ function Deploy-AzureInfrastructure {
                 --parameters tenantId=$env:AZURE_TENANT `
                 --template-file ./azure/main.bicep `
                 --output json) | ConvertFrom-Json
+
+        if(-not $deployment) {
+            Pop-Location
+            throw "Deployment failed"
+        }
         
         $keyvaultName = $deployment.properties.outputs.keyvaultName.value
         

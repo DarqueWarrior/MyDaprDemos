@@ -1,6 +1,7 @@
 targetScope = 'subscription'
 
 param ipAddress string
+@secure()
 param adminPassword string
 param location string = 'eastus'
 param serviceName string = 'app1'
@@ -16,6 +17,7 @@ module pubsub './pubsub.bicep' = {
   name: 'pubsub'
   scope: resourceGroup(rg.name)
   params: {
+    location: location
     ipAddress: ipAddress
     topicName: topicName
     serviceName: serviceName

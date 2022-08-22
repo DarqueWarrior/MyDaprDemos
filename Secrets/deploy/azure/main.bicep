@@ -16,6 +16,7 @@ module secrets './secrets.bicep' = {
   params: {
     tenantId: tenantId
     objectId: objectId
+    location: location
   }
 }
 

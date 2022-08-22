@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
+wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
 apt-get update
 
-apt-get install -y software-properties-common apt-transport-https gnupg2
-
 # Install .net 6
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$HOME/dotnet
+apt-get install -y software-properties-common apt-transport-https gnupg2 dotnet-sdk-6.0
 
-wget -q https://aka.ms/install-dotnet-preview -O - | /bin/bash -s - --install-dir $DOTNET_ROOT
+# export DOTNET_ROOT=$HOME/dotnet
+# export PATH=$PATH:$HOME/dotnet
+
+# wget -q https://aka.ms/install-dotnet-preview -O - | /bin/bash -s - --install-dir $DOTNET_ROOT
 
 # Install Dapr CLI
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
