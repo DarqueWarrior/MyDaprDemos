@@ -9,25 +9,55 @@ param (
     [string]
     $rgName = "dapr_secrets_demo",
 
+    [Parameter(
+        HelpMessage = "Set to the location of the resources to use."
+    )]
+    [ValidateSet("all", "azure", "aws")]
+    [string]
+    $env = "all",
+
     [switch]
     $force
 )
 
-# Remove clear out the vault name environment variable 
-$env:AZURE_KEY_VAULT_NAME = $null 
+if ($env -eq 'all' -or $env -eq 'azure') {
+    # Remove clear out the vault name environment variable 
+    $env:AZURE_KEY_VAULT_NAME = $null 
 
-Write-Output "Waiting for resource group to be deleted so the keyvault can be purged"
-if ($force.IsPresent) {
-    az group delete --resource-group $rgName --yes
+    Write-Output "Waiting for resource group to be deleted so the keyvault can be purged"
+    if ($force.IsPresent) {
+        az group delete --resource-group $rgName --yes
+    }
+    else {
+        az group delete --resource-group $rgName
+    }
+
+    Write-Output "Getting soft deleted key vaults"
+    $vault = $(az keyvault list-deleted --subscription $env:AZURE_SUB_ID --resource-type vault --query [].name --output tsv)
+
+    if ($null -ne $vault) {
+        Write-Output "Purging key vault $vault"
+        az keyvault purge --subscription $env:AZURE_SUB_ID --name $vault
+    }
 }
-else {
-    az group delete --resource-group $rgName
-}
 
-Write-Output "Getting soft deleted key vaults"
-$vault = $(az keyvault list-deleted --subscription $env:AZURE_SUB_ID --resource-type vault --query [].name --output tsv)
+if ($env -eq 'all' -or $env -eq 'aws') {
+    ### AWS
+    # Delete AWS resources
+    if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
+        Push-Location ./deploy/aws
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+        terraform destroy -auto-approve
+        $sw.Stop()
 
-if ($null -ne $vault) {
-    Write-Output "Purging key vault $vault"
-    az keyvault purge --subscription $env:AZURE_SUB_ID --name $vault
+        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS S3"
+        Pop-Location
+    }
+
+    # Remove all terraform files
+    Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
+    Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
 }
