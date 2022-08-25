@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: files
+auth:
+  secretStore: strongbox  
+spec:
+  type: bindings.aws.s3
+  version: v1
+  metadata:
+  - name: bucket
+    value: dapr-bucket
+  - name: region
+    value: us-east-2
+  - name: accessKey
+    secretKeyRef:
+      name: accessKey
+  - name: secretKey
+    secretKeyRef:
+      name: secretKey
