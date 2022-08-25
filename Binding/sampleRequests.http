@@ -1,17 +1,21 @@
 # Use this command to run local
-# Use fileName for the local store
+# Use fileName for item name
 # ./demo.ps1
 # @itemName = fileName
 
-# Use this command to run in the cloud
-# Use blobName for the local store
+# Use this command to run in azure
+# Use blobName for item name
 # ./demo.ps1 -env azure
-@itemName = blobName
+# @itemName = blobName
 
+# Use this command to run in aws
+# Use key for item name
+# ./demo.ps1 -env aws
+# @itemName = key
 
 POST http://localhost:3500/v1.0/bindings/files
 
-{
+@itemName = key
     "operation": "create",
     "data": "Hello World",
     "metadata": {
