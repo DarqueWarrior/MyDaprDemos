@@ -60,4 +60,13 @@ if ($env -eq 'all' -or $env -eq 'aws') {
     Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
     Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
     Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
+
+    # When you delete a secret, Secrets Manager doesn't immediately delete the
+    # secret. Secrets Manager schedules the secret for deletion after a
+    # recovery window of a minimum of seven days. This means that you can't 
+    # recreate a secret using the same name using the AWS Management Console
+    # until the recovery window ends. You can permanently delete a secret 
+    # without any recovery window using the AWS Command Line Interface (AWS CLI)
+    Write-Output "Purging secret my-secret"
+    aws secretsmanager delete-secret --secret-id my-secret --force-delete-without-recovery --region $env:AWS_DEFAULT_REGION
 }

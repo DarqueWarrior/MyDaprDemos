@@ -23,7 +23,7 @@ variable "sns_name" {
 
 variable "table_name" {
   description = "Dynamodb table name (space is not allowed)"
-  default     = "statestore"
+  default     = "pubsub_statestore"
 }
 
 variable "table_billing_mode" {

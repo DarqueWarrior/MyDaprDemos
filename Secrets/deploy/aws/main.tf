@@ -8,7 +8,7 @@ resource "aws_secretsmanager_secret" "dapr_secrets" {
   name = var.secrets_manager_name
 
   tags = {
-    Name        = "Dapr Bucket"
+    Name        = "Dapr Secrets Manager"
     environment = "${var.environment}"
   }
 }

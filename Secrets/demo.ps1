@@ -60,7 +60,9 @@ code ./sampleRequests.http
 docker start dapr_zipkin
 
 if ($env -eq "azure") {
-    Write-Output "Running demo with cloud resources"
+    $error.clear()
+
+    Write-Output "Running demo with Azure resources"
 
     # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
     if ($null -eq $env:AZURE_KEY_VAULT_NAME) {
@@ -68,7 +70,7 @@ if ($env -eq "azure") {
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
 
-    if($error[0]) {
+    if ($error[0]) {
         Write-Error $error[0]
         return
     }
@@ -77,6 +79,8 @@ if ($env -eq "azure") {
     dapr run --app-id azure --dapr-http-port 3500 --components-path ./components/azure
 }
 elseif ($env -eq "aws") {
+    Write-Output "Running demo with AWS resources"
+
     # If you don't find the ./deploy/aws/terraform.tfvars deploy infrastucture
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"

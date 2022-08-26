@@ -6,10 +6,16 @@ provider "aws" {
 
 resource "aws_sns_topic" "dapr_pubsub" {
   name = var.sns_name
+  tags = {
+    dapr-topic-name = "neworder"
+  }
 }
 
 resource "aws_sqs_queue" "dapr_pubsub_queue" {
   name = var.sqs_name
+  tags = {
+    dapr-queue-name = "app1"
+  }
 }
 
 resource "aws_sns_topic_subscription" "dapr_pubsub_sqs_target" {

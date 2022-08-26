@@ -3,8 +3,8 @@
 **/tempfiles/*
 **/local.yaml
 **/.terraform
-StateStore/deploy/aws/terraform.tfvars
-StateStore/deploy/aws/terraform.tfstate
-StateStore/deploy/aws/terraform.tfstate.backup
-StateStore/deploy/aws/.terraform.lock.hcl
-StateStore/terraform.tfstate
+**/terraform.tfvars
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/.terraform.lock.hcl
+**/terraform.tfstate

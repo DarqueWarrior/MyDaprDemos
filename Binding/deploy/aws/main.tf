@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "dapr_binding" {
   bucket = var.bucket_name
 
   tags = {
-    Name        = "Dapr Bucket"
+    Name        = "Dapr Binding Bucket"
     environment = "${var.environment}"
   }
 }
