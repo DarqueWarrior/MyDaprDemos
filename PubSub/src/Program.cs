@@ -5,11 +5,15 @@ builder.Services.AddControllers().AddDapr();
 var app = builder.Build();
 app.UseCloudEvents();
 
-app.MapGet("/order", async (Dapr.Client.DaprClient client) => 
+app.MapGet("/order", async (Dapr.Client.DaprClient client) =>
     await client.GetStateAsync<Order>("statestore", "orders"));
 
 app.MapPost("/neworder", async (Order o, Dapr.Client.DaprClient client) =>
-    await client.SaveStateAsync<Order>("statestore", "orders", o));
+{
+    await client.SaveStateAsync<Order>("statestore", "orders", o);
+    return Results.Ok();
+});
+
 
 app.Run();
 
