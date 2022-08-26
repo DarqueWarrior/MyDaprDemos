@@ -54,7 +54,7 @@ function Deploy-AzureInfrastructure {
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
         $storageAccountName = $deployment.properties.outputs.storageAccountName.value
-        
+
         $serviceBusAuthRule = $deployment.properties.outputs.serviceBusAuthRule.value
         $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
 
@@ -65,26 +65,26 @@ function Deploy-AzureInfrastructure {
         $databaseName = $deployment.properties.outputs.databaseName.value
         $administratorLogin = $deployment.properties.outputs.administratorLogin.value
         $fullyQualifiedDomainName = $deployment.properties.outputs.fullyQualifiedDomainName.value
-        
+
         $eventHubsEndpoint = $(az eventhubs eventhub authorization-rule keys list `
-                                    --eventhub-name $eventHubName `
-                                    --name $eventHubAuthRule `
-                                    --namespace-name $eventHubsNamespace `
-                                    --resource-group $rgName `
-                                    --query primaryConnectionString `
-                                    --output tsv)
+                --eventhub-name $eventHubName `
+                --name $eventHubAuthRule `
+                --namespace-name $eventHubsNamespace `
+                --resource-group $rgName `
+                --query primaryConnectionString `
+                --output tsv)
 
         $serviceBusEndpoint = $(az servicebus namespace authorization-rule keys list `
-                                    --name $serviceBusAuthRule `
-                                    --namespace-name $serviceBusNamespace `
-                                    --resource-group $rgName `
-                                    --query primaryConnectionString `
-                                    --output tsv)
-        
+                --name $serviceBusAuthRule `
+                --namespace-name $serviceBusNamespace `
+                --resource-group $rgName `
+                --query primaryConnectionString `
+                --output tsv)
+
         $storageAccountKey = $(az storage account keys list `
-                                    --account-name $storageAccountName `
-                                    --query [0].value `
-                                    --output tsv)
+                --account-name $storageAccountName `
+                --query [0].value `
+                --output tsv)
 
         Write-Verbose "databaseName = $databaseName"
         Write-Verbose "storageAccountKey = $storageAccountKey"
