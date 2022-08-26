@@ -16,10 +16,24 @@
             "postDebugTask": "daprd-down"
         },
         {
-            "name": "Dapr Cloud",
+            "name": "Dapr Azure",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "daprd-cloud-debug",
+            "preLaunchTask": "daprd-azure-debug",
+            "program": "${workspaceFolder}/src/bin/Debug/net6.0/src.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "postDebugTask": "daprd-down"
+        },
+        {
+            "name": "Dapr AWS",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "daprd-aws-debug",
             "program": "${workspaceFolder}/src/bin/Debug/net6.0/src.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src",

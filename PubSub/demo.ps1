@@ -21,7 +21,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("local", "azure")]
+    [ValidateSet("local", "azure", "aws")]
     [string]
     $env = "local",
 
@@ -38,12 +38,15 @@ param (
     $skipDaprRun
 )
 
+. "./.scripts/Deploy-AWSInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
 # This will deploy the infrastructure without running the demo. You can use
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
+    Deploy-AWSInfrastructure
+
     Deploy-AzureInfrastructure -rgName $rgName -location $location
     return
 }
@@ -77,8 +80,19 @@ if ($env -eq "azure") {
 
     if ($skipDaprRun.IsPresent -eq $false) {
         Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/azure -- dotnet run --project ./src/ `n"
-
         dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/azure -- dotnet run --project ./src/
+    }
+}
+elseif ($env -eq "aws") {
+    # If you don't find the ./deploy/aws/terraform.tfvars deploy infrastucture
+    if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
+        Write-Output "Could not find ./deploy/aws/terraform.tfvars"
+        Deploy-AWSInfrastructure
+    }
+
+    if ($skipDaprRun.IsPresent -eq $false) {
+        Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/aws -- dotnet run --project ./src/ `n"
+        dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/aws -- dotnet run --project ./src/
     }
 }
 else {
@@ -86,7 +100,6 @@ else {
 
     if ($skipDaprRun.IsPresent -eq $false) {
         Write-Output "dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/local -- dotnet run --project ./src/ `n"
-
         dapr run --app-id app1 --app-port 5013 --dapr-http-port 3500 --components-path ./components/local -- dotnet run --project ./src/
     }
 }

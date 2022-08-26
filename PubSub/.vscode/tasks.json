@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Open Requests",
+            "label": "Open Local Requests",
             "command": "code",
             "type": "process",
             "args": [
@@ -22,7 +22,7 @@
             "isBackground": true
         },
         {
-            "label": "Open Cloud Requests",
+            "label": "Open Azure Requests",
             "command": "code",
             "type": "process",
             "args": [
@@ -41,16 +41,52 @@
             },
             "isBackground": true,
             "dependsOn": [
-                "Setup cloud demo"
+                "Setup azure demo"
             ],
         },
         {
-            "label": "Setup cloud demo",
+            "label": "Open AWS Requests",
+            "command": "code",
+            "type": "process",
+            "args": [
+                "sampleRequests.http"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "isBackground": true,
+            "dependsOn": [
+                "Setup aws demo"
+            ],
+        },
+        {
+            "label": "Setup azure demo",
             "type": "shell",
             "command": "./demo.ps1",
             "args": [
                 "-env",
                 "azure",
+                "-skipDaprRun"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Setup aws demo",
+            "type": "shell",
+            "command": "./demo.ps1",
+            "args": [
+                "-env",
+                "aws",
                 "-skipDaprRun"
             ],
             "options": {
@@ -70,32 +106,44 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "daprd-local-debug",
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
-            "label": "daprd-local-debug",
             "type": "daprd",
             "dependsOn": [
                 "build",
-                "Open Requests"
+                "Open Local Requests"
             ],
             "componentsPath": "./components/local"
         },
         {
+            "label": "daprd-azure-debug",
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
-            "label": "daprd-cloud-debug",
             "type": "daprd",
             "dependsOn": [
                 "build",
-                "Open Cloud Requests"
+                "Open Azure Requests"
             ],
             "componentsPath": "./components/azure"
         },
         {
+            "label": "daprd-aws-debug",
             "appId": "app1",
+            "appPort": 5013,
+            "httpPort": 3500,
+            "type": "daprd",
+            "dependsOn": [
+                "build",
+                "Open AWS Requests"
+            ],
+            "componentsPath": "./components/aws"
+        },
+        {
             "label": "daprd-down",
+            "appId": "app1",
             "type": "daprd-down"
         }
     ]

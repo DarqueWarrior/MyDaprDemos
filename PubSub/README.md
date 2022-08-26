@@ -12,20 +12,25 @@ To provision the infrastructure before the demo execute the following command in
 ./demo.ps1 -deployOnly
 ``` 
 
-The workspace consists of one top level folder _PubSub_. This folder holds the _components/azure_, _components_, _deploy_, and _src_ folders. The _components/azure_ and _components_ folders are in the workspace so you can show the difference between a local component and a component configured for the cloud. The component in the _components/azure_ folder is configured to use [Azure Service Bus](https://docs.dapr.io/reference/components-reference/supported-pubsub/setup-azure-servicebus/) while the local component is configured to use Redis. The point to make comparing the files is that as long as the name of the component does not change the code will work no matter what backing service is used. 
+The workspace consists of one top level folder _PubSub_. This folder holds the _components/azure_, _components_, _deploy_, and _src_ folders. The _components/azure_ and _components_ folders are in the workspace so you can show the difference between a local component and a component configured for the cloud. The component in the _components/azure_ folder is configured to use [Azure Service Bus](https://docs.dapr.io/reference/components-reference/supported-pubsub/setup-azure-servicebus/). In the _components/aws_ folder the component is configured to use AWS SNS/SQS and the local component is configured to use Redis. The point to make comparing the files is that as long as the name of the component does not change the code will work no matter what backing service is used. 
 
 ## Running Demo
 
-The core of the demo is in the _sampleRequests.http_ file. At the top of the file are two _demo.ps1_ commands. One for running the requests against local resources and one for running against the cloud resources. Copy the desired command and run it in the terminal. This will start Dapr pointing to the appropriate components for the demo. The Dapr run command issued is output if you want to explain during the demo.
+The core of the demo is in the _sampleRequests.http_ file. At the top of the file are three _demo.ps1_ commands. One for running the requests against local resources and two for running against the cloud resources. Copy the desired command and run it in the terminal. This will start Dapr pointing to the appropriate components for the demo. The Dapr run command issued is output if you want to explain during the demo.
 
 Running local
 ```
  ./demo.ps1
 ```
 
-Running in cloud
+Running in Azure
 ```
  ./demo.ps1 -env azure
+```
+
+Running in AWS
+```
+ ./demo.ps1 -env aws
 ```
 
 Click the Send Request button above each of the requests to execute them.
@@ -34,7 +39,7 @@ Click the Send Request button above each of the requests to execute them.
 
 This demo uses the [Dapr Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) to enable F5 debugging. 
 
-Set breakpoints on lines 9 and 12 of _src/Program.cs_. Select **Run** from the **View** menu then select either the **Dapr Local** or **Dapr Cloud** launch configuration and press _F5_. This will start the code and attach the debugger.
+Set breakpoints on lines 9 and 12 of _src/Program.cs_. Select **Run** from the **View** menu then select either the **Dapr Local**, **Dapr Azure**, or **Dapr AWS** launch configuration and press _F5_. This will start the code and attach the debugger.
 
 Using the _sampleRequests.http_ file click the Send Request button above each of the requests to execute them. Notice with each click the appropriate breakpoint is hit. 
 
