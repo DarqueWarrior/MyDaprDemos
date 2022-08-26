@@ -89,12 +89,14 @@ resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' 
 }
 
 output storageAccountName string = stg.name
+
 output databaseName string = sqlServerDatabase.name
-#disable-next-line outputs-should-not-contain-secrets
-output storageAccountKey string = stg.listKeys().keys[0].value
 output administratorLogin string = sqlServer.properties.administratorLogin
-#disable-next-line outputs-should-not-contain-secrets
-output serviceBusEndpoint string = sbAuthRule.listkeys().primaryConnectionString
-#disable-next-line outputs-should-not-contain-secrets
-output eventHubsEndpoint string = neworderAuth.listkeys().primaryConnectionString
 output fullyQualifiedDomainName string = sqlServer.properties.fullyQualifiedDomainName
+
+output serviceBusNamespace string = sb.name
+output serviceBusAuthRule string = sbAuthRule.name
+
+output eventHubName string = eh.name
+output eventHubAuthRule string = neworderAuth.name
+output eventHubsNamespace string = ehNamespace.name
