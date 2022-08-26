@@ -92,11 +92,11 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
 }
 
 output clusterName string = aksName
+
 output storageAccountName string = stg.name
-#disable-next-line outputs-should-not-contain-secrets
-output cognitiveServiceKey string = cs.listkeys().key1
-#disable-next-line outputs-should-not-contain-secrets
-output storageAccountKey string = stg.listKeys().keys[0].value
-output cognitiveServiceEndpoint string = reference(csName).endpoint
-#disable-next-line outputs-should-not-contain-secrets
-output serviceBusEndpoint string = sbAuthRule.listkeys().primaryConnectionString
+
+output cognitiveServiceName string = cs.name
+output cognitiveServiceEndpoint string = reference(cs.name).endpoint
+
+output serviceBusNamespace string = sb.name
+output serviceBusAuthRule string = sbAuthRule.name

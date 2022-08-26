@@ -90,20 +90,48 @@ jobs:
         id: azure-deployment
         shell: pwsh
         run: |
-          $deployment = $(az deployment sub create --name ${{ env.RG_NAME }} `
+          $rgName = ${{ env.RG_NAME }}
+
+          $deployment = $(az deployment sub create --name $rgName `
             --location ${{ env.LOCATION }} `
             --template-file main.bicep `
             --parameters location=${{ env.LOCATION }} `
-            --parameters rgName=${{ env.RG_NAME }} `
+            --parameters rgName=$rgName `
             --parameters k8sversion=${{ env.K8S_VERSION }} `
             --output json) | ConvertFrom-Json
+          
+          $aksName = $deployment.properties.outputs.aksName.value
+          $serviceBusAuthRule = $deployment.properties.outputs.serviceBusAuthRule.value
+          $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
+          $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+          $cognitiveServiceName = $deployment.properties.outputs.cognitiveServiceName.value
+          $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
+          
+          $serviceBusEndpoint = $(az servicebus namespace authorization-rule keys list `
+                --name $serviceBusAuthRule `
+                --namespace-name $serviceBusNamespace `
+                --resource-group $rgName `
+                --query primaryConnectionString `
+                --output tsv)
+
+          $storageAccountKey = $(az storage account keys list `
+                --account-name $storageAccountName `
+                --query [0].value `
+                --output tsv)
+
+          $cognitiveServiceKey = $(az cognitiveservices account keys list `
+                --name $cognitiveServiceName `
+                --resource-group $rgName `
+                --query key1 `
+                --output tsv)
+          
           # Get all the outputs
-          Write-Output "::set-output name=aksName::$($deployment.properties.outputs.aksName.value)"
-          Write-Output "::set-output name=storageAccountKey::$($deployment.properties.outputs.storageAccountKey.value)"
-          Write-Output "::set-output name=serviceBusEndpoint::$($deployment.properties.outputs.serviceBusEndpoint.value)"
-          Write-Output "::set-output name=storageAccountName::$($deployment.properties.outputs.storageAccountName.value)"
-          Write-Output "::set-output name=cognitiveServiceKey::$($deployment.properties.outputs.cognitiveServiceKey.value)"
-          Write-Output "::set-output name=cognitiveServiceEndpoint::$($deployment.properties.outputs.cognitiveServiceEndpoint.value)"
+          Write-Output "::set-output name=aksName::$($aksName)"
+          Write-Output "::set-output name=storageAccountKey::$($storageAccountKey)"
+          Write-Output "::set-output name=serviceBusEndpoint::$($serviceBusEndpoint)"
+          Write-Output "::set-output name=storageAccountName::$($storageAccountName)"
+          Write-Output "::set-output name=cognitiveServiceKey::$($cognitiveServiceKey)"
+          Write-Output "::set-output name=cognitiveServiceEndpoint::$($cognitiveServiceEndpoint)"
         working-directory: ./DevOps/deploy/azure/
 
       - name: Initialize Dapr
