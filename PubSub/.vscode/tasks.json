@@ -110,6 +110,7 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
+            "grpcPort": 50001,
             "type": "dapr",
             "dependsOn": [
                 "build",
@@ -122,6 +123,7 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
+            "grpcPort": 50001,
             "type": "dapr",
             "dependsOn": [
                 "build",
@@ -134,6 +136,7 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
+            "grpcPort": 50001,
             "type": "dapr",
             "dependsOn": [
                 "build",
