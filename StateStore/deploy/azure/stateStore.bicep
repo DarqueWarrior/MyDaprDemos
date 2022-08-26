@@ -1,9 +1,11 @@
 var dbName = 'StateStore'
 var containerName = 'StateStoreValues'
 
+param location string
+
 resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   name: 'cdb${uniqueString(resourceGroup().id)}'
-  location: resourceGroup().location
+  location: location
   kind: 'GlobalDocumentDB'
   properties: {
     consistencyPolicy: {
@@ -11,7 +13,7 @@ resource cdb 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
     }
     locations: [
       {
-        locationName: resourceGroup().location
+        locationName: location
         failoverPriority: 0
         isZoneRedundant: false
       }
@@ -50,5 +52,5 @@ resource dbContiner 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containe
   }
 }
 
-output cosmosDbKey string = cdb.listKeys().primaryMasterKey
+output cosmosDbName string = cdb.name
 output cosmosDbEndpoint string = cdb.properties.documentEndpoint

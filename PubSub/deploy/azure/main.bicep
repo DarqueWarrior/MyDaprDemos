@@ -25,10 +25,15 @@ module pubsub './pubsub.bicep' = {
   }
 }
 
-output databaseName string = pubsub.outputs.databaseName
-output storageAccountKey string = pubsub.outputs.storageAccountKey
-output eventHubsEndpoint string = pubsub.outputs.eventHubsEndpoint
-output serviceBusEndpoint string = pubsub.outputs.serviceBusEndpoint
-output administratorLogin string = pubsub.outputs.administratorLogin
 output storageAccountName string = pubsub.outputs.storageAccountName
+
+output serviceBusAuthRule string = pubsub.outputs.serviceBusAuthRule
+output serviceBusNamespace string = pubsub.outputs.serviceBusNamespace
+
+output eventHubName string = pubsub.outputs.eventHubName
+output eventHubAuthRule string = pubsub.outputs.eventHubAuthRule
+output eventHubsNamespace string = pubsub.outputs.eventHubsNamespace
+
+output databaseName string = pubsub.outputs.databaseName
+output administratorLogin string = pubsub.outputs.administratorLogin
 output fullyQualifiedDomainName string = pubsub.outputs.fullyQualifiedDomainName

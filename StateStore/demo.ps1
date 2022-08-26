@@ -57,7 +57,7 @@ if ($deployOnly.IsPresent) {
 code ./sampleRequests.http
 
 if ($env -eq "azure") {    
-    # If you don't find the ./components/azure/local_secrets.json run the setup.ps1 in deploy folder
+    # If you don't find the ./components/azure/local_secrets.json deploy infrastucture
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/azure/local_secrets.json"
         $sw = [Diagnostics.Stopwatch]::StartNew()
@@ -68,7 +68,7 @@ if ($env -eq "azure") {
     }
 }
 elseif ($env -eq "aws") {    
-    # If you don't find the ./deploy/aws/terraform.tfvars run the setup.ps1 in deploy folder
+    # If you don't find the ./deploy/aws/terraform.tfvars deploy infrastucture
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"
         $sw = [Diagnostics.Stopwatch]::StartNew()

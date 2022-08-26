@@ -27,7 +27,11 @@ function Deploy-AzureInfrastructure {
 
     process {
         # We need to get the object id for the service principal
-        $objectId = $(az ad sp show --id $env:AZURE_APP_ID --query id --output tsv)
+        $objectId = $(az ad sp show `
+                --id $env:AZURE_APP_ID `
+                --query id `
+                --output tsv)
+
         Write-Verbose "ObjectID = $objectId"
 
         Write-Output 'Deploying the infrastructure'

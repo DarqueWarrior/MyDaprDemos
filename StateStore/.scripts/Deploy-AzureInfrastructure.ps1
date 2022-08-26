@@ -36,8 +36,14 @@ function Deploy-AzureInfrastructure {
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
-        $cosmosDbKey = $deployment.properties.outputs.cosmosDbKey.value
+        $cosmosDbName = $deployment.properties.outputs.cosmosDbName.value
         $cosmosDbEndpoint = $deployment.properties.outputs.cosmosDbEndpoint.value
+        
+        $cosmosDbKey = $(az cosmosdb keys list `
+                --name $cosmosDbName `
+                --resource-group $rgName `
+                --query primaryMasterKey `
+                --output tsv)
 
         Write-Verbose "cosmosDbKey = $cosmosDbKey"
         Write-Verbose "cosmosDbEndpoint = $cosmosDbEndpoint"

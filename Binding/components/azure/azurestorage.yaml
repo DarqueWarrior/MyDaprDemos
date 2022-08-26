@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: files
 auth:
-  secretStore: strongbox  
+  secretStore: strongbox
 spec:
   type: bindings.azure.blobstorage
   version: v1

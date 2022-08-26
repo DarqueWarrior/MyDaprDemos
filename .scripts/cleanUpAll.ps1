@@ -6,10 +6,12 @@ param (
     $Force
 )
 
-$demos = @('Binding', 'Observability', 'PubSub', 'StateStore', 'Secrets', 'DevOps')
+$demos = @('Binding', 'Observability', 'PubSub', 'Secrets', 'StateStore', 'DevOps')
 
 foreach ($demo in $demos) {
+    Write-Host "*******************************************"
     Write-Host "Cleaning up $demo"
+    Write-Host "*******************************************"
     
     Push-Location "../$demo"
     ./cleanUp.ps1 -force:$Force.IsPresent

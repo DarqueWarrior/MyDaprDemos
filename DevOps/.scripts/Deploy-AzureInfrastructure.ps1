@@ -36,11 +36,29 @@ function Deploy-AzureInfrastructure {
 
         # Store the outputs from the deployment to create
         # ./components/azure/local_secrets.json
-        $storageAccountKey = $deployment.properties.outputs.storageAccountKey.value
-        $serviceBusEndpoint = $deployment.properties.outputs.serviceBusEndpoint.value
+        $serviceBusAuthRule = $deployment.properties.outputs.serviceBusAuthRule.value
+        $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
         $storageAccountName = $deployment.properties.outputs.storageAccountName.value
-        $cognitiveServiceKey = $deployment.properties.outputs.cognitiveServiceKey.value
+        $cognitiveServiceName = $deployment.properties.outputs.cognitiveServiceName.value
         $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
+        
+        $serviceBusEndpoint = $(az servicebus namespace authorization-rule keys list `
+                --name $serviceBusAuthRule `
+                --namespace-name $serviceBusNamespace `
+                --resource-group $rgName `
+                --query primaryConnectionString `
+                --output tsv)
+
+        $storageAccountKey = $(az storage account keys list `
+                --account-name $storageAccountName `
+                --query [0].value `
+                --output tsv)
+
+        $cognitiveServiceKey = $(az cognitiveservices account keys list `
+                --name $cognitiveServiceName `
+                --resource-group $rgName `
+                --query key1 `
+                --output tsv)
        
         Write-Verbose "storageAccountKey = $storageAccountKey"
         Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
@@ -64,15 +82,15 @@ function Deploy-AzureInfrastructure {
         # To deploy the helm charts locally in K3d you need the secrets
         # to pass to helm to override the values.yaml file
         $yaml = [PSCustomObject]@{
-            components       = [PSCustomObject]@{
-                serviceBus   = [PSCustomObject]@{
+            components = [PSCustomObject]@{
+                serviceBus       = [PSCustomObject]@{
                     connectionString = $serviceBusEndpoint
                 }
-                tableStorage = [PSCustomObject]@{
+                tableStorage     = [PSCustomObject]@{
                     name = $storageAccountName
                     key  = $storageAccountKey
                 }
-                twitter      = [PSCustomObject]@{
+                twitter          = [PSCustomObject]@{
                     consumerKey    = $env:TWITTER_API_KEY
                     consumerSecret = $env:TWITTER_API_KEY_SECRET
                     accessToken    = $env:TWITTER_ACCESS_TOKEN

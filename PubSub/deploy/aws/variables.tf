@@ -11,9 +11,19 @@ variable "region" {
   default     = "us-east-2"
 }
 
+variable "sqs_name" {
+  description = "SQS name (A queue name is case-sensitive and can have up to 80 characters. You can use alphanumeric characters, hyphens (-), and underscores ( _ ).)"
+  default     = "app1"
+}
+
+variable "sns_name" {
+  description = "SNS name (space is not allowed)"
+  default     = "neworder"
+}
+
 variable "table_name" {
   description = "Dynamodb table name (space is not allowed)"
-  default     = "dapr_store"
+  default     = "pubsub_statestore"
 }
 
 variable "table_billing_mode" {
