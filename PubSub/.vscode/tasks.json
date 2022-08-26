@@ -110,7 +110,7 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
-            "type": "daprd",
+            "type": "dapr",
             "dependsOn": [
                 "build",
                 "Open Local Requests"
@@ -122,7 +122,7 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
-            "type": "daprd",
+            "type": "dapr",
             "dependsOn": [
                 "build",
                 "Open Azure Requests"
@@ -134,7 +134,7 @@
             "appId": "app1",
             "appPort": 5013,
             "httpPort": 3500,
-            "type": "daprd",
+            "type": "dapr",
             "dependsOn": [
                 "build",
                 "Open AWS Requests"
