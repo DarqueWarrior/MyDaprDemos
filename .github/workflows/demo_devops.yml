@@ -90,7 +90,7 @@ jobs:
         id: azure-deployment
         shell: pwsh
         run: |
-          $rgName = ${{ env.RG_NAME }}
+          $rgName = '${{ env.RG_NAME }}'
 
           $deployment = $(az deployment sub create --name $rgName `
             --location ${{ env.LOCATION }} `
