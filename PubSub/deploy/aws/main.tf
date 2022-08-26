@@ -4,20 +4,6 @@ provider "aws" {
   region     = var.region
 }
 
-# data "aws_sqs_queue" "pubsub" {
-#   name = var.sqs_name
-# }
-
-# data "aws_sns_topic" "neworder" {
-#   name = var.sns_name
-# }
-
-# resource "aws_sns_topic_subscription" "dapr_pubsub_sqs_target" {
-#   topic_arn = aws_sns_topic.neworder.arn
-#   protocol  = "sqs"
-#   endpoint  = aws_sqs_queue.pubsub.arn
-# }
-
 resource "aws_sns_topic" "dapr_pubsub" {
   name = var.sns_name
 }

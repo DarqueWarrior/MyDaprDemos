@@ -13,12 +13,12 @@ variable "region" {
 
 variable "sqs_name" {
   description = "SQS name (A queue name is case-sensitive and can have up to 80 characters. You can use alphanumeric characters, hyphens (-), and underscores ( _ ).)"
-  default     = "dapr-pubsub-queue"
+  default     = "app1"
 }
 
 variable "sns_name" {
   description = "SNS name (space is not allowed)"
-  default     = "dapr-pubsub-topic"
+  default     = "neworder"
 }
 
 variable "table_name" {
