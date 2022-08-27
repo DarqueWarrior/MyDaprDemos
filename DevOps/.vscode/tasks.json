@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/twitter.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run_provider",
+            "appId": "provider",
+            "appPort": 5040,
+            "httpPort": 3500,
+            "grpcPort": 50001,
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_provider",
+            "appId": "provider",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_processor",
+            "appId": "processor",
+            "appPort": 5030,
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_processor",
+            "appId": "processor",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_viewer",
+            "appId": "viewer",
+            "appPort": 5000,
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_viewer",
+            "appId": "viewer",
+            "type": "daprd-down"
+        }
+    ]
+}

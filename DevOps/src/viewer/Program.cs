@@ -29,13 +29,12 @@ else
 app.UseStaticFiles();
 app.UseCloudEvents();
 app.UseRouting();
+app.UseAuthorization();
 app.UseEndpoints(endpoints => 
 {
     endpoints.MapSubscribeHandler();
     endpoints.MapHub<viewer.Hubs.TweetHub>("/tweetHub");
 });
-
-app.UseAuthorization();
 
 app.MapControllers();
 

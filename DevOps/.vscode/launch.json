@@ -1,0 +1,70 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Twitter",
+            "preLaunchTask": "build",
+            "configurations": [
+                "Processor",
+                "Provider",
+                "Viewer"
+            ],
+            "stopAll": true
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Viewer",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "run_viewer",
+            "program": "${workspaceFolder}/src/viewer/bin/Debug/net6.0/viewer.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/viewer",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5000"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "postDebugTask": "stop_viewer"
+        },
+        {
+            "name": "Provider",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "run_provider",
+            "program": "${workspaceFolder}/src/provider/bin/Debug/net6.0/provider.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/provider",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5040"
+            },
+            "postDebugTask": "stop_provider"
+        },
+        {
+            "name": "Processor",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "run_processor",
+            "program": "${workspaceFolder}/src/processor/bin/Debug/net6.0/processor.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/processor",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5030"
+            },
+            "envFile": "${workspaceFolder}/components/local/local.env",
+            "postDebugTask": "stop_processor"
+        }
+    ]
+}
