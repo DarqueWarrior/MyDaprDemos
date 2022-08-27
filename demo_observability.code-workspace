@@ -7,7 +7,7 @@
 			"path": "./.images"
 		},
 		{
-			"path": "./../../home/codespace/.dapr"
+			"path": "./../../home/vscode/.dapr/"
 		}
 	],
 	"settings": {
