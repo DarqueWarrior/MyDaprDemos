@@ -33,6 +33,7 @@
 			"pwsh",
 			"zipkin",
 			"zpages"
-		]
+		],
+		"powershell.cwd": "/workspaces/MyDaprDemos/Observability"
 	}
 }

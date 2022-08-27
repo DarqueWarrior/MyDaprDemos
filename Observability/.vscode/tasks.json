@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/services.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run_ServiceA",
+            "appId": "serviceA",
+            "appPort": 5000,
+            "httpPort": 3500,
+            "grpcPort": 50001,
+            "type": "dapr",
+            "dependsOn": "build"
+            // ,"command": ["-- dotnet", "run", "--project", "./src/serviceB/serviceB.csproj", "--urls", "http://localhost:5000"]
+
+        },
+        {
+            "label": "stop_ServiceA",
+            "appId": "serviceA",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_ServiceB",
+            "appId": "serviceB",
+            "appPort": 5010,
+            "grpcPort": 50002,
+            "type": "dapr"
+            // ,"command": ["-- dotnet", "run", "--project", "./src/serviceB/serviceB.csproj", "--urls", "http://localhost:5010"]
+        },
+        {
+            "label": "stop_ServiceB",
+            "appId": "serviceB",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_ServiceC",
+            "appId": "serviceC",
+            "appPort": 5020,
+            "grpcPort": 50003,
+            "type": "dapr"
+            // ,"command": ["-- dotnet", "run", "--project", "./src/serviceC/serviceC.csproj", "--urls", "http://localhost:5020"]
+        },
+        {
+            "label": "stop_ServiceC",
+            "appId": "serviceC",
+            "type": "daprd-down"
+        }
+    ]
+}
