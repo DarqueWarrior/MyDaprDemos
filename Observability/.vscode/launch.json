@@ -1,0 +1,66 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "compounds": [
+        // For more information, visit: https://code.visualstudio.com/docs/editor/debugging#_compound-launch-configurations
+        {
+            "name": "All Services",
+            "preLaunchTask": "build",
+            "configurations": [
+                "ServiceA",
+                "ServiceB",
+                "ServiceC"
+            ],
+            "stopAll": true
+        }
+    ],
+    "configurations": [
+        {
+            "name": "ServiceA",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "run_ServiceA",
+            "program": "${workspaceFolder}/src/serviceA/bin/Debug/net6.0/serviceA.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/serviceA",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5000"
+            },
+            "postDebugTask": "stop_ServiceA"
+        },
+        {
+            "name": "ServiceB",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "run_ServiceB",
+            "program": "${workspaceFolder}/src/serviceB/bin/Debug/net6.0/serviceB.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/serviceB",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5010"
+            },
+            "postDebugTask": "stop_ServiceB"
+        },
+        {
+            "name": "ServiceC",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "run_ServiceC",
+            "program": "${workspaceFolder}/src/serviceC/bin/Debug/net6.0/serviceC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/serviceC",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5020"
+            },
+            "postDebugTask": "stop_ServiceC"
+        }
+    ]
+}

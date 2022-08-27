@@ -7,7 +7,7 @@
 			"path": "./.images"
 		},
 		{
-			"path": "./../../home/codespace/.dapr"
+			"path": "./../../home/vscode/.dapr/"
 		}
 	],
 	"settings": {
@@ -33,6 +33,7 @@
 			"pwsh",
 			"zipkin",
 			"zpages"
-		]
+		],
+		"powershell.cwd": "/workspaces/MyDaprDemos/Observability"
 	}
 }
