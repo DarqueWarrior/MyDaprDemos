@@ -10,6 +10,7 @@ Demo | Building Blocks | Local | Azure | AWS | Language
 [Secrets](./Secrets) | [Secrets management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) | Local | Azure Key Vault | AWS Secrets Manager | HTTP
 [StateStore](./StateStore) | [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Redis | Azure Cosmos DB | AWS DynamoDB | HTTP
 [DevOps](./DevOps) | [Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/) <br> [Observability](./Observability) <br> [PubSub](./PubSub) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) | Twitter <br> Zipkin <br> Redis <br> Redis |  Twitter <br> Zipkin <br> Azure Service Bus <br> Azure Storage | | C#
+[MyApp](./MyApp) | [PubSub](./PubSub) <br> [State management](https://docs.dapr.io/developing-applications/building-blocks/state-management/) |Redis <br> Redis | Azure Service Bus <br> Azure Table Storage | AWS SNS/SQS<br>AWS DynamoDB| C#, HTTP
 
 ## Usage
 
