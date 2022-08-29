@@ -7,6 +7,6 @@ spec:
   version: v1
   metadata:
   - name: table
-    value: pubsub_statestore
+    value: myapp_statestore
   - name: region
     value: us-east-2

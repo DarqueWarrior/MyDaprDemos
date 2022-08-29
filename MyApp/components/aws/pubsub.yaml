@@ -1,9 +1,9 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub2
+  name: pubsub
 auth:
-  secretStore: strongbox    
+  secretStore: strongbox  
 spec:
   type: pubsub.snssqs
   version: v1

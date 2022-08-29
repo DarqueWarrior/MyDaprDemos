@@ -3,11 +3,20 @@ kind: Component
 metadata:
   name: statestore
 auth:
-  secretStore: strongbox
+  secretStore: strongbox  
 spec:
-  type: state.sqlserver
+  type: state.azure.tablestorage
   version: v1
   metadata:
-  - name: connectionString
+  - name: accountName
     secretKeyRef:
-      name: sqlConnectionString
+      key: storageAccountName
+      name: storageAccountName
+  - name: accountKey
+    secretKeyRef:
+      key: storageAccountKey
+      name: storageAccountKey
+  - name: tableName
+    value: weatherforecasts
+  - name: cosmosDbMode
+    value: false

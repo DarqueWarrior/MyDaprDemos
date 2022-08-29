@@ -1,13 +1,14 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub1
+  name: pubsub
 auth:
-  secretStore: strongbox  
+  secretStore: strongbox
 spec:
   type: pubsub.azure.servicebus
   version: v1
   metadata:
   - name: connectionString
     secretKeyRef:
+      key: serviceBusEndpoint
       name: serviceBusEndpoint

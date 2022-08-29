@@ -7,14 +7,14 @@ provider "aws" {
 resource "aws_sns_topic" "dapr_pubsub" {
   name = var.sns_name
   tags = {
-    dapr-topic-name = "neworder"
+    dapr-topic-name = "${var.sns_name}"
   }
 }
 
 resource "aws_sqs_queue" "dapr_pubsub_queue" {
   name = var.sqs_name
   tags = {
-    dapr-queue-name = "app1"
+    dapr-queue-name = "${var.sqs_name}"
   }
 }
 

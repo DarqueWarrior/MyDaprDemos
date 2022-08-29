@@ -16,7 +16,7 @@ To provision the infrastructure before the demo execute the following command in
 
 Running local
 ```
-dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
+dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 -- dotnet run --urls http://*:5000
 ```
 
 ## Steps
@@ -51,7 +51,7 @@ One of the benefits of using the Dapr address is you get observability for free.
 
 ![zipkin ui](../.images/Zipkin.png)
 
-Next add the Dapr package to the project.
+In the terminal press Ctrl + C to stop the application. Next add the Dapr package to the project.
 
 ```powershell
 dotnet add package dapr.aspnetcore
@@ -126,9 +126,9 @@ Local the _env_ object and add.
 "ASPNETCORE_URLS": "http://localhost:5000"
 ```
 
-Notice the _preLaunchTask_ and _postDebugTask_ that start and stop Dapr and our application for us. 
-
 This will make sure our service starts on port 5000.
+
+Notice the _preLaunchTask_ and _postDebugTask_ that start and stop Dapr and our application for us. 
 
 Open _tasks.json_ and locate the _dapr-debug_ section. Under the _appPort_ add:
 
@@ -139,7 +139,9 @@ Open _tasks.json_ and locate the _dapr-debug_ section. Under the _appPort_ add:
 
 This will make sure Dapr is listening for request on port 3500 for HTTP request and 50001 for gRPC requests.
 
-With all the files updated from the _Run_ menu select _Start Debugging_. As the code starts up open _WeatherForecastController.cs_ and set a breakpoint in PostWeatherForecast and Get methods. Finally, _sampleRequests.http_. Click _Send Request_ above the POST request. This will post an event to the pubsub component and the first break point will be hit. Press the _Continue_ button in the debug toolbar to continue execution. This will save the weather forecast to the state store.
+With all the files updated from the _Run_ menu select _Start Debugging_. As the code starts up open _WeatherForecastController.cs_ and set a breakpoint in PostWeatherForecast and Get methods.
+
+Finally, open _sampleRequests.http_. Click _Send Request_ above the POST request. This will post an event to the pubsub component and the first break point will be hit. Press the _Continue_ button in the debug toolbar to continue execution. This will save the weather forecast to the state store.
 
 ```
 HTTP/1.1 204 No Content
@@ -149,7 +151,7 @@ Traceparent: 00-2f68a523e7142f460091cb0130793223-39ce8522c9953e35-01
 Connection: close
 ```
 
-Return to _sampleRequests.http_ and click _Send Request_ above the GEt request. The second break will be hit. Press the _Continue_ button in the debug toolbar to continue execution. This will read the previously saved weather forecast from the state store and return it. 
+Return to _sampleRequests.http_ and click _Send Request_ above the GET request. The second break will be hit. Press the _Continue_ button in the debug toolbar to continue execution. This will read the previously saved weather forecast from the state store and return it. 
 
 ```
 HTTP/1.1 200 OK
@@ -170,7 +172,7 @@ Connection: close
 ]
 ```
 
-Press the _Stop_ button on the debug tool bar or select _Stop Debugging_ from the _Run_ menu to stop debugging.
+Press the _Stop_ button on the debug toolbar or select _Stop Debugging_ from the _Run_ menu to stop debugging.
 
 Running in Azure
 ```

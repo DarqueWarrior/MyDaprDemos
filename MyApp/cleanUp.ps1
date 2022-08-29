@@ -7,7 +7,7 @@ param (
         HelpMessage = "The name of the resource group to be created. All resources will be place in the resource group and start with name."
     )]
     [string]
-    $rgName = "dapr_binding_demo",
+    $rgName = "dapr_myapp_demo",
 
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
@@ -25,7 +25,8 @@ git restore ./sampleRequests.http
 
 if ($env -eq 'all' -or $env -eq 'local') {
     # Remove the myTestFile.txt
-    Remove-Item ./tempfiles/myTestFile.txt -ErrorAction SilentlyContinue
+    Remove-Item ./src -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item ./.vscode -Force -Recurse -ErrorAction SilentlyContinue
 }
 
 if ($env -eq 'all' -or $env -eq 'azure') {
