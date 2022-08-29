@@ -16,6 +16,7 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	// Note that some extensions may not work in Alpine Linux. See https://aka.ms/vscode-remote/linux.
 	"extensions": [
+		"doggy8088.netcore-snippets",
 		"ms-azuretools.vscode-dapr",
 		"GitHub.vscode-pull-request-github",
 		"ms-azuretools.vscode-docker",

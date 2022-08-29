@@ -57,8 +57,6 @@ app.MapPost("/score", async (Tweet t) =>
 
 await app.RunAsync();
 
-app.Run();
-
 public record TwitterUser([property: JsonPropertyName("screen_name")] string ScreenName,
                           [property: JsonPropertyName("profile_image_url_https")] string Picture,
                           string Name);

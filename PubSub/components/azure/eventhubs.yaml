@@ -10,12 +10,15 @@ spec:
   metadata:
   - name: connectionString
     secretKeyRef:
+      key: eventHubsEndpoint
       name: eventHubsEndpoint
   - name: storageAccountName
     secretKeyRef:
+      key: storageAccountName
       name: storageAccountName
   - name: storageAccountKey
     secretKeyRef:
+      key: storageAccountKey
       name: storageAccountKey
   - name: storageContainerName
     value: "neworder"

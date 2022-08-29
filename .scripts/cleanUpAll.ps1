@@ -6,7 +6,7 @@ param (
     $Force
 )
 
-$demos = @('Binding', 'Observability', 'PubSub', 'Secrets', 'StateStore', 'DevOps')
+. ./demos.ps1
 
 foreach ($demo in $demos) {
     Write-Host "*******************************************"

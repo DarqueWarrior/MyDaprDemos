@@ -10,15 +10,19 @@ spec:
   metadata:
   - name: consumerKey
     secretKeyRef:
+      key: apiKey
       name: apiKey
   - name: consumerSecret
     secretKeyRef:
+      key: apiKeySecret
       name: apiKeySecret
   - name: accessToken
     secretKeyRef:
+      key: accessToken
       name: accessToken
   - name: accessSecret
     secretKeyRef:
+      key: accessTokenSecret
       name: accessTokenSecret
   - name: query
     value: "microsoft"

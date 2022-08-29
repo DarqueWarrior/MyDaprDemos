@@ -10,9 +10,11 @@ spec:
   metadata:
   - name: url
     secretKeyRef:
+      key: url
       name: url
   - name: masterKey
     secretKeyRef:
+      key: key
       name: key
   - name: database
     value: StateStore

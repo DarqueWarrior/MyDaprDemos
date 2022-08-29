@@ -7,12 +7,12 @@ param (
         HelpMessage = "The name of the resource group to be created. All resources will be place in the resource group and start with name."
     )]
     [string]
-    $rgName = "dapr_secrets_demo",
+    $rgName = "dapr_myapp_demo",
 
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("all", "azure", "aws")]
+    [ValidateSet("all", "local", "azure", "aws")]
     [string]
     $env = "all",
 
@@ -22,20 +22,20 @@ param (
 
 . ../.scripts/common.ps1
 
+# Put the sampleRequests.http file back the way it was
+git restore ./sampleRequests.http
+
+if ($env -eq 'all' -or $env -eq 'local') {
+    # Remove the myTestFile.txt
+    Remove-Item ./src -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item ./.vscode -Force -Recurse -ErrorAction SilentlyContinue
+}
+
 if ($env -eq 'all' -or $env -eq 'azure') {
-    # Remove clear out the vault name environment variable 
-    $env:AZURE_KEY_VAULT_NAME = $null 
+    Remove-ResourceGroup -name $rgName -nowait
 
-    Write-Output "Waiting for resource group to be deleted so the keyvault can be purged"
-    Remove-ResourceGroup -name $rgName
-
-    Write-Output "Getting soft deleted key vaults"
-    $vault = $(az keyvault list-deleted --subscription $env:AZURE_SUB_ID --resource-type vault --query [].name --output tsv)
-
-    if ($null -ne $vault) {
-        Write-Output "Purging key vault $vault"
-        az keyvault purge --subscription $env:AZURE_SUB_ID --name $vault
-    }
+    # Remove local_secrets.json
+    Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 }
 
 if ($env -eq 'all' -or $env -eq 'aws') {
@@ -60,13 +60,4 @@ if ($env -eq 'all' -or $env -eq 'aws') {
     Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
     Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
     Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
-
-    # When you delete a secret, Secrets Manager doesn't immediately delete the
-    # secret. Secrets Manager schedules the secret for deletion after a
-    # recovery window of a minimum of seven days. This means that you can't 
-    # recreate a secret using the same name using the AWS Management Console
-    # until the recovery window ends. You can permanently delete a secret 
-    # without any recovery window using the AWS Command Line Interface (AWS CLI)
-    Write-Output "Purging secret my-secret"
-    aws secretsmanager delete-secret --secret-id my-secret --force-delete-without-recovery --region $env:AWS_DEFAULT_REGION
 }

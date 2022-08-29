@@ -10,4 +10,5 @@ spec:
   metadata:
   - name: connectionString
     secretKeyRef:
+      key: serviceBusEndpoint
       name: serviceBusEndpoint

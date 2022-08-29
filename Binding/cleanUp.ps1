@@ -20,6 +20,8 @@ param (
     $force
 )
 
+. ../.scripts/common.ps1
+
 # Put the sampleRequests.http file back the way it was
 git restore ./sampleRequests.http
 
@@ -29,12 +31,7 @@ if ($env -eq 'all' -or $env -eq 'local') {
 }
 
 if ($env -eq 'all' -or $env -eq 'azure') {
-    if ($force.IsPresent) {
-        az group delete --resource-group $rgName --no-wait --yes
-    }
-    else {
-        az group delete --resource-group $rgName --no-wait
-    }
+    Remove-ResourceGroup -name $rgName -nowait
 
     # Remove local_secrets.json
     Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
@@ -42,6 +39,9 @@ if ($env -eq 'all' -or $env -eq 'azure') {
 
 if ($env -eq 'all' -or $env -eq 'aws') {
     ### AWS
+    # Remove local_secrets.json
+    Remove-Item ./components/aws/local_secrets.json -ErrorAction SilentlyContinue
+    
     # Delete AWS resources
     if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
         Push-Location ./deploy/aws

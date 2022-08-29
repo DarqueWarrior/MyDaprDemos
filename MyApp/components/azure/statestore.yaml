@@ -1,0 +1,22 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+auth:
+  secretStore: strongbox  
+spec:
+  type: state.azure.tablestorage
+  version: v1
+  metadata:
+  - name: accountName
+    secretKeyRef:
+      key: storageAccountName
+      name: storageAccountName
+  - name: accountKey
+    secretKeyRef:
+      key: storageAccountKey
+      name: storageAccountKey
+  - name: tableName
+    value: weatherforecasts
+  - name: cosmosDbMode
+    value: false

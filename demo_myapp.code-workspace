@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"path": "./MyApp"
+		},
+		{
+			"path": "./.images"
+		},
+		{
+			"path": "./../../home/vscode/.dapr/components"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			".gitignore": true,
+			"**/.devcontainer": true,
+			"**/.images": true,
+			"**/bin": true,
+			"**/obj": true,
+			"demo_observability.code-workspace": true
+		},
+		"editor.minimap.enabled": false,
+		"cSpell.words": [
+			"azuremonitor",
+			"Codespace",
+			"Dapr",
+			"loglevel",
+			"maxbatchinterval",
+			"maxbatchsize",
+			"pprof",
+			"pwsh",
+			"zipkin",
+			"zpages"
+		],
+		"powershell.cwd": "/workspaces/MyDaprDemos/MyApp"
+	}
+}

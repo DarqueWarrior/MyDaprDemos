@@ -1,0 +1,11 @@
+POST http://localhost:3500/v1.0/publish/pubsub/new
+Content-Type: application/json
+
+{
+    "Summary": "hot",
+    "TemperatureC": "46"
+}
+
+###
+
+GET http://localhost:3500/v1.0/invoke/myapp/method/weatherforecast
