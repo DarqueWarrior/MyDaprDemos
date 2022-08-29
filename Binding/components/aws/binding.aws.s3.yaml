@@ -14,7 +14,9 @@ spec:
     value: us-east-2
   - name: accessKey
     secretKeyRef:
+      key: accessKey
       name: accessKey
   - name: secretKey
     secretKeyRef:
+      key: secretKey
       name: secretKey
