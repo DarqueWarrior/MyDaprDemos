@@ -20,16 +20,13 @@ param (
     $force
 )
 
+. ../.scripts/common.ps1
+
 if ($env -eq 'all' -or $env -eq 'azure') {
     # Remove local_secrets.json
     Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 
-    if ($force.IsPresent) {
-        az group delete --resource-group $rgName --no-wait --yes
-    }
-    else {
-        az group delete --resource-group $rgName --no-wait
-    }
+    Remove-ResourceGroup -name $rgName -nowait
 }
 
 if ($env -eq 'all' -or $env -eq 'aws') {

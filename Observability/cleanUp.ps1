@@ -13,12 +13,9 @@ param (
     $force
 )
 
+. ../.scripts/common.ps1
+
 # Put the otel-local-config.yaml file back the way it was
 git restore ./config/azure/otel-local-config.yaml
 
-if ($force.IsPresent) {
-    az group delete --resource-group $rgName --no-wait --yes
-}
-else {
-    az group delete --resource-group $rgName --no-wait
-}
+Remove-ResourceGroup -name $rgName -nowait

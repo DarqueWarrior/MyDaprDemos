@@ -13,18 +13,15 @@ param (
     $force
 )
 
+. ../.scripts/common.ps1
+
 # Remove local_secrets.json
 Remove-Item ./charts/local.yaml -Force -ErrorAction SilentlyContinue
 Remove-Item ./charts/charts/ -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item ./components/local/local.env -Force -ErrorAction SilentlyContinue
 Remove-Item ./components/local/local_secrets.json -Force -ErrorAction SilentlyContinue
 
-if ($force.IsPresent) {
-    az group delete --resource-group $rgName --yes
-}
-else {
-    az group delete --resource-group $rgName
-}
+Remove-ResourceGroup -name $rgName
 
 Write-Output "Getting soft deleted cognitive services"
 $cs = $(az cognitiveservices account list-deleted --subscription $env:AZURE_SUB_ID --query [].name --output tsv)

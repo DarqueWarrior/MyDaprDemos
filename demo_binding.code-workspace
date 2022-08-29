@@ -21,6 +21,7 @@
 			"Dapr",
 			"pwsh",
 			"tempfiles"
-		]
+		],
+		"powershell.cwd": "/workspaces/MyDaprDemos/Binding"
 	}
 }

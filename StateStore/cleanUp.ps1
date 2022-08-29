@@ -16,6 +16,8 @@ param (
     $timing
 )
 
+. ../.scripts/common.ps1
+
 ### Azure
 # Remove local_secrets.json
 Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
@@ -23,24 +25,14 @@ Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 if ($timing.IsPresent) {
     $sw = [Diagnostics.Stopwatch]::StartNew()
 
-    if ($force.IsPresent) {
-        az group delete --resource-group $rgName --yes
-    }
-    else {
-        az group delete --resource-group $rgName
-    }
+    Remove-ResourceGroup -name $rgName
 
     $sw.Stop()
 
     Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a Azure Cosmos DB"
 }
-else {    
-    if ($force.IsPresent) {
-        az group delete --resource-group $rgName --no-wait --yes
-    }
-    else {
-        az group delete --resource-group $rgName --no-wait
-    }
+else {
+    Remove-ResourceGroup -name $rgName -nowait
 }
 
 ### AWS
