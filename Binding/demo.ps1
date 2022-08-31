@@ -32,6 +32,7 @@ param (
     $deployOnly
 )
 
+. "../.scripts/common.ps1"
 . "./.scripts/Deploy-AWSInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
@@ -39,17 +40,9 @@ param (
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
-    $sw = [Diagnostics.Stopwatch]::StartNew()
     Deploy-AWSInfrastructure
-    $sw.Stop()
-
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS S3"
-
-    $sw.Start()
     Deploy-AzureInfrastructure -rgName $rgName -location $location
-    $sw.Stop()
 
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Storage Account"
     return
 }
 
@@ -63,7 +56,7 @@ if ($env -eq "azure") {
     $file[8] = '@itemName = blobName'
     $file[13] = '# @itemName = key'
 }
-elseif ($env -eq "aws") {    
+elseif ($env -eq "aws") {
     $file[3] = '# @itemName = fileName'
     $file[8] = '# @itemName = blobName'
     $file[13] = '@itemName = key'
@@ -85,36 +78,17 @@ if ($env -eq "azure") {
     # If you don't find the ./components/azure/local_secrets.json deploy infrastucture
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/azure/local_secrets.json"
-        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AzureInfrastructure -rgName $rgName -location $location
-        $sw.Stop()
-
-        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Storage Account"
     }
-
-    Write-Output "dapr run --app-id azure --dapr-http-port 3500 --components-path ./components/azure `n"
-
-    dapr run --app-id azure --dapr-http-port 3500 --components-path ./components/azure
 }
 elseif ($env -eq "aws") {
     # If you don't find the ./deploy/aws/terraform.tfvars deploy infrastucture
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"
-        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AWSInfrastructure
-        $sw.Stop()
-
-        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS DynamoDB"
     }
-
-    Write-Output "dapr run --app-id aws --dapr-http-port 3500 --components-path ./components/aws `n"
-
-    dapr run --app-id aws --dapr-http-port 3500 --components-path ./components/aws
 }
-else {
-    Write-Output "Running demo with local resources"
 
-    Write-Output "dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local `n"
-
-    dapr run --app-id local --dapr-http-port 3500 --components-path ./components/local
-}
+Write-Output "Running demo with $env resources"
+Write-Output "dapr run --app-id $env --dapr-http-port 3500 --components-path ./components/$env `n"
+dapr run --app-id $env --dapr-http-port 3500 --components-path ./components/$env

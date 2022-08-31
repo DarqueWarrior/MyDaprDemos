@@ -21,7 +21,7 @@ Remove-Item ./charts/charts/ -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item ./components/local/local.env -Force -ErrorAction SilentlyContinue
 Remove-Item ./components/local/local_secrets.json -Force -ErrorAction SilentlyContinue
 
-Remove-ResourceGroup -name $rgName
+Remove-ResourceGroup -name $rgName -force:$force
 
 Write-Output "Getting soft deleted cognitive services"
 $cs = $(az cognitiveservices account list-deleted --subscription $env:AZURE_SUB_ID --query [].name --output tsv)

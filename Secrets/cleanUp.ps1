@@ -23,11 +23,11 @@ param (
 . ../.scripts/common.ps1
 
 if ($env -eq 'all' -or $env -eq 'azure') {
-    # Remove clear out the vault name environment variable 
-    $env:AZURE_KEY_VAULT_NAME = $null 
+    # Remove clear out the vault name environment variable
+    $env:AZURE_KEY_VAULT_NAME = $null
 
     Write-Output "Waiting for resource group to be deleted so the keyvault can be purged"
-    Remove-ResourceGroup -name $rgName
+    Remove-ResourceGroup -name $rgName -force:$force
 
     Write-Output "Getting soft deleted key vaults"
     $vault = $(az keyvault list-deleted --subscription $env:AZURE_SUB_ID --resource-type vault --query [].name --output tsv)
@@ -40,32 +40,13 @@ if ($env -eq 'all' -or $env -eq 'azure') {
 
 if ($env -eq 'all' -or $env -eq 'aws') {
     ### AWS
-    # Remove local_secrets.json
-    Remove-Item ./components/aws/local_secrets.json -ErrorAction SilentlyContinue
-    
-    # Delete AWS resources
-    if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
-        Push-Location ./deploy/aws
-        $sw = [Diagnostics.Stopwatch]::StartNew()
-        terraform destroy -auto-approve
-        $sw.Stop()
-
-        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS S3"
-        Pop-Location
-    }
-
-    # Remove all terraform files
-    Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
+    Remove-AWS
 
     # When you delete a secret, Secrets Manager doesn't immediately delete the
     # secret. Secrets Manager schedules the secret for deletion after a
-    # recovery window of a minimum of seven days. This means that you can't 
+    # recovery window of a minimum of seven days. This means that you can't
     # recreate a secret using the same name using the AWS Management Console
-    # until the recovery window ends. You can permanently delete a secret 
+    # until the recovery window ends. You can permanently delete a secret
     # without any recovery window using the AWS Command Line Interface (AWS CLI)
     Write-Output "Purging secret my-secret"
     aws secretsmanager delete-secret --secret-id my-secret --force-delete-without-recovery --region $env:AWS_DEFAULT_REGION
