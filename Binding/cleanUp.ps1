@@ -20,7 +20,7 @@ param (
     $force
 )
 
-. ../.scripts/common.ps1
+. "../.scripts/common.ps1"
 
 # Put the sampleRequests.http file back the way it was
 git restore ./sampleRequests.http
@@ -31,32 +31,13 @@ if ($env -eq 'all' -or $env -eq 'local') {
 }
 
 if ($env -eq 'all' -or $env -eq 'azure') {
-    Remove-ResourceGroup -name $rgName -nowait
-
     # Remove local_secrets.json
     Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
+
+    Remove-ResourceGroup -name $rgName -force:$force -nowait
 }
 
 if ($env -eq 'all' -or $env -eq 'aws') {
     ### AWS
-    # Remove local_secrets.json
-    Remove-Item ./components/aws/local_secrets.json -ErrorAction SilentlyContinue
-    
-    # Delete AWS resources
-    if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
-        Push-Location ./deploy/aws
-        $sw = [Diagnostics.Stopwatch]::StartNew()
-        terraform destroy -auto-approve
-        $sw.Stop()
-
-        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS S3"
-        Pop-Location
-    }
-
-    # Remove all terraform files
-    Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
+    Remove-AWS
 }

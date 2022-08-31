@@ -14,6 +14,6 @@ foreach ($demo in $demos) {
     Write-Host "*******************************************"
     
     Push-Location "../$demo"
-    ./cleanUp.ps1 -force:$Force.IsPresent
+    ./cleanUp.ps1 -force:$Force
     Pop-Location   
 }

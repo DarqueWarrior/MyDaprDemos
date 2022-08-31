@@ -18,4 +18,4 @@ param (
 # Put the otel-local-config.yaml file back the way it was
 git restore ./config/azure/otel-local-config.yaml
 
-Remove-ResourceGroup -name $rgName -nowait
+Remove-ResourceGroup -name $rgName -force:$force -nowait

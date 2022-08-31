@@ -32,6 +32,7 @@ param (
     $deployOnly
 )
 
+. "../.scripts/common.ps1"
 . "./.scripts/Deploy-AWSInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
@@ -41,7 +42,7 @@ param (
 if ($deployOnly.IsPresent) {
     Deploy-AWSInfrastructure
     Deploy-AzureInfrastructure -rgName $rgName -location $location
-    
+
     return
 }
 
@@ -54,35 +55,17 @@ if ($env -eq "azure") {
     # If you don't find the ./components/azure/local_secrets.json deploy infrastucture
     if ($(Test-Path -Path './components/azure/local_secrets.json') -eq $false) {
         Write-Output "Could not find ./components/azure/local_secrets.json"
-        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AzureInfrastructure -rgName $rgName -location $location
-        $sw.Stop()
-
-        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a Azure Storage Account"
     }
-
-    Write-Output "dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 --components-path ./components/azure -- dotnet run --project ./src/myapp/ --urls http://*:5000 `n"
-
-    dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 --components-path ./components/azure -- dotnet run --project ./src/myapp/ --urls http://*:5000
 }
 elseif ($env -eq "aws") {
     # If you don't find the ./deploy/aws/terraform.tfvars deploy infrastucture
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"
-        $sw = [Diagnostics.Stopwatch]::StartNew()
         Deploy-AWSInfrastructure
-        $sw.Stop()
-
-        Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deploying a AWS DynamoDB"
     }
-
-    Write-Output "dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 --components-path ./components/aws -- dotnet run --project ./src/myapp/ --urls http://*:5000 `n"
-    dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 --components-path ./components/aws -- dotnet run --project ./src/myapp/ --urls http://*:5000
 }
-else {
-    Write-Output "Running demo with local resources"
 
-    Write-Output "dapr run --app-id myapp --dapr-http-port 3500 --components-path ./components/local `n"
-
-    dapr run --app-id myapp --dapr-http-port 3500
-}
+Write-Output "Running demo with $env resources"
+Write-Output "dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 --components-path ./components/$env -- dotnet run --project ./src/myapp/ --urls http://*:5000 `n"
+dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 --components-path ./components/$env -- dotnet run --project ./src/myapp/ --urls http://*:5000

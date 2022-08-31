@@ -9,50 +9,28 @@ param (
     [string]
     $rgName = "dapr_statestore_demo",
 
-    [switch]
-    $force,
+    [Parameter(
+        HelpMessage = "Set to the location of the resources to use."
+    )]
+    [ValidateSet("all", "azure", "aws")]
+    [string]
+    $env = "all",
 
     [switch]
-    $timing
+    $force
 )
 
-. ../.scripts/common.ps1
+. "../.scripts/common.ps1"
 
-### Azure
-# Remove local_secrets.json
-Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
+if ($env -eq 'all' -or $env -eq 'azure') {
+    ### Azure
+    # Remove local_secrets.json
+    Remove-Item ./components/azure/local_secrets.json -ErrorAction SilentlyContinue
 
-if ($timing.IsPresent) {
-    $sw = [Diagnostics.Stopwatch]::StartNew()
-
-    Remove-ResourceGroup -name $rgName
-
-    $sw.Stop()
-
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a Azure Cosmos DB"
-}
-else {
-    Remove-ResourceGroup -name $rgName -nowait
+    Remove-ResourceGroup -name $rgName -force:$force -nowait
 }
 
-### AWS
-# Remove local_secrets.json
-Remove-Item ./components/aws/local_secrets.json -ErrorAction SilentlyContinue
-
-# Delete AWS resources
-if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
-    Push-Location ./deploy/aws
-    $sw = [Diagnostics.Stopwatch]::StartNew()
-    terraform destroy -auto-approve
-    $sw.Stop()
-
-    Write-Verbose "Total elapsed time: $($sw.Elapsed.Minutes):$($sw.Elapsed.Seconds):$($sw.Elapsed.Milliseconds) for deleting a AWS DynamoDB"
-    Pop-Location
+if ($env -eq 'all' -or $env -eq 'aws') {
+    ### AWS
+    Remove-AWS
 }
-
-# Remove all terraform files
-Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
-Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
