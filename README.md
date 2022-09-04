@@ -69,6 +69,8 @@ Some of the demos define components that use AWS infrastructure. To run those de
 
 You can follow the instructions from the AWS document [Access key ID and secret access key](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-creds) to collect the required information.
 
+### GCP
+
 ### Twitter
 
 The DevOps demo uses the Twitter input binding and requires Twitter keys and tokens. If these secrets are not set the DevOps demo will not run.

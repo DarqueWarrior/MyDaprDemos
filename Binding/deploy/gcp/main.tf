@@ -1,10 +1,10 @@
 provider "google" {
-  project = "mydaprdemos-330800"
-  region  = "us-central1"
+  project = "${var.project_id}"
+  region  = "${var.region}"
 }
 
 resource "google_storage_bucket" "dapr_binding" {
   name          = var.bucket_name
-  location      = "US"
+  location      = "${var.location}"
   force_destroy = true
 }

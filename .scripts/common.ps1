@@ -79,6 +79,9 @@ function Deploy-GCP {
     
     Write-Output 'Deploying the GCP infrastructure'
 
+    Write-Output 'Saving ./terraform.tfvars for terraform'
+    "project_id = `"$env:GCP_DEFAULT_PROJECT`" `nregion = `"$env:GCP_DEFAULT_REGION`" `nlocation = `"$env:GCP_DEFAULT_LOCATION`"" | Set-Content ./terraform.tfvars
+
     if ($(Test-Path ./.terraform) -eq $false) {
         terraform init
     }
