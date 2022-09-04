@@ -12,7 +12,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("all", "local", "azure", "aws")]
+    [ValidateSet("all", "local", "azure", "aws", "gcp")]
     [string]
     $env = "all",
 
@@ -40,4 +40,9 @@ if ($env -eq 'all' -or $env -eq 'azure') {
 if ($env -eq 'all' -or $env -eq 'aws') {
     ### AWS
     Remove-AWS
+}
+
+if ($env -eq 'all' -or $env -eq 'gcp') {
+    ### GCP
+    Remove-GCP
 }

@@ -14,57 +14,90 @@ function Remove-ResourceGroup {
         [switch]
         $force
     )
-
-    begin {
-
-    }
-
-    process {
-        if (@(az group list --query [].name --output tsv).IndexOf($name) -ne -1) {
-            if ($force.IsPresent) {
-                if ($nowait.IsPresent) {
-                    az group delete --resource-group $name --no-wait --yes
-                }
-                else {
-                    az group delete --resource-group $name --yes
-                }
+    if (@(az group list --query [].name --output tsv).IndexOf($name) -ne -1) {
+        if ($force.IsPresent) {
+            if ($nowait.IsPresent) {
+                az group delete --resource-group $name --no-wait --yes
             }
             else {
-                if ($nowait.IsPresent) {
-                    az group delete --resource-group $name --no-wait
-                }
-                else {
-                    az group delete --resource-group $name
-                }
+                az group delete --resource-group $name --yes
             }
         }
         else {
-            Write-Verbose "Resource group '$name' not found."
+            if ($nowait.IsPresent) {
+                az group delete --resource-group $name --no-wait
+            }
+            else {
+                az group delete --resource-group $name
+            }
         }
     }
-
-    end {
-
+    else {
+        Write-Verbose "Resource group '$name' not found."
     }
 }
 
-function Remove-AWS {
+function Remove-Terraform {
+    [CmdletBinding()]
+    param (
+        [string]
+        $provider
+    )
+    
     # Remove local_secrets.json
-    Remove-Item ./components/aws/local_secrets.json -ErrorAction SilentlyContinue
+    Remove-Item "./components/$provider/local_secrets.json" -ErrorAction SilentlyContinue
 
-    # Delete AWS resources
-    if ($(Test-Path ./deploy/aws/terraform.tfvars)) {
-        Push-Location ./deploy/aws
+    # Delete Gcp resources
+    if ($(Test-Path "./deploy/$provider/terraform.tfstate")) {
+        Push-Location "./deploy/$provider"
         terraform destroy -auto-approve
         Pop-Location
+        
+        # Remove all terraform files
+        Remove-Item "./deploy/$provider/terraform.tfvars" -Force -ErrorAction SilentlyContinue
+        Remove-Item "./deploy/$provider/terraform.tfstate" -Force -ErrorAction SilentlyContinue
+        Remove-Item "./deploy/$provider/.terraform.lock.hcl" -Force -ErrorAction SilentlyContinue
+        Remove-Item "./deploy/$provider/.terraform/ -Force" -Recurse -ErrorAction SilentlyContinue
+        Remove-Item "./deploy/$provider/terraform.tfstate.backup" -Force -ErrorAction SilentlyContinue
+    }
+}
+
+function Remove-Gcp {
+    Remove-Terraform -provider gcp
+}
+
+function Remove-AWS {
+    Remove-Terraform -provider aws
+}
+
+function Deploy-GCP {
+    [CmdletBinding()]
+    param (
+        [switch]
+        $skipSecrets
+    )
+    
+    Write-Output 'Deploying the GCP infrastructure'
+
+    # Write-Output 'Saving ./terraform.tfvars for terraform'
+    # "access_key = `"$env:AWS_ACCESS_KEY_ID`" `nsecret_key = `"$env:AWS_SECRET_ACCESS_KEY`"" | Set-Content ./terraform.tfvars
+
+    if ($(Test-Path ./.terraform) -eq $false) {
+        terraform init
     }
 
-    # Remove all terraform files
-    Remove-Item ./deploy/aws/terraform.tfvars -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/terraform.tfstate -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/.terraform -Force -Recurse -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/.terraform.lock.hcl -Force -ErrorAction SilentlyContinue
-    Remove-Item ./deploy/aws/terraform.tfstate.backup -Force -ErrorAction SilentlyContinue
+    terraform apply -auto-approve
+
+    if (-not $skipSecrets.IsPresent) {
+        # Creating components/gcp/local_secrets.json
+        # $secrets = [PSCustomObject]@{
+        #     accessKey = $env:AWS_ACCESS_KEY_ID
+        #     secretKey = $env:AWS_SECRET_ACCESS_KEY
+        # }
+
+        # Write-Output 'Saving ../../components/gcp/local_secrets.json for local secret store'
+        # $secrets | ConvertTo-Json | Set-Content ../../components/gcp/local_secrets.json
+    }
 }
 
 function Deploy-AWS {
@@ -73,36 +106,26 @@ function Deploy-AWS {
         [switch]
         $skipSecrets
     )
+    
+    Write-Output 'Deploying the AWS infrastructure'
 
-    begin {
+    Write-Output 'Saving ./terraform.tfvars for terraform'
+    "access_key = `"$env:AWS_ACCESS_KEY_ID`" `nsecret_key = `"$env:AWS_SECRET_ACCESS_KEY`"" | Set-Content ./terraform.tfvars
 
+    if ($(Test-Path ./.terraform) -eq $false) {
+        terraform init
     }
 
-    process {
-        Write-Output 'Deploying the AWS infrastructure'
+    terraform apply -auto-approve
 
-        Write-Output 'Saving ./terraform.tfvars for terraform'
-        "access_key = `"$env:AWS_ACCESS_KEY_ID`" `nsecret_key = `"$env:AWS_SECRET_ACCESS_KEY`"" | Set-Content ./terraform.tfvars
-
-        if ($(Test-Path ./.terraform) -eq $false) {
-            terraform init
+    if (-not $skipSecrets.IsPresent) {
+        # Creating components/aws/local_secrets.json
+        $secrets = [PSCustomObject]@{
+            accessKey = $env:AWS_ACCESS_KEY_ID
+            secretKey = $env:AWS_SECRET_ACCESS_KEY
         }
 
-        terraform apply -auto-approve
-
-        if (-not $skipSecrets.IsPresent) {
-            # Creating components/aws/local_secrets.json
-            $secrets = [PSCustomObject]@{
-                accessKey = $env:AWS_ACCESS_KEY_ID
-                secretKey = $env:AWS_SECRET_ACCESS_KEY
-            }
-
-            Write-Output 'Saving ../../components/aws/local_secrets.json for local secret store'
-            $secrets | ConvertTo-Json | Set-Content ../../components/aws/local_secrets.json
-        }
-    }
-
-    end {
-
+        Write-Output 'Saving ../../components/aws/local_secrets.json for local secret store'
+        $secrets | ConvertTo-Json | Set-Content ../../components/aws/local_secrets.json
     }
 }
