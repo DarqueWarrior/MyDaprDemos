@@ -90,7 +90,7 @@ function Deploy-GCP {
 
     if (-not $skipSecrets.IsPresent) {
         Write-Output 'Saving ../../components/gcp/local_secrets.json for local secret store'
-        gcloud iam service-accounts keys create ../../components/gcp/local_secrets.json --iam-account=mydaprdemos@mydaprdemos-330800.iam.gserviceaccount.com
+        $env:GCP_KEY | Set-Content ../../components/gcp/local_secrets.json
     }
 }
 

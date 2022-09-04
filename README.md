@@ -16,9 +16,9 @@ Demo | Building Blocks | Local | Azure | AWS | GCP | Language
 
 These demos require [CodeSpaces](https://github.com/features/codespaces). This repo is configured to create a CodeSpace with all the required tools. Simply fork this repo and setup the Codespace secrets and assign them to your fork.
 
-## Create Codespace Secrets
+## Create Codespaces Secrets
 
-To create the Codespace secrets you will need an Azure service principal, tenant and subscription id to run Azure Demos. To run the demos with AWS you will need an AWS access key ID, secret access key and region.
+To create the Codespaces secrets you will need an Azure service principal, tenant and subscription id to run Azure Demos. To run the demos with AWS you will need an AWS access key ID, secret access key and region.
 
 ### Azure
 
@@ -58,8 +58,14 @@ az account show -o json
   "state": "Enabled",
   "tenantId": "00000000-0000-0000-0000-000000000000"
 }
-
 ```
+
+Codesapces secret | Description
+--- | ---
+AZURE_APP_ID |
+AZURE_PASSWORD |
+AZURE_SUB_ID |
+AZURE_TENANT |
 
 ### AWS
 
@@ -69,7 +75,20 @@ Some of the demos define components that use AWS infrastructure. To run those de
 
 You can follow the instructions from the AWS document [Access key ID and secret access key](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-creds) to collect the required information.
 
+Codesapces secret | Description
+--- | ---
+AWS_ACCESS_KEY_ID | 
+AWS_DEFAULT_REGION |
+AWS_SECRET_ACCESS_KEY |
+
 ### GCP
+
+Codesapces secret | Description
+--- | ---
+GCP_DEFAULT_LOCATION |
+GCP_DEFAULT_PROJECT | Create a project to hold the resources
+GCP_DEFAULT_REGION |
+GCP_KEY | JSON-formatted key file
 
 ### Twitter
 
@@ -78,6 +97,26 @@ The DevOps demo uses the Twitter input binding and requires Twitter keys and tok
 #### Get Twitter access token, access token secret, API key and API key secret
 
 You can follow the instructions from the Twitter Developer Platform document [Getting started](https://developer.twitter.com/en/docs/twitter-api/getting-started/getting-access-to-the-twitter-api) to collect the required information.
+
+Codesapces secret | Description
+--- | ---
+TWITTER_ACCESS_TOKEN |
+TWITTER_ACCESS_TOKEN_SECRET |
+TWITTER_API_KEY |
+TWITTER_API_KEY_SECRET |
+
+### Docker
+
+Codesapces secret | Description
+--- | ---
+DOCKER_HUB_TOKEN |
+DOCKER_HUB_USERNAME | 
+
+### GitHub Workflows
+
+Codesapces secret | Description
+--- | ---
+ACTIONS_TOKEN |
 
 ### Set Codespace secrets
 
