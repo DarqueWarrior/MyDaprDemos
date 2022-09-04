@@ -8,6 +8,9 @@
 # ./demo.ps1 -env aws
 # aws dynamodb get-item --table-name dapr_store --key '{""key"": {""S"": ""aws||Dog""}}' --output json
 
+# Use this command to run in gcp
+# ./demo.ps1 -env gcp
+
 POST http://localhost:3500/v1.0/state/statestore
 
 [

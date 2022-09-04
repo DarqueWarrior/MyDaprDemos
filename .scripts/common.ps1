@@ -14,6 +14,8 @@ function Remove-ResourceGroup {
         [switch]
         $force
     )
+    Write-Host "Cleaning up azure"
+
     if (@(az group list --query [].name --output tsv).IndexOf($name) -ne -1) {
         if ($force.IsPresent) {
             if ($nowait.IsPresent) {
@@ -43,6 +45,8 @@ function Remove-Terraform {
         [string]
         $provider
     )
+
+    Write-Host "Cleaning up $provider"
     
     # Remove local_secrets.json
     Remove-Item "./components/$provider/local_secrets.json" -ErrorAction SilentlyContinue
@@ -59,7 +63,7 @@ function Remove-Terraform {
     Remove-Item "./deploy/$provider/terraform.tfstate" -Force -ErrorAction SilentlyContinue
     Remove-Item "./deploy/$provider/.terraform.lock.hcl" -Force -ErrorAction SilentlyContinue
     Remove-Item "./deploy/$provider/terraform.tfstate.backup" -Force -ErrorAction SilentlyContinue
-    Remove-Item "./deploy/$provider/.terraform" -Force -Recurse
+    Remove-Item "./deploy/$provider/.terraform" -Force -Recurse -ErrorAction SilentlyContinue
 }
 
 function Remove-Gcp {

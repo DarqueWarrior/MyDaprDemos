@@ -21,7 +21,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("local", "azure", "aws")]
+    [ValidateSet("local", "azure", "aws", "gcp")]
     [string]
     $env = "local",
 
@@ -33,6 +33,7 @@ param (
 )
 
 . "../.scripts/common.ps1"
+. "./.scripts/Deploy-GCPInfrastructure.ps1"
 . "./.scripts/Deploy-AWSInfrastructure.ps1"
 . "./.scripts/Deploy-AzureInfrastructure.ps1"
 
@@ -40,8 +41,15 @@ param (
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
-    Deploy-AWSInfrastructure
-    Deploy-AzureInfrastructure -rgName $rgName -location $location
+    if ($env -eq "azure" -or $env -eq "local") {
+        Deploy-AzureInfrastructure -rgName $rgName -location $location
+    }
+    elseif ($env -eq "aws" -or $env -eq "local") {
+        Deploy-AWSInfrastructure
+    }
+    elseif ($env -eq "gcp" -or $env -eq "local") {
+        Deploy-GCPInfrastructure
+    }
     
     return
 }
@@ -61,6 +69,13 @@ elseif ($env -eq "aws") {
     if ($(Test-Path -Path './deploy/aws/terraform.tfvars') -eq $false) {
         Write-Output "Could not find ./deploy/aws/terraform.tfvars"
         Deploy-AWSInfrastructure
+    }
+}
+elseif ($env -eq "gcp") {
+    # If you don't find the ./deploy/gcp/terraform.tfvars deploy infrastucture
+    if ($(Test-Path -Path './deploy/gcp/terraform.tfvars') -eq $false) {
+        Write-Output "Could not find ./deploy/gcp/terraform.tfvars"
+        Deploy-GCPInfrastructure
     }
 }
 

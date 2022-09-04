@@ -83,6 +83,8 @@ AWS_SECRET_ACCESS_KEY |
 
 ### GCP
 
+The _App Engine Admin API_ must be enabled for the project used with these demos. 
+
 Codesapces secret | Description
 --- | ---
 GCP_DEFAULT_LOCATION |
@@ -111,12 +113,6 @@ Codesapces secret | Description
 --- | ---
 DOCKER_HUB_TOKEN |
 DOCKER_HUB_USERNAME | 
-
-### GitHub Workflows
-
-Codesapces secret | Description
---- | ---
-ACTIONS_TOKEN |
 
 ### Set Codespace secrets
 

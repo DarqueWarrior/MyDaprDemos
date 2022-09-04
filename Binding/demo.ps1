@@ -41,13 +41,13 @@ param (
 # this flag to set everything up before you run the demos to save time. Some
 # infrastucture can take some time to deploy.
 if ($deployOnly.IsPresent) {
-    if ($env -eq "azure") {
+    if ($env -eq "azure" -or $env -eq "local") {
         Deploy-AzureInfrastructure -rgName $rgName -location $location
     }
-    elseif ($env -eq "aws") {
+    elseif ($env -eq "aws" -or $env -eq "local") {
         Deploy-AWSInfrastructure
     }
-    elseif ($env -eq "gcp") {
+    elseif ($env -eq "gcp" -or $env -eq "local") {
         Deploy-GCPInfrastructure
     }
 
@@ -97,9 +97,9 @@ elseif ($env -eq "aws") {
     }
 }
 elseif ($env -eq "gcp") {
-    # If you don't find the ./deploy/gcp/terraform.tfstate deploy infrastucture
-    if ($(Test-Path -Path './deploy/gcp/terraform.tfstate') -eq $false) {
-        Write-Output "Could not find ./deploy/gcp/terraform.tfstate"
+    # If you don't find the ./deploy/gcp/terraform.tfvars deploy infrastucture
+    if ($(Test-Path -Path './deploy/gcp/terraform.tfvars') -eq $false) {
+        Write-Output "Could not find ./deploy/gcp/terraform.tfvars"
         Deploy-GCPInfrastructure
     }
 }
