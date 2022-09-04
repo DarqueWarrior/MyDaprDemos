@@ -1,0 +1,50 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: files
+auth:
+  secretStore: strongbox  
+spec:
+  type: bindings.gcp.bucket
+  version: v1
+  metadata:
+  - name: bucket
+    value: dapr-bucket
+  - name: project_id
+    secretKeyRef:
+      key: project_id
+      name: project_id
+  - name: type
+    value: service_account
+  - name: private_key_id
+    secretKeyRef:
+      key: private_key_id
+      name: private_key_id
+  - name: client_email
+    secretKeyRef:
+      key: client_email
+      name: client_email
+  - name: client_id
+    secretKeyRef:
+      key: client_id
+      name: client_id
+  - name: auth_uri
+    secretKeyRef:
+      key: auth_uri
+      name: auth_uri
+  - name: token_uri
+    secretKeyRef:
+      key: token_uri
+      name: token_uri
+  - name: auth_provider_x509_cert_url
+    secretKeyRef:
+      key: auth_provider_x509_cert_url
+      name: auth_provider_x509_cert_url
+  - name: client_x509_cert_url
+    secretKeyRef:
+      key: client_x509_cert_url
+      name: client_x509_cert_url
+  - name: private_key
+    secretKeyRef:
+      key: private_key
+      name: private_key

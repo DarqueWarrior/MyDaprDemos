@@ -62,17 +62,17 @@ $file = Get-Content -Path ./sampleRequests.http
 if ($env -eq "azure") {
     $file[3] = '# @itemName = fileName'
     $file[8] = '@itemName = blobName'
-    $file[13] = '# @itemName = key'
+    $file[14] = '# @itemName = key'
 }
-elseif ($env -eq "aws") {
+elseif ($env -eq "aws" -or $env -eq "gcp") {
     $file[3] = '# @itemName = fileName'
     $file[8] = '# @itemName = blobName'
-    $file[13] = '@itemName = key'
+    $file[14] = '@itemName = key'
 }
 else {
     $file[3] = '@itemName = fileName'
     $file[8] = '# @itemName = blobName'
-    $file[13] = '# @itemName = key'
+    $file[14] = '# @itemName = key'
 }
 
 Set-Content -Path ./sampleRequests.http -Value $file
@@ -97,9 +97,9 @@ elseif ($env -eq "aws") {
     }
 }
 elseif ($env -eq "gcp") {
-    # If you don't find the ./deploy/gcp/terraform.tfvars deploy infrastucture
-    if ($(Test-Path -Path './deploy/gcp/terraform.tfvars') -eq $false) {
-        Write-Output "Could not find ./deploy/gcp/terraform.tfvars"
+    # If you don't find the ./deploy/gcp/terraform.tfstate deploy infrastucture
+    if ($(Test-Path -Path './deploy/gcp/terraform.tfstate') -eq $false) {
+        Write-Output "Could not find ./deploy/gcp/terraform.tfstate"
         Deploy-GCPInfrastructure
     }
 }

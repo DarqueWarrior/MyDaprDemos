@@ -52,14 +52,14 @@ function Remove-Terraform {
         Push-Location "./deploy/$provider"
         terraform destroy -auto-approve
         Pop-Location
-        
-        # Remove all terraform files
-        Remove-Item "./deploy/$provider/terraform.tfvars" -Force -ErrorAction SilentlyContinue
-        Remove-Item "./deploy/$provider/terraform.tfstate" -Force -ErrorAction SilentlyContinue
-        Remove-Item "./deploy/$provider/.terraform.lock.hcl" -Force -ErrorAction SilentlyContinue
-        Remove-Item "./deploy/$provider/.terraform/ -Force" -Recurse -ErrorAction SilentlyContinue
-        Remove-Item "./deploy/$provider/terraform.tfstate.backup" -Force -ErrorAction SilentlyContinue
     }
+        
+    # Remove all terraform files
+    Remove-Item "./deploy/$provider/terraform.tfvars" -Force -ErrorAction SilentlyContinue
+    Remove-Item "./deploy/$provider/terraform.tfstate" -Force -ErrorAction SilentlyContinue
+    Remove-Item "./deploy/$provider/.terraform.lock.hcl" -Force -ErrorAction SilentlyContinue
+    Remove-Item "./deploy/$provider/terraform.tfstate.backup" -Force -ErrorAction SilentlyContinue
+    Remove-Item "./deploy/$provider/.terraform" -Force -Recurse
 }
 
 function Remove-Gcp {
@@ -79,9 +79,6 @@ function Deploy-GCP {
     
     Write-Output 'Deploying the GCP infrastructure'
 
-    # Write-Output 'Saving ./terraform.tfvars for terraform'
-    # "access_key = `"$env:AWS_ACCESS_KEY_ID`" `nsecret_key = `"$env:AWS_SECRET_ACCESS_KEY`"" | Set-Content ./terraform.tfvars
-
     if ($(Test-Path ./.terraform) -eq $false) {
         terraform init
     }
@@ -89,14 +86,8 @@ function Deploy-GCP {
     terraform apply -auto-approve
 
     if (-not $skipSecrets.IsPresent) {
-        # Creating components/gcp/local_secrets.json
-        # $secrets = [PSCustomObject]@{
-        #     accessKey = $env:AWS_ACCESS_KEY_ID
-        #     secretKey = $env:AWS_SECRET_ACCESS_KEY
-        # }
-
-        # Write-Output 'Saving ../../components/gcp/local_secrets.json for local secret store'
-        # $secrets | ConvertTo-Json | Set-Content ../../components/gcp/local_secrets.json
+        Write-Output 'Saving ../../components/gcp/local_secrets.json for local secret store'
+        gcloud iam service-accounts keys create ../../components/gcp/local_secrets.json --iam-account=mydaprdemos@mydaprdemos-330800.iam.gserviceaccount.com
     }
 }
 
