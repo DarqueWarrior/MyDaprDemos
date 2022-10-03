@@ -15,25 +15,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.dapr.Topic;
 import io.dapr.client.domain.CloudEvent;
 import reactor.core.publisher.Mono;
 
 @RestController
 public class ApplicationController {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ApplicationController.class);
 
-    private static final String PUBSUB = "messagebus";
+    private static final String PUBSUB = "pubsub";
   
     @Topic(name = "tweets", pubsubName = PUBSUB)
-    @PostMapping(value = "/tweets")
+    @PostMapping(path  = "/tweets")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void tweet(@RequestBody byte[] payload) throws IOException {
-        var event = CloudEvent.deserialize(payload);
+    public void tweet(@RequestBody(required = false) CloudEvent<?> event) throws IOException {
         log.info("Received cloud event: " + event.getData());
-        WebSocketPubSub.INSTANCE.send(event.getData());
+        WebSocketPubSub.INSTANCE.send(OBJECT_MAPPER.writeValueAsString(event));
     }
 
     @GetMapping(path = "/health")
