@@ -35,7 +35,7 @@ public class ApplicationController {
     @ResponseBody
     public void tweet(@RequestBody(required = false) CloudEvent<?> event) throws IOException {
         log.info("Received cloud event: " + event.getData());
-        WebSocketPubSub.INSTANCE.send(OBJECT_MAPPER.writeValueAsString(event));
+        WebSocketPubSub.INSTANCE.send(OBJECT_MAPPER.writeValueAsString(event.getData()));
     }
 
     @GetMapping(path = "/health")
