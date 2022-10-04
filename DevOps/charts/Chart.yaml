@@ -29,10 +29,10 @@ dependencies:
     repository: "file://../components/charts/components"
   - name: processor
     version: 0.1.0
-    repository: "file://../src/processor/charts/processor"
+    repository: "file://../src/csharp_processor/charts/processor"
   - name: provider
     version: 0.1.0
-    repository: "file://../src/provider/charts/provider"
+    repository: "file://../src/csharp_provider/charts/provider"
   - name: viewer
     version: 0.1.0
-    repository: "file://../src/viewer/charts/viewer"    
+    repository: "file://../src/csharp_viewer/charts/viewer"    

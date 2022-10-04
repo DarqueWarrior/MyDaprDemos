@@ -3,47 +3,47 @@
     "compounds": [
         {
             "name": "Twitter",
-            "preLaunchTask": "build",
+            "preLaunchTask": "csharp_build",
             "configurations": [
-                "Processor",
-                "Provider",
-                "Viewer"
+                "CSharp_Processor",
+                "CSharp_Provider",
+                "CSharp_Viewer"
             ],
             "stopAll": true
         },
         {
             "name": "Multi",
-            "preLaunchTask": "java build",
+            "preLaunchTask": "java_build",
             "configurations": [
-                "Processor",
-                "Provider",
-                "Java Viewer"
+                "CSharp_Processor",
+                "CSharp_Provider",
+                "Java_Viewer"
             ],
             "stopAll": true
         }
     ],
     "configurations": [
         {
+            "name": "Java_Viewer",
             "type": "java",
-            "name": "Java Viewer",
             "request": "launch",
             "preLaunchTask": "run_java_viewer",
             "mainClass": "",
-            "cwd": "${workspaceFolder}/src/jviewer",
+            "cwd": "${workspaceFolder}/src/java_viewer",
             "args": [
                 "-jar",
-                "./src/jviewer/target/app.jar"
+                "./src/java_viewer/target/app.jar"
             ],
             "postDebugTask": "stop_java_viewer"
         },
         {
-            "name": "Viewer",
+            "name": "CSharp_Viewer",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "run_viewer",
-            "program": "${workspaceFolder}/src/viewer/bin/Debug/net6.0/viewer.dll",
+            "preLaunchTask": "run_csharp_viewer",
+            "program": "${workspaceFolder}/src/csharp_viewer/bin/Debug/net6.0/viewer.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/viewer",
+            "cwd": "${workspaceFolder}/src/csharp_viewer",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
@@ -53,41 +53,38 @@
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "ASPNETCORE_URLS": "http://localhost:5000"
             },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            },
-            "postDebugTask": "stop_viewer"
+            "postDebugTask": "stop_csharp_viewer"
         },
         {
-            "name": "Provider",
+            "name": "CSharp_Provider",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "run_provider",
-            "program": "${workspaceFolder}/src/provider/bin/Debug/net6.0/provider.dll",
+            "preLaunchTask": "run_csharp_provider",
+            "program": "${workspaceFolder}/src/csharp_provider/bin/Debug/net6.0/provider.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/provider",
+            "cwd": "${workspaceFolder}/src/csharp_provider",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "ASPNETCORE_URLS": "http://localhost:5040"
             },
-            "postDebugTask": "stop_provider"
+            "postDebugTask": "stop_csharp_provider"
         },
         {
-            "name": "Processor",
+            "name": "CSharp_Processor",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "run_processor",
-            "program": "${workspaceFolder}/src/processor/bin/Debug/net6.0/processor.dll",
+            "preLaunchTask": "run_csharp_processor",
+            "program": "${workspaceFolder}/src/csharp_processor/bin/Debug/net6.0/processor.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/processor",
+            "cwd": "${workspaceFolder}/src/csharp_processor",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "ASPNETCORE_URLS": "http://localhost:5030"
             },
             "envFile": "${workspaceFolder}/components/local/local.env",
-            "postDebugTask": "stop_processor"
+            "postDebugTask": "stop_csharp_processor"
         }
     ]
 }

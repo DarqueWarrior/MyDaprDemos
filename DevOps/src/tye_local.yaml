@@ -3,14 +3,14 @@ name: observability
 services:
 - name: viewer
   executable: dapr
-  args: run --app-id viewer --app-port 5000 --components-path ./components/local -- dotnet run --project ./src/viewer/viewer.csproj --urls "http://localhost:5000"
+  args: run --app-id viewer --app-port 5000 --components-path ./components/local -- dotnet run --project ./src/csharp_viewer/viewer.csproj --urls "http://localhost:5000"
 
 - name: processor
   executable: dapr
-  args: run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/processor/processor.csproj --urls "http://localhost:5030"
+  args: run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/csharp_processor/processor.csproj --urls "http://localhost:5030"
   env_file:
     - ../components/local/local.env
 
 - name: provider
   executable: dapr
-  args: run --app-id provider --app-port 5040 --components-path ./components/local -- dotnet run --project ./src/provider/provider.csproj --urls "http://localhost:5040"
+  args: run --app-id provider --app-port 5040 --components-path ./components/local -- dotnet run --project ./src/csharp_provider/provider.csproj --urls "http://localhost:5040"

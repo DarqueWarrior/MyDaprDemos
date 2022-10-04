@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "csharp_build",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -14,10 +14,10 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "java build",
+            "label": "java_build",
             "command": "mvn",
             "options": {
-                "cwd": "${workspaceFolder}/src/jviewer"
+                "cwd": "${workspaceFolder}/src/java_viewer"
             },
             "type": "process",
             "args": [
@@ -27,7 +27,7 @@
             "problemMatcher": []
         },
         {
-            "label": "run_provider",
+            "label": "run_csharp_provider",
             "appId": "provider",
             "appPort": 5040,
             "httpPort": 3500,
@@ -36,31 +36,31 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_provider",
+            "label": "stop_csharp_provider",
             "appId": "provider",
             "type": "daprd-down"
         },
         {
-            "label": "run_processor",
+            "label": "run_csharp_processor",
             "appId": "processor",
             "appPort": 5030,
             "type": "dapr",
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_processor",
+            "label": "stop_csharp_processor",
             "appId": "processor",
             "type": "daprd-down"
         },
         {
-            "label": "run_viewer",
+            "label": "run_csharp_viewer",
             "appId": "viewer",
             "appPort": 5000,
             "type": "dapr",
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_viewer",
+            "label": "stop_csharp_viewer",
             "appId": "viewer",
             "type": "daprd-down"
         },
