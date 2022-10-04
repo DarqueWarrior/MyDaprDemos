@@ -70,9 +70,12 @@ elseif ($env -eq "multi") {
     # Build the java project
     mvn -f ./src/java_viewer/ clean install
 
+    # Update Python
+    pip3 install -r ./src/python_provider/requirements.txt
+
     Write-Output "dapr run --app-id viewer --app-port 8088 --components-path ./components/local -- java -jar ./src/java_viewer/target/app.jar `n"
     Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- dotnet run --project ./src/csharp_processor/processor.csproj --urls "http://localhost:5030" `n"
-    Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- dotnet run --project ./src/csharp_provider/provider.csproj --urls "http://localhost:5040" `n"
+    Write-Output "dapr run --app-id provider --app-port 5040 --app-protocol grpc --components-path ./components/local -- python3 ./src/python_provider/provider.py `n"
 
     tye run ./src/tye_multi.yaml
 }

@@ -38,3 +38,7 @@ wget https://aka.ms/download-jdk/microsoft-jdk-11.0.11.9.1-linux-x64.tar.gz -O m
 wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -O maven.tar.gz && \
     tar zxvf maven.tar.gz && \
     rm -rf maven.tar.gz /var/lib/apt/lists/*
+
+# Install PIP3
+apt-get update
+apt-get install -y python3-pip

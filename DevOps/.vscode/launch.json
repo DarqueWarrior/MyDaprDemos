@@ -16,13 +16,23 @@
             "preLaunchTask": "java_build",
             "configurations": [
                 "CSharp_Processor",
-                "CSharp_Provider",
+                "Python_Provider",
                 "Java_Viewer"
             ],
             "stopAll": true
         }
     ],
     "configurations": [
+        {
+            "name": "Python_Provider",
+            "type": "python",
+            "request": "launch",
+            "preLaunchTask": "run_python_provider",
+            "program": "${workspaceFolder}/src/python_provider/provider.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "postDebugTask": "stop_python_provider"
+        },
         {
             "name": "Java_Viewer",
             "type": "java",

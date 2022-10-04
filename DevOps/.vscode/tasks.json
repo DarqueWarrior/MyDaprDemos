@@ -41,6 +41,21 @@
             "type": "daprd-down"
         },
         {
+            "label": "run_python_provider",
+            "appId": "provider",
+            "appPort": 5040,
+            "httpPort": 3500,
+            "grpcPort": 50001,
+            "appProtocol": "grpc",
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_python_provider",
+            "appId": "provider",
+            "type": "daprd-down"
+        },
+        {
             "label": "run_csharp_processor",
             "appId": "processor",
             "appPort": 5030,
