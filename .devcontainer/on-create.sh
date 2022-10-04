@@ -34,6 +34,6 @@ aws configure set output table
 dotnet tool install --tool-path ~/bin Microsoft.Tye --version "0.11.0-alpha.22111.1"
 
 # install PowerShell modules
-pwsh -Command "& {Install-Module -Name Trackyon.Utils, VSTeam, powershell-yaml -Force}"
+pwsh -Command "& {Install-Module -Name Trackyon.Utils, powershell-yaml -Force}"
  
 echo "on-create complete" >> ~/status

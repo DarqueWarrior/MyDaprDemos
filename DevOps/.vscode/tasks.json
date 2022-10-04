@@ -14,6 +14,18 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "java build",
+            "command": "mvn",
+            "options": {
+                "cwd": "${workspaceFolder}/src/jviewer"
+            },
+            "type": "process",
+            "args": [
+                "clean",
+                "install"
+            ]
+        },
+        {
             "label": "run_provider",
             "appId": "provider",
             "appPort": 5040,
@@ -48,6 +60,18 @@
         },
         {
             "label": "stop_viewer",
+            "appId": "viewer",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_java_viewer",
+            "appId": "viewer",
+            "appPort": 8088,
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_java_viewer",
             "appId": "viewer",
             "type": "daprd-down"
         }

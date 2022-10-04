@@ -10,9 +10,32 @@
                 "Viewer"
             ],
             "stopAll": true
+        },
+        {
+            "name": "Multi",
+            "preLaunchTask": "java build",
+            "configurations": [
+                "Processor",
+                "Provider",
+                "Java Viewer"
+            ],
+            "stopAll": true
         }
     ],
     "configurations": [
+        {
+            "type": "java",
+            "name": "Java Viewer",
+            "request": "launch",
+            "preLaunchTask": "run_java_viewer",
+            "mainClass": "",
+            "cwd": "${workspaceFolder}/src/jviewer",
+            "args": [
+                "-jar",
+                "./src/jviewer/target/app.jar"
+            ],
+            "postDebugTask": "stop_java_viewer"
+        },
         {
             "name": "Viewer",
             "type": "coreclr",

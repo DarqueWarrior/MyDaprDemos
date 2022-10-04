@@ -31,3 +31,13 @@ apt-get install -y kubectl
 
 # Install terraform 
 apt-get install -y terraform
+
+# Install Microsoft Open SDK
+wget https://aka.ms/download-jdk/microsoft-jdk-11.0.11.9.1-linux-x64.tar.gz -O msopenjdk11.tar.gz && \
+    tar zxvf msopenjdk11.tar.gz && \
+    rm -rf msopenjdk11.tar.gz /var/lib/apt/lists/*
+
+# Install Maven
+wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -O maven.tar.gz && \
+    tar zxvf maven.tar.gz && \
+    rm -rf maven.tar.gz /var/lib/apt/lists/*

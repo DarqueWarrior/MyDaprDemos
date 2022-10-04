@@ -29,8 +29,8 @@ public class ApplicationController {
 
     private static final String PUBSUB = "pubsub";
   
-    @Topic(name = "tweets", pubsubName = PUBSUB)
-    @PostMapping(path  = "/tweets")
+    @Topic(name = "scored", pubsubName = PUBSUB)
+    @PostMapping(value  = "/tweets")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void tweet(@RequestBody(required = false) CloudEvent<?> event) throws IOException {
