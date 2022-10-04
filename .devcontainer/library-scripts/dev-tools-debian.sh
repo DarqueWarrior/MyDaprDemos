@@ -9,10 +9,7 @@ apt-get update
 # Install .net 6
 apt-get install -y software-properties-common apt-transport-https gnupg2 dotnet-sdk-6.0
 
-# export DOTNET_ROOT=$HOME/dotnet
-# export PATH=$PATH:$HOME/dotnet
-
-# wget -q https://aka.ms/install-dotnet-preview -O - | /bin/bash -s - --install-dir $DOTNET_ROOT
+dotnet tool install --tool-path /bin Microsoft.Tye --version "0.11.0-alpha.22111.1"
 
 # Install Dapr CLI
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
