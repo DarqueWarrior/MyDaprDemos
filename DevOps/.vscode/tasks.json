@@ -23,7 +23,8 @@
             "args": [
                 "clean",
                 "install"
-            ]
+            ],
+            "problemMatcher": []
         },
         {
             "label": "run_provider",
