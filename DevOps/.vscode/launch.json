@@ -13,7 +13,7 @@
         },
         {
             "name": "Multi",
-            "preLaunchTask": "java_build",
+            "preLaunchTask": "multi_build",
             "configurations": [
                 "CSharp_Processor",
                 "Python_Provider",

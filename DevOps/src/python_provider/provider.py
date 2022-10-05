@@ -6,49 +6,30 @@ from dapr.clients import DaprClient
 from dapr.ext.grpc import App, BindingRequest
 
 APP_PORT = os.getenv("APP_PORT", "5040")
-TOPIC_NAME = os.getenv("TOPIC_NAME", "scored")
-PUBSUB_NAME = os.getenv("PUBSUB_NAME", "pubsub")
-STORE_NAME = os.getenv("STORE_NAME", "statestore")
 
 app = App()
+
 
 @app.binding('tweets')
 def binding(request: BindingRequest):
     payload = request.text()
-    m = extract_tweets(json.loads(payload))
+    m = json.loads(payload)
 
     logging.info(m)
 
     with DaprClient() as d:
-        tweet_data = json.dumps(m)
-        d.save_state(STORE_NAME, m['id'], tweet_data)
-
-        resp = d.invoke_method(
-                'processor',
-                'score',
-                data=tweet_data,
-                http_verb='POST')
-
-        m['sentiment'] = json.loads(resp.data)
-
-        d.publish_event(PUBSUB_NAME, TOPIC_NAME, json.dumps(m))
-
-
-def extract_tweets(payload):
-    content = payload['text']
-    ext_text = payload.get('extended_tweet')
-    if ext_text:
-        content = ext_text['full_text']
-    user_info = payload['user']
-
-    return {
-        'id': payload['id_str'],
-        'author': user_info['screen_name'] or user_info['name'],
-        'author_pic': user_info['profile_image_url_https'],
-        'content': content,
-        'lang': payload['lang'],
-        'published': payload['created_at'],
-    }
+        logging.info('/tweets invoked...')
+        d.save_state('statestore', m['id_str'], payload)
+        
+        logging.info('/tweet scored, saving to state store')
+        resp = d.invoke_method('processor', 'score', payload, http_verb='POST')
+        scoredTweet = json.loads(resp.data)
+        
+        logging.info('/tweet saved, posting to pubsub')
+        d.publish_event("pubsub", "scored", json.dumps(
+            scoredTweet), data_content_type='application/json')
+        
+        logging.info('/tweet processed')
 
 
 def main():

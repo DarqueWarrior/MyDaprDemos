@@ -13,4 +13,4 @@ services:
 
 - name: provider
   executable: dapr
-  args: run --app-id provider --app-port 5040 --app-protocol grpc --components-path ./components/local --log-level debug -- python3 ./src/python_provider/provider.py
+  args: run --app-id provider --app-port 5040 --app-protocol grpc --components-path ./components/local -- python3 ./src/python_provider/provider.py

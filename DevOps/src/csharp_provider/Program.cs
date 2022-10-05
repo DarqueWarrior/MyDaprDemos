@@ -15,10 +15,13 @@ app.MapPost("/tweets", async (Tweet t, Dapr.Client.DaprClient client) =>
  {
      app.Logger.LogInformation("/tweets invoked...");
      var scoredTweet = await client.InvokeMethodAsync<Tweet, AnalyzedTweet>("processor", "score", t);
+     
      app.Logger.LogInformation("/tweet scored, saving to state store");
      await client.SaveStateAsync<AnalyzedTweet>("statestore", t.Id, scoredTweet);
+     
      app.Logger.LogInformation("/tweet saved, posting to pubsub");
      await client.PublishEventAsync<AnalyzedTweet>("pubsub", "scored", scoredTweet);
+     
      app.Logger.LogInformation("/tweet processed");
  });
 
