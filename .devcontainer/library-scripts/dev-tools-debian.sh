@@ -26,6 +26,9 @@ apt-get update
 # Install kubectl
 apt-get install -y kubectl
 
+# Install Helm
+wget -q https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 -O - | /bin/bash
+
 # Install terraform 
 apt-get install -y terraform
 
