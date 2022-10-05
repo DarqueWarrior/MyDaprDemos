@@ -32,7 +32,8 @@
 		"ms-kubernetes-tools.vscode-kubernetes-tools",
 		"HashiCorp.terraform",
 		"vscjava.vscode-java-pack",
-		"ms-python.python"
+		"ms-python.python",
+		"mindaro.mindaro"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
