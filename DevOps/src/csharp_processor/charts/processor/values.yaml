@@ -13,5 +13,5 @@ image:
    imagePullPolicy: "Always"
 
 processor:
-   port: 80
+   port: 5030
    image: "k3d-registry.localhost:5500/csharpprocessor"

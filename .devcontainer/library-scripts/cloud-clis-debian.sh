@@ -7,6 +7,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | /bin/bash
  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
  unzip awscliv2.zip
  ./aws/install
+ rm -f awscliv2.zip
 
  # Install gcloud CLI
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list 

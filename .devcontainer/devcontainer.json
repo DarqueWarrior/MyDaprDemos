@@ -2,8 +2,8 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/alpine
 {
 	"name": "MyDaprDemos",
-	"image": "darquewarrior/daprdevcontainer:0.0.8",
-	// "dockerFile": "./Dockerfile",
+	"image": "darquewarrior/daprdevcontainer:0.0.11",
+	//"dockerFile": "./Dockerfile",
 	"remoteEnv": {
 		"PATH": "${containerEnv:PATH}:/home/codespace/.dapr/bin"
 	},
@@ -30,7 +30,10 @@
 		"streetsidesoftware.code-spell-checker",
 		"ms-azuretools.vscode-tye",
 		"ms-kubernetes-tools.vscode-kubernetes-tools",
-		"HashiCorp.terraform"
+		"HashiCorp.terraform",
+		"vscjava.vscode-java-pack",
+		"ms-python.python",
+		"mindaro.mindaro"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [

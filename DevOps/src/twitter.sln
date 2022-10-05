@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "provider", "provider\provider.csproj", "{02EAB257-5E55-4502-B0BB-8CAB7A3FCE60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "provider", "csharp_provider\provider.csproj", "{02EAB257-5E55-4502-B0BB-8CAB7A3FCE60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "processor", "processor\processor.csproj", "{189A7892-2265-42A1-AB56-E05ACF104131}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "processor", "csharp_processor\processor.csproj", "{189A7892-2265-42A1-AB56-E05ACF104131}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "viewer", "viewer\viewer.csproj", "{75DA92D0-1B5F-4D85-BF6A-EF3D32C5EB84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "viewer", "csharp_viewer\viewer.csproj", "{75DA92D0-1B5F-4D85-BF6A-EF3D32C5EB84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

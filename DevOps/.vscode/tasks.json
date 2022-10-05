@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "csharp_build",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -14,7 +14,42 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "run_provider",
+            "label": "multi_build",
+            "dependsOn": [
+                "java_build",
+                "python_build"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "python_build",
+            "command": "pip3",
+            "options": {
+                "cwd": "${workspaceFolder}/src/python_provider"
+            },
+            "type": "process",
+            "args": [
+                "install",
+                "-r",
+                "requirements.txt"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "java_build",
+            "command": "mvn",
+            "options": {
+                "cwd": "${workspaceFolder}/src/java_viewer"
+            },
+            "type": "process",
+            "args": [
+                "clean",
+                "install"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "run_csharp_provider",
             "appId": "provider",
             "appPort": 5040,
             "httpPort": 3500,
@@ -23,31 +58,58 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_provider",
+            "label": "stop_csharp_provider",
             "appId": "provider",
             "type": "daprd-down"
         },
         {
-            "label": "run_processor",
+            "label": "run_python_provider",
+            "appId": "provider",
+            "appPort": 5040,
+            "httpPort": 3500,
+            "grpcPort": 50001,
+            "appProtocol": "grpc",
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_python_provider",
+            "appId": "provider",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_csharp_processor",
             "appId": "processor",
             "appPort": 5030,
             "type": "dapr",
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_processor",
+            "label": "stop_csharp_processor",
             "appId": "processor",
             "type": "daprd-down"
         },
         {
-            "label": "run_viewer",
+            "label": "run_csharp_viewer",
             "appId": "viewer",
             "appPort": 5000,
             "type": "dapr",
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_viewer",
+            "label": "stop_csharp_viewer",
+            "appId": "viewer",
+            "type": "daprd-down"
+        },
+        {
+            "label": "run_java_viewer",
+            "appId": "viewer",
+            "appPort": 8088,
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "stop_java_viewer",
             "appId": "viewer",
             "type": "daprd-down"
         }

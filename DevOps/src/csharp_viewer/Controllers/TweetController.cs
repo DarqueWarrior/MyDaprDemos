@@ -21,7 +21,7 @@ public class TweetController : ControllerBase
     [Dapr.Topic("pubsub", "scored")]
     public async void PostTweet(object tweet)
     {
-        this._logger.LogInformation("Viewer");
+        this._logger.LogInformation("Viewer received tweet");
         await this._hub.Clients.All.SendAsync("ReceiveTweet", tweet);
     }
 }
