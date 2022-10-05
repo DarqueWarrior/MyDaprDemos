@@ -63,7 +63,7 @@ if ($env -eq "azure") {
     Write-Output "dapr run -a serviceB -p 5010 -- dotnet run --project ./serviceB/serviceB.csproj --urls "http://localhost:5010" `n"
     Write-Output "dapr run -a serviceC -p 5020 -- dotnet run --project ./serviceC/serviceC.csproj --urls "http://localhost:5020" `n"
 
-    ~/bin/tye run ./src/tye_cloud.yaml
+    tye run ./src/tye_cloud.yaml
 }
 else {
     Write-Output "Running demo with local resources"
@@ -75,5 +75,5 @@ else {
     Write-Output "dapr run -a serviceB -p 5010 -- dotnet run --project ./serviceB/serviceB.csproj --urls "http://localhost:5010" `n"
     Write-Output "dapr run -a serviceC -p 5020 -- dotnet run --project ./serviceC/serviceC.csproj --urls "http://localhost:5020" `n"
 
-    ~/bin/tye run ./src/tye_local.yaml
+    tye run ./src/tye_local.yaml
 }

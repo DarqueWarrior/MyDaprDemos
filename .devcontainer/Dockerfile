@@ -34,6 +34,9 @@ RUN /bin/bash /tmp/library-scripts/cloud-clis-debian.sh \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/    
 
+ENV JAVA_HOME="/jdk-11.0.11+9/"
+ENV PATH="${PATH}:/apache-maven-3.8.6/bin:/jdk-11.0.11+9/bin"
+
 VOLUME [ "/var/lib/docker" ]
 
 # Setting the ENTRYPOINT to docker-init.sh will start up the Docker Engine 
