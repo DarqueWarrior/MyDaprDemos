@@ -3,9 +3,10 @@ Content-Type: application/json
 
 {
     "Summary": "hot",
+    "Location": "77379",
     "TemperatureC": "46"
 }
 
 ###
 
-GET http://localhost:3500/v1.0/invoke/myapp/method/weatherforecast
+GET http://localhost:3500/v1.0/invoke/myapp/method/weatherforecast/77379
