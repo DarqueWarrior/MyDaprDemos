@@ -18,7 +18,10 @@ These demos require [CodeSpaces](https://github.com/features/codespaces). This r
 
 ## Create Codespaces Secrets
 
-To create the Codespaces secrets you will need an Azure service principal, tenant and subscription id to run Azure Demos. To run the demos with AWS you will need an AWS access key ID, secret access key and region.
+To create the Codespaces secrets you will need:
+- Azure, Azure service principal, tenant, and subscription id 
+- AWS, AWS access key ID, secret access key, and region
+- GCP, GCP Key, project, location, and region
 
 ### Azure
 
