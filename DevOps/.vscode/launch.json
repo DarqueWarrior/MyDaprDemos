@@ -5,9 +5,9 @@
             "name": "Twitter",
             "preLaunchTask": "csharp_build",
             "configurations": [
+                "CSharp_Viewer",
                 "CSharp_Processor",
-                "CSharp_Provider",
-                "CSharp_Viewer"
+                "CSharp_Provider"
             ],
             "stopAll": true
         },
@@ -15,9 +15,9 @@
             "name": "Multi",
             "preLaunchTask": "multi_build",
             "configurations": [
+                "Java_Viewer",
                 "CSharp_Processor",
-                "Python_Provider",
-                "Java_Viewer"
+                "Python_Provider"
             ],
             "stopAll": true
         }
