@@ -37,7 +37,7 @@ Now in the folder create a new web API project:
 dotnet new webapi --no-https
 ```
 
-At this point we can already use Dapr with this app without changing a single line.
+At this point we can use Dapr with this app without changing a single line.
 
 ```powershell
 dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 -- dotnet run --urls http://*:5000
@@ -83,7 +83,13 @@ app.MapSubscribeHandler();
 
 This allows code to subscribe to events via attributes.  With those three changes in place we can turn this code into a stateful, event driven service.
 
-By default this code returns random weather data. But a real system might return data stored from events posted to it about the current weather. So we are going to add code that get executed for each event and stores the data.
+By default this code returns random weather data. But a real system might return data stored from events posted to it about the current weather. So we are going to update the data model to have a location property and add code that get executed for each event and stores the data.
+
+Open the _WeatherForecast.cs_ file and add.
+
+```csharp
+public string? Location { get; set; }
+```
 
 Open the _WeatherForecastController.cs_ file and add.
 
@@ -92,19 +98,20 @@ Open the _WeatherForecastController.cs_ file and add.
 [Dapr.Topic("pubsub", "new")]
 public async Task<ActionResult<WeatherForecast>> PostWeatherForecast(WeatherForecast model, [FromServices] Dapr.Client.DaprClient daprClient)
 {
-    await daprClient.SaveStateAsync<WeatherForecast>("statestore", "weather", model);
+    await daprClient.SaveStateAsync<WeatherForecast>("statestore", model.Location, model);
 
     return model;
 }
 ```
 
-Continuing with the incremental adoption we will not change the return type of the get method when adding new functionality. 
+Update the _Get_ method to return a single WeatherForecast object. 
 
 ```csharp
 [HttpGet(Name = "GetWeatherForecast")]
-public IEnumerable<WeatherForecast> Get([FromServices] Dapr.Client.DaprClient daprClient)
+[Route("{location}")]
+public async Task<WeatherForecast> Get(string location, [FromServices] Dapr.Client.DaprClient daprClient)
 {
-    return new List<WeatherForecast>{ daprClient.GetStateAsync<WeatherForecast>("statestore", "weather").Result };
+    return await daprClient.GetStateAsync<WeatherForecast>("statestore", location);
 }
 ```
 
@@ -167,7 +174,8 @@ Connection: close
     "date": "0001-01-01T00:00:00",
     "temperatureC": 46,
     "temperatureF": 114,
-    "summary": "hot"
+    "summary": "hot",
+    "location": "77379"
   }
 ]
 ```
