@@ -38,6 +38,23 @@ resource sbAuthRule 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2021-06-
   name: 'RootManageSharedAccessKey'
 }
 
+resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
+  name: 'ws${uniqueString(resourceGroup().id)}'
+  location: location
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
+  name: 'appi${uniqueString(resourceGroup().id)}'
+  kind: 'web'
+  location: location
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: workspace.id
+    publicNetworkAccessForQuery: 'Enabled'
+    publicNetworkAccessForIngestion: 'Enabled'
+  }
+}
+
 output storageAccountName string = stg.name
 
 output cognitiveServiceName string = cs.name
@@ -45,3 +62,5 @@ output cognitiveServiceEndpoint string = reference(cs.name).endpoint
 
 output serviceBusNamespace string = sb.name
 output serviceBusAuthRule string = sbAuthRule.name
+
+output instrumentationKey string = appInsights.properties.InstrumentationKey

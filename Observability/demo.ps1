@@ -57,12 +57,15 @@ if ($env -eq "azure") {
     }
 
     # Make sure the dapr_zipkin container is not running.
+    # Don't need zipkin because this demo uses the 
+    # otel/opentelemetry-collector-contrib-dev image
     docker stop dapr_zipkin
 
     Write-Output "dapr run -a serviceA -p 5000 -H 3500 -- dotnet run --project ./serviceA/serviceA.csproj --urls "http://localhost:5000" `n"
     Write-Output "dapr run -a serviceB -p 5010 -- dotnet run --project ./serviceB/serviceB.csproj --urls "http://localhost:5010" `n"
     Write-Output "dapr run -a serviceC -p 5020 -- dotnet run --project ./serviceC/serviceC.csproj --urls "http://localhost:5020" `n"
 
+    # Launches Application Insights container
     tye run ./src/tye_cloud.yaml
 }
 else {

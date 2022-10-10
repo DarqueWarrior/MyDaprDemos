@@ -102,8 +102,9 @@ jobs:
           
           $aksName = $deployment.properties.outputs.aksName.value
           $serviceBusAuthRule = $deployment.properties.outputs.serviceBusAuthRule.value
-          $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
           $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+          $instrumentationKey = $deployment.properties.outputs.instrumentationKey.value
+          $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
           $cognitiveServiceName = $deployment.properties.outputs.cognitiveServiceName.value
           $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
           
@@ -130,8 +131,10 @@ jobs:
           Write-Output "::set-output name=storageAccountKey::$($storageAccountKey)"
           Write-Output "::set-output name=serviceBusEndpoint::$($serviceBusEndpoint)"
           Write-Output "::set-output name=storageAccountName::$($storageAccountName)"
+          Write-Output "::set-output name=instrumentationKey::$($instrumentationKey)"
           Write-Output "::set-output name=cognitiveServiceKey::$($cognitiveServiceKey)"
           Write-Output "::set-output name=cognitiveServiceEndpoint::$($cognitiveServiceEndpoint)"
+
         working-directory: ./DevOps/deploy/azure/
 
       - name: Initialize Dapr
@@ -153,6 +156,7 @@ jobs:
     outputs:
       aksName: ${{ steps.azure-deployment.outputs.aksName }}
       storageAccountKey: ${{ steps.azure-deployment.outputs.storageAccountKey }}
+      instrumentationKey: ${{ steps.azure-deployment.outputs.instrumentationKey }}
       storageAccountName: ${{ steps.azure-deployment.outputs.storageAccountName }}
       serviceBusEndpoint: ${{ steps.azure-deployment.outputs.serviceBusEndpoint }}
       cognitiveServiceKey: ${{ steps.azure-deployment.outputs.cognitiveServiceKey }}

@@ -34,7 +34,7 @@ Running in cloud
  ./demo.ps1 -env azure
 ```
 
-Click the Send Request button above of the request to post a new order to Service A to start the demo. After clicking the link a few times you can view the tracing information. If running locally click the
+Click the Send Request button above of the request to post a new order to Service A to start the demo. After clicking the link a few times you can view the tracing information.
 
 When running locally you can expand the _tempfiles_ folder to show the data being stored and deleted.
 

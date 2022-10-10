@@ -13,5 +13,5 @@ image:
    imagePullPolicy: "Always"
 
 provider:
-   port: 5040
+   port: 80
    image: "k3d-registry.localhost:5500/csharpprovider"
