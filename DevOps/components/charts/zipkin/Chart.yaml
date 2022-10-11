@@ -1,6 +1,6 @@
 apiVersion: v2
-name: twittersentimentprocessor
-description: Main chart for twitter sentiment processor demo
+name: zipkin
+description: A Helm chart for Kubernetes that deploys a zipkin for Twitter Sentiment Demo.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -22,20 +22,3 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "0.1.0"
-
-dependencies:
-  - name: components
-    version: 0.1.0
-    repository: "file://../components/charts/components"
-  - name: zipkin
-    version: 0.1.0
-    repository: "file://../components/charts/zipkin"
-  - name: processor
-    version: 0.1.0
-    repository: "file://../src/csharp_processor/charts/processor"
-  - name: provider
-    version: 0.1.0
-    repository: "file://../src/csharp_provider/charts/provider"
-  - name: viewer
-    version: 0.1.0
-    repository: "file://../src/csharp_viewer/charts/viewer"
