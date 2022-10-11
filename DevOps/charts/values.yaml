@@ -12,9 +12,6 @@ components:
 processor:
   cognitiveService:
     endpoint: ""
-tracing:
-   zipkin:
-      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
-zipkin:
-   externalPort: 9411
-   nodePort: 30001    
+
+enableZipkin: false
+enableAppInsights: false

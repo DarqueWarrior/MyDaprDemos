@@ -85,26 +85,28 @@ function Deploy-AzureInfrastructure {
         # To deploy the helm charts locally in K3d you need the secrets
         # to pass to helm to override the values.yaml file
         $yaml = [PSCustomObject]@{
-            components = [PSCustomObject]@{
-                serviceBus       = [PSCustomObject]@{
+            appinsights = [PSCustomObject]@{
+                applicationInsights = [PSCustomObject]@{
+                    instrumentationKey = $instrumentationKey
+                }
+            } 
+            components  = [PSCustomObject]@{
+                serviceBus          = [PSCustomObject]@{
                     connectionString = $serviceBusEndpoint
                 }
-                tableStorage     = [PSCustomObject]@{
+                tableStorage        = [PSCustomObject]@{
                     name = $storageAccountName
                     key  = $storageAccountKey
                 }
-                twitter          = [PSCustomObject]@{
+                twitter             = [PSCustomObject]@{
                     consumerKey    = $env:TWITTER_API_KEY
                     consumerSecret = $env:TWITTER_API_KEY_SECRET
                     accessToken    = $env:TWITTER_ACCESS_TOKEN
                     accessSecret   = $env:TWITTER_ACCESS_TOKEN_SECRET
                 }
-                cognitiveService = [PSCustomObject]@{
+                cognitiveService    = [PSCustomObject]@{
                     token    = $cognitiveServiceKey
                     endpoint = $cognitiveServiceEndpoint
-                }
-                applicationInsights = [PSCustomObject]@{
-                    instrumentationKey = $instrumentationKey
                 }
             }
         }

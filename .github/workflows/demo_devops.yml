@@ -199,7 +199,6 @@ jobs:
             --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
             --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
             --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprocessor' `
-            --set components.zipkin.externalPort='80' `
             --set components.twitter.consumerKey='${{ secrets.TWITTER_CONSUMERKEY }}' `
             --set components.twitter.accessToken='${{ secrets.TWITTER_ACCESSTOKEN }}' `
             --set components.twitter.accessSecret='${{ secrets.TWITTER_ACCESSSECRET }}' `
@@ -208,7 +207,9 @@ jobs:
             --set components.tableStorage.name='${{ needs.deployInfrastructure.outputs.storageAccountName }}' `
             --set components.cognitiveService.token='${{ needs.deployInfrastructure.outputs.cognitiveServiceKey }}' `
             --set components.serviceBus.connectionString='${{ needs.deployInfrastructure.outputs.serviceBusEndpoint }}' `
-            --set components.cognitiveService.endpoint='${{ needs.deployInfrastructure.outputs.cognitiveServiceEndpoint }}'
+            --set components.cognitiveService.endpoint='${{ needs.deployInfrastructure.outputs.cognitiveServiceEndpoint }}' `
+            --set enableAppInsights=true `
+            --set appinsights.applicationInsights.instrumentationKey='${{ needs.deployInfrastructure.outputs.instrumentationKey }}'
 
       - name: Get IPs
         shell: pwsh

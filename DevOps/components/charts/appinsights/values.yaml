@@ -1,0 +1,9 @@
+tracing:
+   endpointAddress: "http://otel-collector.default.svc.cluster.local:9411/api/v2/spans"
+
+zipkin:
+   externalPort: 9411
+   nodePort: 30001
+
+applicationInsights:
+  instrumentationKey: ""

@@ -93,5 +93,5 @@ else {
 
     helm dependency update ./charts/
 
-    helm upgrade twitter ./charts/ -f ./charts/local.yaml -i
+    helm upgrade twitter ./charts/ --values ./charts/local.yaml --install --set enableZipkin=true
 }

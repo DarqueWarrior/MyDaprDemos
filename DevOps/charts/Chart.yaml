@@ -27,11 +27,13 @@ dependencies:
   - name: components
     version: 0.1.0
     repository: "file://../components/charts/components"
-  # - name: zipkin
-  #   version: 0.1.0
-  #   repository: "file://../components/charts/zipkin"
+  - name: zipkin
+    version: 0.1.0
+    condition: enableZipkin
+    repository: "file://../components/charts/zipkin"
   - name: appinsights
     version: 0.1.0
+    condition: enableAppInsights
     repository: "file://../components/charts/appinsights"    
   - name: processor
     version: 0.1.0
