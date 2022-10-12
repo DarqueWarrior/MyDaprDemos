@@ -195,7 +195,7 @@ jobs:
             --set viewer.image.tag='${{ github.run_number }}' `
             --set provider.image.tag='${{ github.run_number }}' `
             --set processor.image.tag='${{ github.run_number }}' `
-            --set viewer.viewer.nodePort='-1'
+            --set viewer.viewer.nodePort='-1' `
             --set viewer.viewer.externalPort='80' `
             --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
             --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
