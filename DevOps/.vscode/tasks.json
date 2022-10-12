@@ -16,6 +16,7 @@
         {
             "label": "multi_build",
             "dependsOn": [
+                "csharp_build",
                 "java_build",
                 "python_build"
             ],

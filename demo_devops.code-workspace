@@ -12,7 +12,6 @@
 			"**/.devcontainer": true,
 			"**/.images": true,
 			"**/.scripts": true,
-			"**/.vscode": true,
 			"**/bin": true,
 			"**/obj": true,
 			"demo_devops.code-workspace": true
