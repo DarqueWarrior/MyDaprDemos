@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/csharp${{ matrix.app }}:${{ github.run_number }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.app }}:${{ github.run_number }}
           context: ./DevOps/src/${{ matrix.app }}/
 
       - name: Output matrix values
@@ -54,7 +54,7 @@ jobs:
         id: values
         run: |
           # Get all the outputs
-          Write-Output "::set-output name=image::${{ secrets.DOCKERHUB_USERNAME }}/csharp${{ matrix.app }}"
+          Write-Output "::set-output name=image::${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.app }}"
 
   deployInfrastructure:
     name: deploy infrastructure
@@ -197,9 +197,9 @@ jobs:
             --set processor.image.tag='${{ github.run_number }}' `
             --set viewer.viewer.nodePort='-1' `
             --set viewer.viewer.externalPort='80' `
-            --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
-            --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
-            --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprocessor' `
+            --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharp_viewer' `
+            --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharp_provider' `
+            --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharp_processor' `
             --set components.twitter.consumerKey='${{ secrets.TWITTER_CONSUMERKEY }}' `
             --set components.twitter.accessToken='${{ secrets.TWITTER_ACCESSTOKEN }}' `
             --set components.twitter.accessSecret='${{ secrets.TWITTER_ACCESSSECRET }}' `
