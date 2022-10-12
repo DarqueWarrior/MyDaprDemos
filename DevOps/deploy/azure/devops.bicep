@@ -91,6 +91,23 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-09-01' = {
   }
 }
 
+resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
+  name: 'ws${uniqueString(resourceGroup().id)}'
+  location: location
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
+  name: 'appi${uniqueString(resourceGroup().id)}'
+  kind: 'web'
+  location: location
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: workspace.id
+    publicNetworkAccessForQuery: 'Enabled'
+    publicNetworkAccessForIngestion: 'Enabled'
+  }
+}
+
 output clusterName string = aksName
 
 output storageAccountName string = stg.name
@@ -100,3 +117,5 @@ output cognitiveServiceEndpoint string = reference(cs.name).endpoint
 
 output serviceBusNamespace string = sb.name
 output serviceBusAuthRule string = sbAuthRule.name
+
+output instrumentationKey string = appInsights.properties.InstrumentationKey

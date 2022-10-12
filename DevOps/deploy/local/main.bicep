@@ -23,3 +23,5 @@ output serviceBusNamespace string = devops.outputs.serviceBusNamespace
 
 output cognitiveServiceName string = devops.outputs.cognitiveServiceName
 output cognitiveServiceEndpoint string = devops.outputs.cognitiveServiceEndpoint
+
+output instrumentationKey string = devops.outputs.instrumentationKey

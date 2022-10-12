@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/csharp${{ matrix.app }}:${{ github.run_number }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.app }}:${{ github.run_number }}
           context: ./DevOps/src/${{ matrix.app }}/
 
       - name: Output matrix values
@@ -54,7 +54,7 @@ jobs:
         id: values
         run: |
           # Get all the outputs
-          Write-Output "::set-output name=image::${{ secrets.DOCKERHUB_USERNAME }}/csharp${{ matrix.app }}"
+          Write-Output "::set-output name=image::${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.app }}"
 
   deployInfrastructure:
     name: deploy infrastructure
@@ -102,8 +102,9 @@ jobs:
           
           $aksName = $deployment.properties.outputs.aksName.value
           $serviceBusAuthRule = $deployment.properties.outputs.serviceBusAuthRule.value
-          $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
           $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+          $instrumentationKey = $deployment.properties.outputs.instrumentationKey.value
+          $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
           $cognitiveServiceName = $deployment.properties.outputs.cognitiveServiceName.value
           $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
           
@@ -130,8 +131,10 @@ jobs:
           Write-Output "::set-output name=storageAccountKey::$($storageAccountKey)"
           Write-Output "::set-output name=serviceBusEndpoint::$($serviceBusEndpoint)"
           Write-Output "::set-output name=storageAccountName::$($storageAccountName)"
+          Write-Output "::set-output name=instrumentationKey::$($instrumentationKey)"
           Write-Output "::set-output name=cognitiveServiceKey::$($cognitiveServiceKey)"
           Write-Output "::set-output name=cognitiveServiceEndpoint::$($cognitiveServiceEndpoint)"
+
         working-directory: ./DevOps/deploy/azure/
 
       - name: Initialize Dapr
@@ -153,6 +156,7 @@ jobs:
     outputs:
       aksName: ${{ steps.azure-deployment.outputs.aksName }}
       storageAccountKey: ${{ steps.azure-deployment.outputs.storageAccountKey }}
+      instrumentationKey: ${{ steps.azure-deployment.outputs.instrumentationKey }}
       storageAccountName: ${{ steps.azure-deployment.outputs.storageAccountName }}
       serviceBusEndpoint: ${{ steps.azure-deployment.outputs.serviceBusEndpoint }}
       cognitiveServiceKey: ${{ steps.azure-deployment.outputs.cognitiveServiceKey }}
@@ -191,11 +195,11 @@ jobs:
             --set viewer.image.tag='${{ github.run_number }}' `
             --set provider.image.tag='${{ github.run_number }}' `
             --set processor.image.tag='${{ github.run_number }}' `
+            --set viewer.viewer.nodePort='-1' `
             --set viewer.viewer.externalPort='80' `
-            --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpviewer' `
-            --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprovider' `
-            --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharpprocessor' `
-            --set components.zipkin.externalPort='80' `
+            --set viewer.viewer.image='${{ secrets.DOCKERHUB_USERNAME }}/csharp_viewer' `
+            --set provider.provider.image='${{ secrets.DOCKERHUB_USERNAME }}/csharp_provider' `
+            --set processor.processor.image='${{ secrets.DOCKERHUB_USERNAME }}/csharp_processor' `
             --set components.twitter.consumerKey='${{ secrets.TWITTER_CONSUMERKEY }}' `
             --set components.twitter.accessToken='${{ secrets.TWITTER_ACCESSTOKEN }}' `
             --set components.twitter.accessSecret='${{ secrets.TWITTER_ACCESSSECRET }}' `
@@ -204,7 +208,9 @@ jobs:
             --set components.tableStorage.name='${{ needs.deployInfrastructure.outputs.storageAccountName }}' `
             --set components.cognitiveService.token='${{ needs.deployInfrastructure.outputs.cognitiveServiceKey }}' `
             --set components.serviceBus.connectionString='${{ needs.deployInfrastructure.outputs.serviceBusEndpoint }}' `
-            --set components.cognitiveService.endpoint='${{ needs.deployInfrastructure.outputs.cognitiveServiceEndpoint }}'
+            --set components.cognitiveService.endpoint='${{ needs.deployInfrastructure.outputs.cognitiveServiceEndpoint }}' `
+            --set enableAppInsights=true `
+            --set appinsights.applicationInsights.instrumentationKey='${{ needs.deployInfrastructure.outputs.instrumentationKey }}'
 
       - name: Get IPs
         shell: pwsh
@@ -230,7 +236,5 @@ jobs:
           # Make sure services are ready
           Write-Output "`nGetting IP addresses. Please wait..."
           $viewerIp = Get-IP -serviceName viewer
-          $zipkinIp = Get-IP -serviceName publiczipkin
 
-          Write-Output "`nYour app is accessible from http://$viewerIp"
-          Write-Output "Zipkin is accessible from http://$zipkinIp`n"
+          Write-Output "`nYour app is accessible from http://$viewerIp`n"

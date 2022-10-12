@@ -12,3 +12,6 @@ components:
 processor:
   cognitiveService:
     endpoint: ""
+
+enableZipkin: false
+enableAppInsights: false

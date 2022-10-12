@@ -39,6 +39,7 @@ function Deploy-AzureInfrastructure {
         $serviceBusAuthRule = $deployment.properties.outputs.serviceBusAuthRule.value
         $serviceBusNamespace = $deployment.properties.outputs.serviceBusNamespace.value
         $storageAccountName = $deployment.properties.outputs.storageAccountName.value
+        $instrumentationKey = $deployment.properties.outputs.instrumentationKey.value
         $cognitiveServiceName = $deployment.properties.outputs.cognitiveServiceName.value
         $cognitiveServiceEndpoint = $deployment.properties.outputs.cognitiveServiceEndpoint.value
         
@@ -63,6 +64,7 @@ function Deploy-AzureInfrastructure {
         Write-Verbose "storageAccountKey = $storageAccountKey"
         Write-Verbose "serviceBusEndpoint = $serviceBusEndpoint"
         Write-Verbose "storageAccountName = $storageAccountName"
+        Write-Verbose "instrumentationKey = $instrumentationKey"
         Write-Verbose "cognitiveServiceKey = $cognitiveServiceKey"
         Write-Verbose "cognitiveServiceEndpoint = $cognitiveServiceEndpoint"
 
@@ -77,26 +79,32 @@ function Deploy-AzureInfrastructure {
             accessTokenSecret        = $env:TWITTER_ACCESS_TOKEN_SECRET
             cognitiveServiceKey      = $cognitiveServiceKey
             cognitiveServiceEndpoint = $cognitiveServiceEndpoint
+            instrumentationKey       = $instrumentationKey
         }
 
         # To deploy the helm charts locally in K3d you need the secrets
         # to pass to helm to override the values.yaml file
         $yaml = [PSCustomObject]@{
-            components = [PSCustomObject]@{
-                serviceBus       = [PSCustomObject]@{
+            appinsights = [PSCustomObject]@{
+                applicationInsights = [PSCustomObject]@{
+                    instrumentationKey = $instrumentationKey
+                }
+            } 
+            components  = [PSCustomObject]@{
+                serviceBus          = [PSCustomObject]@{
                     connectionString = $serviceBusEndpoint
                 }
-                tableStorage     = [PSCustomObject]@{
+                tableStorage        = [PSCustomObject]@{
                     name = $storageAccountName
                     key  = $storageAccountKey
                 }
-                twitter          = [PSCustomObject]@{
+                twitter             = [PSCustomObject]@{
                     consumerKey    = $env:TWITTER_API_KEY
                     consumerSecret = $env:TWITTER_API_KEY_SECRET
                     accessToken    = $env:TWITTER_ACCESS_TOKEN
                     accessSecret   = $env:TWITTER_ACCESS_TOKEN_SECRET
                 }
-                cognitiveService = [PSCustomObject]@{
+                cognitiveService    = [PSCustomObject]@{
                     token    = $cognitiveServiceKey
                     endpoint = $cognitiveServiceEndpoint
                 }
