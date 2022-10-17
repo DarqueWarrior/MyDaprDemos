@@ -23,7 +23,7 @@ dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 -- dotnet run --ur
 
 ### Coding
 
-All the commands below will be performed in a PowerShell terminal.
+All the commands below will be performed in a PowerShell terminal. Some of the commands require [Trackyon.Utils](https://www.powershellgallery.com/packages/Trackyon.Utils/0.2.1)
 
 From the root of the workspace create and change into _src/myapp_:
 
