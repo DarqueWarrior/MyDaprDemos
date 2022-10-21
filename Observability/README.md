@@ -16,7 +16,7 @@ To provision the infrastructure before the demo execute the following command in
 
 This code is automatically run by the _demo.ps1_ script if the `-env` parameter is passed and *./azureConfig/otel-local-config.yaml* file is missing the Azure Application Insights instrumentation key.
 
-The workspace consists of one top level folder _Observability_. This folder holds the _azureConfig_, _deploy_, and _src_ folders. The _azureConfig_ folder holds the _otel-local-config.yaml_ file that contains the configuration for the [Open Telemetry Collector used to send the data to Application Insights](https://docs.dapr.io/operations/monitoring/tracing/open-telemetry-collector-appinsights/). The Open Telemetry Collector is run in a local container.
+The workspace consists of one top level folder _Observability_. This folder holds the _azureConfig_, _deploy_, and _src_ folders. The _azureConfig_ folder holds the _otel-local-config.yaml_ file that contains the configuration for the [Open Telemetry Collector used to send the data to Application Insights](https://docs.dapr.io/operations/monitoring/tracing/otel-collector/open-telemetry-collector-appinsights/). The Open Telemetry Collector is run in a local container.
 
 The core of the demo is in the _src_ folder. This folder holds three services, Service A, B, and C. Service A subscribes to the **PubSub** component. When a new order is received (1) Service A calls Service B using service to service invocation (2). When Service A gets a response from Service B, Service A stores the processed order using the **StateStore** component (3). Finally, Service A publishes the order to the **PubSub** component where Service C reads it (4).
 
