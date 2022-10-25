@@ -25,6 +25,7 @@ az account set -s $AZURE_SUB_ID
 
 # set defaults
 az config set core.output=table
+az config set extension.use_dynamic_install=yes_without_prompt
 
 ### AWS
 # set output to table
