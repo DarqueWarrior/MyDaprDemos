@@ -21,7 +21,7 @@ param (
     [Parameter(
         HelpMessage = "Set to the location of the resources to use."
     )]
-    [ValidateSet("local", "k8s", "multi")]
+    [ValidateSet("local", "k8s", "multi", "node")]
     [string]
     $env = "local",
 
@@ -50,7 +50,7 @@ if ($(Test-Path -Path './components/local/local_secrets.json') -eq $false) {
 }
 
 if ($env -eq "local") {
-    Write-Output "Running demo with local resources"
+    Write-Output "Running .NET demo with local resources"
 
     # Make sure the dapr_zipkin container is running.
     docker start dapr_zipkin
@@ -78,6 +78,24 @@ elseif ($env -eq "multi") {
     Write-Output "dapr run --app-id provider --app-port 5040 --app-protocol grpc --components-path ./components/local -- python3 ./src/python_provider/provider.py `n"
 
     tye run ./src/tye_multi.yaml
+}
+elseif ($env -eq "node") {
+    Write-Output "Running Node.js demo with local resources"
+
+    # Make sure the dapr_zipkin container is running.
+    docker start dapr_zipkin
+
+    # Build the java project
+    mvn -f ./src/java_viewer/ clean install
+
+    # Update Python
+    pip3 install -r ./src/python_provider/requirements.txt
+
+    Write-Output "dapr run --app-id viewer --app-port 8088 --components-path ./components/local -- node ./src/javascript_viewer/app.js `n"
+    Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- node ./src/javascript_processor/app.js `n"
+    Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- node ./src/javascript_provider/app.js `n"
+
+    tye run ./src/tye_node.yaml
 }
 else {
     if ($null -eq $(docker images "k3d-registry.localhost:5500/*" -q)) {
