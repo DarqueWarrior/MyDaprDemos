@@ -45,3 +45,7 @@ wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bi
 # Install PIP3
 apt-get update
 apt-get install -y python3-pip
+
+# Install NodeJS
+curl -fsSL https://deb.nodesource.com/setup_current.x | bash - &&\
+apt-get install -y nodejs
