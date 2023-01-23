@@ -26,7 +26,7 @@ connection.on("ReceiveTweet", function (t) {
     var scoreAlt = `${scoreStr}: ${t.score}`;
 
     var tweetText = t.tweet.text;
-    if (t.tweet.fullText != null) {
+    if (t.tweet.full_text != null) {
         tweetText = t.tweet.full_text;
     }
 
