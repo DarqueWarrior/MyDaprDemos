@@ -85,13 +85,7 @@ elseif ($env -eq "node") {
     # Make sure the dapr_zipkin container is running.
     docker start dapr_zipkin
 
-    # Build the java project
-    mvn -f ./src/java_viewer/ clean install
-
-    # Update Python
-    pip3 install -r ./src/python_provider/requirements.txt
-
-    Write-Output "dapr run --app-id viewer --app-port 8088 --components-path ./components/local -- node ./src/javascript_viewer/app.js `n"
+    Write-Output "dapr run --app-id viewer --app-port 5000 --components-path ./components/local -- dotnet run --project ./src/csharp_viewer/viewer.csproj --urls "http://localhost:5000" `n"
     Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- node ./src/javascript_processor/app.js `n"
     Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- node ./src/javascript_provider/app.js `n"
 
