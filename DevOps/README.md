@@ -2,7 +2,7 @@
 
 The purpose of this demo is to show:
 - how to deploy a Daprized application to a cloud based Kubernetes Service, using the [Dapr tool installer](https://github.com/marketplace/actions/dapr-tool-installer) GitHub Action
-- using Dapr with C#, Java, and Python
+- using Dapr with C#, Java, JavaScript, and Python
 - how to debug all three microservices at the same time across languages
 
 Open the _demo_devops.code-workspace_ file and click the **Open Workspace** button in the lower right corner. This will reload your Codespace and scope your Explorer to just the folders needed for this demo. 
