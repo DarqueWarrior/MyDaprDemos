@@ -1,8 +1,9 @@
 const express = require("express");
 const logger = require("./logger");
-const openTelemetry = require("@opentelemetry/api");
+const tracing = require("./tracing");
+const { context, propagation, trace } = require("@opentelemetry/api");
 
-const tracer = openTelemetry.trace.getTracer(
+const tracer = trace.getTracer(
     'processor-tracer'
 );
 
@@ -45,6 +46,16 @@ app.post("/score", (req, res) => {
             },
         ],
     };
+
+    // Extracts the 'traceparent' and 'tracestate' data into a context object.
+    //
+    logger.debug("Request Header: " + JSON.stringify(req.headers));
+
+    // You can then treat this context as the active context for your
+    // traces.
+    logger.debug("Active Context: " + JSON.stringify(context.active));
+    let activeContext = propagation.extract(context.active(), req.headers)
+    logger.debug("New Active Context: " + JSON.stringify(activeContext));
 
     // Call cognitive service to score the tweet
     logger.debug("Invoking cognitive service");

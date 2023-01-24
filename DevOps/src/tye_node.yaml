@@ -7,7 +7,7 @@ services:
 
 - name: processor
   executable: dapr
-  args: run --app-id processor --app-port 5030 --components-path ./components/local -- node -r ./src/javascript_processor/tracing.js ./src/javascript_processor/app.js
+  args: run --app-id processor --app-port 5030 --components-path ./components/local -- node ./src/javascript_processor/app.js
   env_file:
     - ../components/local/local.env
 
