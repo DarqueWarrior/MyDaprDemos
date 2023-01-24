@@ -48,7 +48,7 @@ app.post("/score", (req, res) => {
 
     // Call cognitive service to score the tweet
     logger.debug("Invoking cognitive service");
-    tracer.startActiveSpan("call cognitive services", span => {
+    tracer.startActiveSpan("callazure/text/analytics/v2.1/sentiment", span => {
         fetch(apiURL, {
             method: "POST",
             body: JSON.stringify(reqBody),
@@ -60,11 +60,11 @@ app.post("/score", (req, res) => {
             .then((_res) => {
                 // Add an attribute to the span
                 span.setAttribute('response.code', _res.status);
-                
+
                 if (!_res.ok) {
                     logger.debug("error invoking cognitive service");
                     res.status(400).send({ error: "error invoking cognitive service" });
-                    
+
                     span.end();
                     return;
                 }
