@@ -1,5 +1,10 @@
 const express = require("express");
 const logger = require("./logger");
+const openTelemetry = require("@opentelemetry/api");
+
+const tracer = openTelemetry.trace.getTracer(
+    'processor-tracer'
+);
 
 const app = express();
 app.use(express.json());
@@ -43,34 +48,44 @@ app.post("/score", (req, res) => {
 
     // Call cognitive service to score the tweet
     logger.debug("Invoking cognitive service");
-    fetch(apiURL, {
-        method: "POST",
-        body: JSON.stringify(reqBody),
-        headers: {
-            "Content-Type": "application/json",
-            "Ocp-Apim-Subscription-Key": apiToken,
-        },
-    })
-        .then((_res) => {
-            if (!_res.ok) {
-                logger.debug("error invoking cognitive service");
-                res.status(400).send({ error: "error invoking cognitive service" });
-                return;
-            }
-            return _res.json();
+    tracer.startActiveSpan("call cognitive services", span => {
+        fetch(apiURL, {
+            method: "POST",
+            body: JSON.stringify(reqBody),
+            headers: {
+                "Content-Type": "application/json",
+                "Ocp-Apim-Subscription-Key": apiToken,
+            },
         })
-        .then((_resp) => {
-            // Send the response back to the caller.
-            const result = _resp.documents[0];
-            logger.debug("Response:" + JSON.stringify(result));
-            res.status(200).send(result);
+            .then((_res) => {
+                // Add an attribute to the span
+                span.setAttribute('response.code', _res.status);
+                
+                if (!_res.ok) {
+                    logger.debug("error invoking cognitive service");
+                    res.status(400).send({ error: "error invoking cognitive service" });
+                    
+                    span.end();
+                    return;
+                }
+                return _res.json();
+            })
+            .then((_resp) => {
+                // Send the response back to the caller.
+                const result = _resp.documents[0];
+                // Add an attribute to the span
+                span.setAttribute('response.data.score', result.score);
+                logger.debug("Response:" + JSON.stringify(result));
+                res.status(200).send(result);
 
-            return;
-        })
-        .catch((error) => {
-            logger.error("error:" + error);
-            res.status(500).send({ message: error });
-        });
+                span.end();
+                return;
+            })
+            .catch((error) => {
+                logger.error("error:" + error);
+                res.status(500).send({ message: error });
+            });
+    });
 });
 
 // Root get that just returns the configured values.
