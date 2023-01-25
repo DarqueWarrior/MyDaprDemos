@@ -85,6 +85,14 @@ elseif ($env -eq "node") {
     # Make sure the dapr_zipkin container is running.
     docker start dapr_zipkin
 
+    Push-Location ./src/javascript_processor/
+    npm i
+    Pop-Location
+
+    Push-Location ./src/javascript_provider/
+    npm i
+    Pop-Location
+
     Write-Output "dapr run --app-id viewer --app-port 5000 --components-path ./components/local -- dotnet run --project ./src/csharp_viewer/viewer.csproj --urls "http://localhost:5000" `n"
     Write-Output "dapr run --app-id processor --app-port 5030 --components-path ./components/local -- node ./src/javascript_processor/app.js `n"
     Write-Output "dapr run --app-id provider --app-port 5040 --components-path ./components/local -- node ./src/javascript_provider/app.js `n"

@@ -20,6 +20,16 @@
                 "Python_Provider"
             ],
             "stopAll": true
+        },
+        {
+            "name": "Node",
+            "preLaunchTask": "node_build",
+            "configurations": [
+                "CSharp_Viewer",
+                "JavaScript_Processor",
+                "JavaScript_Provider"
+            ],
+            "stopAll": true
         }
     ],
     "configurations": [
@@ -31,7 +41,26 @@
             "program": "${workspaceFolder}/src/python_provider/provider.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "postDebugTask": "stop_python_provider"
+            "postDebugTask": "stop_provider"
+        },
+        {
+            "name": "JavaScript_Provider",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "run_javascript_provider",
+            "program": "${workspaceFolder}/src/javascript_provider/app.js",
+            "console": "integratedTerminal",
+            "postDebugTask": "stop_provider"
+        },
+        {
+            "name": "JavaScript_Processor",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "run_javascript_processor",
+            "program": "${workspaceFolder}/src/javascript_processor/app.js",
+            "console": "integratedTerminal",
+            "postDebugTask": "stop_processor",
+            "envFile": "${workspaceFolder}/components/local/local.env",
         },
         {
             "name": "Java_Viewer",
@@ -44,7 +73,7 @@
                 "-jar",
                 "./src/java_viewer/target/app.jar"
             ],
-            "postDebugTask": "stop_java_viewer"
+            "postDebugTask": "stop_viewer"
         },
         {
             "name": "CSharp_Viewer",
@@ -63,7 +92,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "ASPNETCORE_URLS": "http://localhost:5000"
             },
-            "postDebugTask": "stop_csharp_viewer"
+            "postDebugTask": "stop_viewer"
         },
         {
             "name": "CSharp_Provider",
@@ -78,7 +107,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "ASPNETCORE_URLS": "http://localhost:5040"
             },
-            "postDebugTask": "stop_csharp_provider"
+            "postDebugTask": "stop_provider"
         },
         {
             "name": "CSharp_Processor",
@@ -94,7 +123,7 @@
                 "ASPNETCORE_URLS": "http://localhost:5030"
             },
             "envFile": "${workspaceFolder}/components/local/local.env",
-            "postDebugTask": "stop_csharp_processor"
+            "postDebugTask": "stop_processor"
         }
     ]
 }

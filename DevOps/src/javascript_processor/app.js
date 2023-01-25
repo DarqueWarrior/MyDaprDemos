@@ -1,7 +1,7 @@
 const express = require("express");
 const logger = require("./logger");
 const tracing = require("./tracing");
-const { context, propagation, trace } = require("@opentelemetry/api");
+const { context, propagation, trace, SpanStatusCode, SpanKind } = require("@opentelemetry/api");
 
 const tracer = trace.getTracer(
     'processor-tracer'
@@ -47,56 +47,75 @@ app.post("/score", (req, res) => {
         ],
     };
 
-    // Extracts the 'traceparent' and 'tracestate' data into a context object.
-    //
-    logger.debug("Request Header: " + JSON.stringify(req.headers));
-
-    // You can then treat this context as the active context for your
-    // traces.
-    logger.debug("Active Context: " + JSON.stringify(context.active));
-    let activeContext = propagation.extract(context.active(), req.headers)
-    logger.debug("New Active Context: " + JSON.stringify(activeContext));
-
     // Call cognitive service to score the tweet
     logger.debug("Invoking cognitive service");
-    tracer.startActiveSpan("callazure/text/analytics/v2.1/sentiment", span => {
-        fetch(apiURL, {
-            method: "POST",
-            body: JSON.stringify(reqBody),
-            headers: {
-                "Content-Type": "application/json",
-                "Ocp-Apim-Subscription-Key": apiToken,
-            },
-        })
-            .then((_res) => {
-                // Add an attribute to the span
-                span.setAttribute('response.code', _res.status);
+    tracer.startActiveSpan("callazure/text/analytics/v2.1/sentiment", { kind: SpanKind.SERVER }, context.active(),
+        // tracer.startActiveSpan("callazure/text/analytics/v2.1/sentiment",
+        span => {
+            fetch(apiURL, {
+                method: "POST",
+                body: JSON.stringify(reqBody),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Ocp-Apim-Subscription-Key": apiToken,
+                },
+            })
+                .then((_res) => {
+                    // To avoid expensive computations, check that span is recording
+                    // before setting any attributes.
+                    if (span.isRecording()) {
+                        // Add an attribute to the span
+                        span.setAttribute('response.code', _res.status);
+                    }
 
-                if (!_res.ok) {
-                    logger.debug("error invoking cognitive service");
-                    res.status(400).send({ error: "error invoking cognitive service" });
+                    if (!_res.ok) {
+                        logger.debug("error invoking cognitive service");
+                        res.status(400).send({ error: "error invoking cognitive service" });
+
+                        span.setStatus({ code: SpanStatusCode.ERROR, message: "error invoking cognitive service" });
+                        span.end();
+                        return;
+                    }
+                    return _res.json();
+                })
+                .then((_resp) => {
+                    // Send the response back to the caller.
+                    const result = _resp.documents[0];
+
+                    // Check result is valid
+                    if (!result) {
+                        logger.debug("Response: result was undefined");
+                        // To avoid expensive computations, check that span is recording
+                        // before setting any attributes.
+                        if (span.isRecording()) {
+                            // Add an attribute to the span
+                            span.setAttribute('response.data.score', 'undefined');
+                        }
+                    } else {
+                        // To avoid expensive computations, check that span is recording
+                        // before setting any attributes.
+                        if (span.isRecording()) {
+                            // Add an attribute to the span
+                            span.setAttribute('response.data.score', result.score);
+                        }
+                    }
 
                     span.end();
-                    return;
-                }
-                return _res.json();
-            })
-            .then((_resp) => {
-                // Send the response back to the caller.
-                const result = _resp.documents[0];
-                // Add an attribute to the span
-                span.setAttribute('response.data.score', result.score);
-                logger.debug("Response:" + JSON.stringify(result));
-                res.status(200).send(result);
 
-                span.end();
-                return;
-            })
-            .catch((error) => {
-                logger.error("error:" + error);
-                res.status(500).send({ message: error });
-            });
-    });
+                    logger.debug("Response:" + JSON.stringify(result));
+                    res.status(200).send(result);
+
+                    return;
+                })
+                .catch((error) => {
+                    span.recordException(error);
+                    span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
+                    span.end();
+
+                    logger.error("error:" + error);
+                    res.status(500).send({ message: error });
+                });
+        });
 });
 
 // Root get that just returns the configured values.

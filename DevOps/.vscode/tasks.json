@@ -23,6 +23,15 @@
             "problemMatcher": []
         },
         {
+            "label": "node_build",
+            "dependsOn": [
+                "csharp_build",
+                "javascript_provider_build",
+                "javascript_processor_build"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "python_build",
             "command": "pip3",
             "options": {
@@ -33,6 +42,30 @@
                 "install",
                 "-r",
                 "requirements.txt"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "javascript_processor_build",
+            "command": "npm",
+            "options": {
+                "cwd": "${workspaceFolder}/src/javascript_processor"
+            },
+            "type": "process",
+            "args": [
+                "install"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "javascript_provider_build",
+            "command": "npm",
+            "options": {
+                "cwd": "${workspaceFolder}/src/javascript_provider"
+            },
+            "type": "process",
+            "args": [
+                "install"
             ],
             "problemMatcher": []
         },
@@ -59,7 +92,7 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_csharp_provider",
+            "label": "stop_provider",
             "appId": "provider",
             "type": "daprd-down"
         },
@@ -74,11 +107,6 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_python_provider",
-            "appId": "provider",
-            "type": "daprd-down"
-        },
-        {
             "label": "run_csharp_processor",
             "appId": "processor",
             "appPort": 5030,
@@ -86,7 +114,7 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_csharp_processor",
+            "label": "stop_processor",
             "appId": "processor",
             "type": "daprd-down"
         },
@@ -98,7 +126,7 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_csharp_viewer",
+            "label": "stop_viewer",
             "appId": "viewer",
             "type": "daprd-down"
         },
@@ -110,9 +138,20 @@
             "componentsPath": "./components/local"
         },
         {
-            "label": "stop_java_viewer",
-            "appId": "viewer",
-            "type": "daprd-down"
+            "label": "run_javascript_processor",
+            "appId": "processor",
+            "appPort": 5030,
+            "type": "dapr",
+            "componentsPath": "./components/local"
+        },
+        {
+            "label": "run_javascript_provider",
+            "appId": "provider",
+            "appPort": 5040,
+            "httpPort": 3500,
+            "grpcPort": 50001,
+            "type": "dapr",
+            "componentsPath": "./components/local"
         }
     ]
 }
