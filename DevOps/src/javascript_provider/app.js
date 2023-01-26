@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("./logger");
+// const tracing = require("./tracing");
 const { DaprClient, DaprServer, HttpMethod, CommunicationProtocolEnum } = require("@dapr/dapr");
 
 const app = express();
@@ -25,28 +26,39 @@ app.post("/tweets", async (req, res) => {
         return;
     }
 
-    let client = new DaprClient();
+    // await tracer.startActiveSpan("queryActor.onActivate", async span => {
 
-    // Save in state store for future use
-    logger.debug("Storing tweet via Dapr with id: " + tweet.id_str);
-    let response = await client.state.save(serviceStoreName, [{ key: tweet.id_str, value: tweet }]);
+        let client = new DaprClient();
 
-    // Call sentiment scoring service
-    let body = { lang: tweet.lang, text: tweet.text };
-    logger.debug("Calling processor via Dapr with body: " + JSON.stringify(body));
-    response = await client.invoker.invoke(serviceAppId, serviceMethod, HttpMethod.POST, body);
-    logger.debug("Processor response: " + JSON.stringify(response));
+        // Save in state store for future use
+        logger.debug("Storing tweet via Dapr with id: " + tweet.id_str);
+        let response = await client.state.save(serviceStoreName, [{ key: tweet.id_str, value: tweet }]);
 
-    // publish the tweet to the topic
-    // Added the sentiment score to the tweet
-    let analyzedTweet = {
-        tweet: tweet,
-        score: response.score
-    };
-    logger.debug("Publishing tweet with sentiment via Dapr: " + JSON.stringify(analyzedTweet));
-    response = await client.pubsub.publish(servicePubSubName, serviceTopicName, analyzedTweet);
+        // Call sentiment scoring service
+        let body = { lang: tweet.lang, text: tweet.text };
+        logger.debug("Calling processor via Dapr with body: " + JSON.stringify(body));
+        try {
+            response = await client.invoker.invoke(serviceAppId, serviceMethod, HttpMethod.POST, body);
+            logger.debug("Processor response: " + JSON.stringify(response));
+        } catch (error) {
+            logger.error("Error calling processor: " + error);
+            return res.status(200).send();
+            // return res.status(500).send({ error: "error calling processor" });
+        }
 
-    res.status(200).send();
+        // publish the tweet to the topic
+        // Added the sentiment score to the tweet
+        let analyzedTweet = {
+            tweet: tweet,
+            score: response.score
+        };
+        logger.debug("Publishing tweet with sentiment via Dapr: " + JSON.stringify(analyzedTweet));
+        response = await client.pubsub.publish(servicePubSubName, serviceTopicName, analyzedTweet);
+
+        res.status(200).send();
+
+    //     span.end();
+    // });
 });
 
 app.listen(port, () => logger.info(`Port: ${port}!`));

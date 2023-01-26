@@ -30,6 +30,16 @@
                 "JavaScript_Provider"
             ],
             "stopAll": true
+        },
+        {
+            "name": "Node Manual Provider",
+            "preLaunchTask": "node_build",
+            "configurations": [
+                "CSharp_Viewer",
+                "JavaScript_Processor",
+                "JavaScript_Manual_Provider"
+            ],
+            "stopAll": true
         }
     ],
     "configurations": [
@@ -48,6 +58,15 @@
             "type": "node",
             "request": "launch",
             "preLaunchTask": "run_javascript_provider",
+            "program": "${workspaceFolder}/src/javascript_provider/app.js",
+            "console": "integratedTerminal",
+            "postDebugTask": "stop_provider"
+        },
+        {
+            "name": "JavaScript_Manual_Provider",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "run_javascript_provider_manual_tweet",
             "program": "${workspaceFolder}/src/javascript_provider/app.js",
             "console": "integratedTerminal",
             "postDebugTask": "stop_provider"

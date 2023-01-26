@@ -145,6 +145,15 @@
             "componentsPath": "./components/local"
         },
         {
+            "label": "run_javascript_provider_manual_tweet",
+            "appId": "provider",
+            "appPort": 5040,
+            "httpPort": 3500,
+            "grpcPort": 50001,
+            "type": "dapr",
+            "componentsPath": "./components/debug"
+        },
+        {
             "label": "run_javascript_provider",
             "appId": "provider",
             "appPort": 5040,

@@ -1,0 +1,14 @@
+POST http://localhost:3500/v1.0/invoke/provider/method/tweets HTTP/1.1
+content-type: application/json
+
+{
+    "id_str": "1617945397376471044",
+    "lang": "en",
+    "text": "What an amazing time to be a developer.",
+    "full_text": "",
+    "user": {        
+        "name": "Donovan Brown",
+        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1405545967269691400/V6zWBIaL_400x400.jpg",
+        "screen_name": "DonovanBrown"
+    }
+}

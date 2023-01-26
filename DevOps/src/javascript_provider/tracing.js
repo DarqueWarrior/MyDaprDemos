@@ -15,7 +15,7 @@ registerInstrumentations({
 const resource =
   Resource.default().merge(
     new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: "processor",
+      [SemanticResourceAttributes.SERVICE_NAME]: "provider",
       [SemanticResourceAttributes.SERVICE_VERSION]: "0.1.0",
     })
   );
